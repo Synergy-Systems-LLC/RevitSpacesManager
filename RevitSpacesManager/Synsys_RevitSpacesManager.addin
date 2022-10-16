@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>RevitSpacesManager</Name>
+		<Assembly>SynSys\RevitSpacesManager\RevitSpacesManager.dll</Assembly>
+		<FullClassName>RevitSpacesManager.Revit.App</FullClassName>
+		<AddInId>06baf8e8-ba8e-4179-bbe2-5aea5261e336</AddInId>
+		<VendorId>Synergy Systems</VendorId>
+		<VendorDescription>amaslov@synsys.co</VendorDescription>
+	</AddIn>
+</RevitAddIns>
