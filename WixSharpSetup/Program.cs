@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RevitSpacesManager.Revit;
+using System;
 using System.IO;
 using WixSharp;
 using WixSharp.CommonTasks;
@@ -10,15 +11,13 @@ namespace WixSharpSetup
     {
         private static void Main()
         {
-            // Program заменить на тип из главного проекта и удалить комментарий.
-            // Тип НЕ должен зависеть от сторонних библиотек, например typeof(RevitManager).
-            var assemblyName = typeof(Program).Assembly.GetName();
+            var assemblyName = typeof(RevitManager).Assembly.GetName();
 
             var outFileName = $"{assemblyName.Name}-{assemblyName.Version}";
             var version = assemblyName.Version;
             var projectName = assemblyName.Name;
 
-            var guid = new Guid("51a63727-4b6e-4425-840e-d5343238cb99"); // Заменить гуид и удалить комментарий.
+            var guid = new Guid("9879281f-1f82-42a1-bf75-177e77f929c2");
 
             var solutionDir = Directory.GetParent(Directory.GetCurrentDirectory());
             var tempDir = new DirectoryInfo(Path.Combine(solutionDir.FullName, "setup", "temp"));
