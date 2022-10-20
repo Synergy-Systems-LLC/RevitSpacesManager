@@ -65,7 +65,6 @@
     <Compile Include="Revit\RevitManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitignore" />
     <None Include="packages.config" />
     <None Include="Synsys_RevitSpacesManager.addin" />
   </ItemGroup>

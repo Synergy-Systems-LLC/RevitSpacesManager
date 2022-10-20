@@ -16,7 +16,6 @@ namespace RevitSpacesManager.Revit
             {
                 return Result.Cancelled;
             }
-
             TaskDialog.Show("info", $"Тестовый запуск из документа {RevitManager.Document.Title}");
 
             return Result.Succeeded;
@@ -32,7 +31,7 @@ namespace RevitSpacesManager.Revit
         {
             var dialog = new TaskDialog("Start")
             {
-                MainInstruction = "Хотите запустить плагин?", // заменить на нужное и удалить комментарий
+                MainInstruction = "Хотите запустить плагин?",
                 CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No
             };
 
