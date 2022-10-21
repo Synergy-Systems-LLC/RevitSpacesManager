@@ -5,10 +5,10 @@ namespace RevitSpacesManager.Revit.Services
 {
     internal class RevitDocumentServices
     {
-        private Document _document;
-        private FilteredElementCollector _elementCollector;
-        private FilteredWorksetCollector _worksetCollector;
-        private FilteredWorksetCollector _userWorksetCollector;
+        private readonly Document _document;
+        private readonly FilteredElementCollector _elementCollector;
+        private readonly FilteredWorksetCollector _worksetCollector;
+        private readonly FilteredWorksetCollector _userWorksetCollector;
 
 
         internal RevitDocumentServices(Document doc)
