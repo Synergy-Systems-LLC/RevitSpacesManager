@@ -2,6 +2,7 @@
 using RevitSpacesManager.Revit;
 using RevitSpacesManager.Revit.Services;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace RevitSpacesManager.Models
 {
@@ -27,7 +28,7 @@ namespace RevitSpacesManager.Models
             //- get rooms workset id
 
             DefineInitialRevitModelData();
-            DefineCurrentDocumentLevels();
+            DefineCurrentDocumentLevelElements();
         }
 
         private void DefineInitialRevitModelData()
@@ -38,7 +39,7 @@ namespace RevitSpacesManager.Models
             _currentModelServices = new RevitDocumentServices(_currentDocument);
         }
 
-        private void DefineCurrentDocumentLevels()
+        private void DefineCurrentDocumentLevelElements()
         {
             _currentDocumentLevelElements = new List<LevelElement>();
             List<Level> levels = _currentModelServices.GetLevels();
