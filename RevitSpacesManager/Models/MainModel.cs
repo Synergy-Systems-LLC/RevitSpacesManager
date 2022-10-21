@@ -10,6 +10,16 @@ namespace RevitSpacesManager.Models
     {
         internal MainModel()
         {
+            //TODO
+            //- get spaces workset id
+            //- get rooms workset id
+            //- get levels
+            //- get link documents
+            //- get spaces by phase
+            //- get rooms by phase
+            //- get rooms by link and phase
+            //- get active view phase and check
+            //- launch window
 
         }
     }
