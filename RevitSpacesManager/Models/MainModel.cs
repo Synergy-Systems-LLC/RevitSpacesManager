@@ -11,7 +11,7 @@ namespace RevitSpacesManager.Models
         private View _activeView;
         private string _activeViewPhaseName;
         private RevitDocumentServices _currentModelServices;
-        private List<LevelElement> _currentDocumentLevels;
+        private List<LevelElement> _currentDocumentLevelElements;
 
         internal MainModel()
         {
@@ -40,12 +40,12 @@ namespace RevitSpacesManager.Models
 
         private void DefineCurrentDocumentLevels()
         {
-            _currentDocumentLevels = new List<LevelElement>();
+            _currentDocumentLevelElements = new List<LevelElement>();
             List<Level> levels = _currentModelServices.GetLevels();
             foreach (Level level in levels)
             {
                 LevelElement levelElement = new LevelElement(level);
-                _currentDocumentLevels.Add(levelElement);
+                _currentDocumentLevelElements.Add(levelElement);
             }
         }
     }
