@@ -11,7 +11,7 @@ namespace RevitSpacesManager.ViewModels
     {
         private readonly MainModel _MainModel;
 
-        internal MainWindowViewModel()
+        public MainWindowViewModel()
         {
             _MainModel = new MainModel();
         }
