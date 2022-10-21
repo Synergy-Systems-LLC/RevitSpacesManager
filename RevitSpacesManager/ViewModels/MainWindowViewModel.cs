@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RevitSpacesManager.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,11 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class MainWindowViewModel
     {
+        private readonly MainModel _MainModel;
+
+        internal MainWindowViewModel()
+        {
+            _MainModel = new MainModel();
+        }
     }
 }

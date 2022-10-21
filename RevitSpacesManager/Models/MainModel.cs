@@ -8,5 +8,9 @@ namespace RevitSpacesManager.Models
 {
     internal class MainModel
     {
+        internal MainModel()
+        {
+
+        }
     }
 }
