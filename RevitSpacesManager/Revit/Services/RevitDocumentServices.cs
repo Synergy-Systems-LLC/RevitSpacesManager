@@ -1,6 +1,5 @@
 ﻿using Autodesk.Revit.DB;
 using System.Collections.Generic;
-using System.Windows;
 
 namespace RevitSpacesManager.Revit.Services
 {
@@ -20,7 +19,7 @@ namespace RevitSpacesManager.Revit.Services
 
         internal bool DoesUserWorksetExist(string worksetName)
         {
-            foreach(Workset workset in _userWorksetCollector)
+            foreach (Workset workset in _userWorksetCollector)
             {
                 if(workset.Name == worksetName)
                 {
