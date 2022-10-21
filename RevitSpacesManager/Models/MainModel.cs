@@ -1,5 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 using RevitSpacesManager.Revit;
+using RevitSpacesManager.Revit.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace RevitSpacesManager.Models
         private Document _currentDocument;
         private View _activeView;
         private string _activeViewPhaseName;
+        private RevitDocumentServices _currentModelServices;
 
         internal MainModel()
         {
@@ -35,6 +37,7 @@ namespace RevitSpacesManager.Models
             _currentDocument = RevitManager.Document;
             _activeView = _currentDocument.ActiveView;
             _activeViewPhaseName = _activeView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
+            _currentModelServices = new RevitDocumentServices(_currentDocument);
         }
     }
 }
