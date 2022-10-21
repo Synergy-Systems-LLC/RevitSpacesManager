@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:RevitSpacesManager.ViewModels" 
-        xmlns:m="clr-namespace:RevitSpacesManager.Models" 
         mc:Ignorable="d"
         
         Title="MainWindow" 
@@ -12,6 +11,9 @@
         Width="800"
         ResizeMode="CanMinimize" 
         WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
 
     </Grid>

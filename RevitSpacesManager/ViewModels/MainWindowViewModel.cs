@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RevitSpacesManager.ViewModels
 {
-    internal class ViewModel
+    internal class MainWindowViewModel
     {
     }
 }
