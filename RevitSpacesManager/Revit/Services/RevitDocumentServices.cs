@@ -1,12 +1,12 @@
 ﻿using Autodesk.Revit.DB;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace RevitSpacesManager.Revit.Services
 {
     internal class RevitDocumentServices
     {
         private readonly Document _document;
-        private readonly FilteredElementCollector _elementCollector;
         private readonly FilteredWorksetCollector _worksetCollector;
         private readonly FilteredWorksetCollector _userWorksetCollector;
 
@@ -14,7 +14,6 @@ namespace RevitSpacesManager.Revit.Services
         internal RevitDocumentServices(Document doc)
         {
             _document = doc;
-            _elementCollector = new FilteredElementCollector(_document);
             _worksetCollector = new FilteredWorksetCollector(_document);
             _userWorksetCollector = _worksetCollector.OfKind(WorksetKind.UserWorkset);
         }
@@ -45,8 +44,9 @@ namespace RevitSpacesManager.Revit.Services
 
         internal List<Level> GetLevels()
         {
+            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            IList<Element> elements = elementCollector.OfClass(typeof(Level)).WhereElementIsNotElementType().ToElements();
             List<Level> levels = new List<Level>();
-            IList<Element> elements = _elementCollector.OfClass(typeof(Level)).WhereElementIsNotElementType().ToElements();
             foreach (Element element in elements)
             {
                 Level level = element as Level;
@@ -57,8 +57,9 @@ namespace RevitSpacesManager.Revit.Services
 
         internal List<RevitLinkInstance> GetRevitLinkInstances()
         {
+            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            IList<Element> elements = elementCollector.OfClass(typeof(RevitLinkInstance)).WhereElementIsNotElementType().ToElements();
             List<RevitLinkInstance> revitLinkInstances = new List<RevitLinkInstance>();
-            IList<Element> elements = _elementCollector.OfClass(typeof(RevitLinkInstance)).ToElements();
             foreach (Element element in elements)
             {
                 RevitLinkInstance revitLinkInstance = element as RevitLinkInstance;
