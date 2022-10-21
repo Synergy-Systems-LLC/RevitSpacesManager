@@ -1,11 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using RevitSpacesManager.Revit;
 using RevitSpacesManager.Revit.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RevitSpacesManager.Models
 {
@@ -15,6 +11,7 @@ namespace RevitSpacesManager.Models
         private View _activeView;
         private string _activeViewPhaseName;
         private RevitDocumentServices _currentModelServices;
+        private List<LevelElement> _currentDocumentLevels;
 
         internal MainModel()
         {
@@ -30,6 +27,7 @@ namespace RevitSpacesManager.Models
             //- get rooms workset id
 
             DefineInitialRevitModelData();
+            DefineCurrentDocumentLevels();
         }
 
         private void DefineInitialRevitModelData()
@@ -38,6 +36,17 @@ namespace RevitSpacesManager.Models
             _activeView = _currentDocument.ActiveView;
             _activeViewPhaseName = _activeView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
             _currentModelServices = new RevitDocumentServices(_currentDocument);
+        }
+
+        private void DefineCurrentDocumentLevels()
+        {
+            _currentDocumentLevels = new List<LevelElement>();
+            List<Level> levels = _currentModelServices.GetLevels();
+            foreach (Level level in levels)
+            {
+                LevelElement levelElement = new LevelElement(level);
+                _currentDocumentLevels.Add(levelElement);
+            }
         }
     }
 }
