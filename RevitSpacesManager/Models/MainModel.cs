@@ -13,6 +13,7 @@ namespace RevitSpacesManager.Models
         private string _activeViewPhaseName;
         private RevitDocumentServices _currentModelServices;
         private List<LevelElement> _currentDocumentLevelElements;
+        private List<RevitLinkElement> _revitLinkElements;
 
         internal MainModel()
         {
@@ -29,6 +30,7 @@ namespace RevitSpacesManager.Models
 
             DefineInitialRevitModelData();
             DefineCurrentDocumentLevelElements();
+            DefineRevitLinkElements();
         }
 
         private void DefineInitialRevitModelData()
@@ -47,6 +49,17 @@ namespace RevitSpacesManager.Models
             {
                 LevelElement levelElement = new LevelElement(level);
                 _currentDocumentLevelElements.Add(levelElement);
+            }
+        }
+
+        private void DefineRevitLinkElements()
+        {
+            _revitLinkElements = new List<RevitLinkElement>();
+            List<RevitLinkInstance> revitLinkInstances = _currentModelServices.GetRevitLinkInstances();
+            foreach (RevitLinkInstance revitLinkInstance in revitLinkInstances)
+            {
+                RevitLinkElement revitLinkElement = new RevitLinkElement(revitLinkInstance);
+                _revitLinkElements.Add(revitLinkElement);
             }
         }
     }
