@@ -29,5 +29,17 @@ namespace RevitSpacesManager.Revit.Services
             }
             return false;
         }
+
+        internal int GetUserWorksetIntegerIdByName(string worksetName)
+        {
+            foreach (Workset workset in _userWorksetCollector)
+            {
+                if (workset.Name == worksetName)
+                {
+                    return workset.Id.IntegerValue;
+                }
+            }
+            return 0;
+        }
     }
 }
