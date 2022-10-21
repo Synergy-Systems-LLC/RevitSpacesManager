@@ -54,5 +54,17 @@ namespace RevitSpacesManager.Revit.Services
             }
             return levels;
         }
+
+        internal List<RevitLinkInstance> GetRevitLinkInstances()
+        {
+            List<RevitLinkInstance> revitLinkInstances = new List<RevitLinkInstance>();
+            IList<Element> elements = _elementCollector.OfClass(typeof(RevitLinkInstance)).ToElements();
+            foreach (Element element in elements)
+            {
+                RevitLinkInstance revitLinkInstance = element as RevitLinkInstance;
+                revitLinkInstances.Add(revitLinkInstance);
+            }
+            return revitLinkInstances;
+        }
     }
 }
