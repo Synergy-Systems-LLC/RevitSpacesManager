@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Autodesk.Revit.DB;
+using RevitSpacesManager.Revit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +10,15 @@ namespace RevitSpacesManager.Models
 {
     internal class MainModel
     {
+        private Document _currentDocument;
+        private View _activeView;
+        private string _activeViewPhaseName;
+
         internal MainModel()
         {
             //TODO
+            //+ get active view phase and check
+            //+ launch window
             //- get spaces workset id
             //- get rooms workset id
             //- get levels
@@ -18,9 +26,15 @@ namespace RevitSpacesManager.Models
             //- get spaces by phase
             //- get rooms by phase
             //- get rooms by link and phase
-            //- get active view phase and check
-            //- launch window
 
+            DefineInitialRevitModelData();
+        }
+
+        private void DefineInitialRevitModelData()
+        {
+            _currentDocument = RevitManager.Document;
+            _activeView = _currentDocument.ActiveView;
+            _activeViewPhaseName = _activeView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
         }
     }
 }
