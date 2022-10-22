@@ -30,7 +30,7 @@ namespace RevitSpacesManager.Revit.Services
 
         internal bool DoesUserWorksetExist(string worksetName)
         {
-            foreach (Workset workset in _userWorksetCollector)
+            foreach (Workset workset in UserWorksets)
             {
                 if(workset.Name == worksetName)
                 {
@@ -42,7 +42,7 @@ namespace RevitSpacesManager.Revit.Services
 
         internal int GetUserWorksetIntegerIdByName(string worksetName)
         {
-            foreach (Workset workset in _userWorksetCollector)
+            foreach (Workset workset in UserWorksets)
             {
                 if (workset.Name == worksetName)
                 {
