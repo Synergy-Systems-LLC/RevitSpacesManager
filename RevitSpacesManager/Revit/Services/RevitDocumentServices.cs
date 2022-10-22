@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.Mechanical;
 using System.Collections.Generic;
 
@@ -79,6 +80,19 @@ namespace RevitSpacesManager.Revit.Services
                 spaces.Add(space);
             }
             return spaces;
+        }
+
+        internal List<Room> GetRooms()
+        {
+            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            IList<Element> elements = elementCollector.OfCategory(BuiltInCategory.OST_Rooms).WhereElementIsNotElementType().ToElements();
+            List<Room> rooms = new List<Room>();
+            foreach (Element element in elements)
+            {
+                Room room = element as Room;
+                rooms.Add(room);
+            }
+            return rooms;
         }
     }
 }
