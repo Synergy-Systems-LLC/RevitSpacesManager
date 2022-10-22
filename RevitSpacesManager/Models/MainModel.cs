@@ -8,12 +8,12 @@ namespace RevitSpacesManager.Models
 {
     internal class MainModel
     {
-        private Document _currentDocument;
-        private View _activeView;
-        private string _activeViewPhaseName;
+        private readonly Document _currentDocument;
+        private readonly View _activeView;
+        private readonly string _activeViewPhaseName;
 
-        private RevitDocument _currentRevitDocument;
-        private List<RevitLinkElement> _revitLinkElements;
+        private readonly RevitDocument _currentRevitDocument;
+        private readonly List<RevitDocument> _linkRevitDocuments;
 
         internal MainModel()
         {
@@ -28,30 +28,14 @@ namespace RevitSpacesManager.Models
             //- get spaces workset id
             //- get rooms workset id
 
-            DefineInitialRevitModelData();
-            DefineRevitLinkElements();
-
-            //string report = $"Levels : {_currentDocumentLevelElements.Count}\nLinks : {_revitLinkElements.Count}\nSpaces : {_currentDocumentSpaceElements.Count}\nRooms : {_currentDocumentRoomElements.Count}";
-            //MessageBox.Show(report, "REPORT");
-        }
-
-        private void DefineInitialRevitModelData()
-        {
             _currentDocument = RevitManager.Document;
             _activeView = _currentDocument.ActiveView;
             _activeViewPhaseName = _activeView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
             _currentRevitDocument = new RevitDocument(_currentDocument);
-        }
+            _linkRevitDocuments = _currentRevitDocument.GetRevitLinkDocuments();
 
-        private void DefineRevitLinkElements()
-        {
-            _revitLinkElements = new List<RevitLinkElement>();
-            List<RevitLinkInstance> revitLinkInstances = _currentRevitDocument.GetRevitLinkInstances();
-            foreach (RevitLinkInstance revitLinkInstance in revitLinkInstances)
-            {
-                RevitLinkElement revitLinkElement = new RevitLinkElement(revitLinkInstance);
-                _revitLinkElements.Add(revitLinkElement);
-            }
+            //string report = $"Levels : {_currentDocumentLevelElements.Count}\nLinks : {_revitLinkElements.Count}\nSpaces : {_currentDocumentSpaceElements.Count}\nRooms : {_currentDocumentRoomElements.Count}";
+            //MessageBox.Show(report, "REPORT");
         }
     }
 }

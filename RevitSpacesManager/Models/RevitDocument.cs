@@ -27,15 +27,19 @@ namespace RevitSpacesManager.Revit.Services
             GetRooms();
         }
 
-        private void GetUserWorksets()
+        internal List<RevitDocument> GetRevitLinkDocuments()
         {
-            UserWorksets = new List<Workset>();
-            FilteredWorksetCollector worksetCollector = new FilteredWorksetCollector(_document);
-            FilteredWorksetCollector userWorksetCollector = worksetCollector.OfKind(WorksetKind.UserWorkset);
-            foreach(Workset workset in userWorksetCollector)
+            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            IList<Element> elements = elementCollector.OfClass(typeof(RevitLinkInstance)).WhereElementIsNotElementType().ToElements();
+            List<RevitDocument> revitLinkDocuments = new List<RevitDocument>();
+            foreach (Element element in elements)
             {
-                UserWorksets.Add(workset);
+                RevitLinkInstance revitLinkInstance = element as RevitLinkInstance;
+                Document linkDocument = revitLinkInstance.GetLinkDocument();
+                RevitDocument revitLinkDocument = new RevitDocument(linkDocument);
+                revitLinkDocuments.Add(revitLinkDocument);
             }
+            return revitLinkDocuments;
         }
 
         internal bool DoesUserWorksetExist(string worksetName)
@@ -60,6 +64,17 @@ namespace RevitSpacesManager.Revit.Services
                 }
             }
             return 0;
+        }
+
+        private void GetUserWorksets()
+        {
+            UserWorksets = new List<Workset>();
+            FilteredWorksetCollector worksetCollector = new FilteredWorksetCollector(_document);
+            FilteredWorksetCollector userWorksetCollector = worksetCollector.OfKind(WorksetKind.UserWorkset);
+            foreach (Workset workset in userWorksetCollector)
+            {
+                UserWorksets.Add(workset);
+            }
         }
 
         private void GetLevels()
@@ -99,19 +114,6 @@ namespace RevitSpacesManager.Revit.Services
                 RoomElement roomElement = new RoomElement(room);
                 Rooms.Add(roomElement);
             }
-        }
-
-        internal List<RevitLinkInstance> GetRevitLinkInstances()
-        {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
-            IList<Element> elements = elementCollector.OfClass(typeof(RevitLinkInstance)).WhereElementIsNotElementType().ToElements();
-            List<RevitLinkInstance> revitLinkInstances = new List<RevitLinkInstance>();
-            foreach (Element element in elements)
-            {
-                RevitLinkInstance revitLinkInstance = element as RevitLinkInstance;
-                revitLinkInstances.Add(revitLinkInstance);
-            }
-            return revitLinkInstances;
         }
     }
 }
