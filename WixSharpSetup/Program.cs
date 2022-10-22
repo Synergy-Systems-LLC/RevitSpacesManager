@@ -48,6 +48,7 @@ namespace WixSharpSetup
             MajorUpgrade.Default.AllowSameVersionUpgrades = true;
             project.RemoveDialogsBetween(NativeDialogs.WelcomeDlg, NativeDialogs.VerifyReadyDlg);
             project.BuildMsi();
+            //project.BuildMsiCmd();
 
             Directory.Delete(tempDir.FullName, true);
         }

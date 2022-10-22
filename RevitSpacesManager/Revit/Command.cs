@@ -1,6 +1,8 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using RevitSpacesManager.Views;
+using System.Windows;
 
 namespace RevitSpacesManager.Revit
 {
@@ -12,35 +14,40 @@ namespace RevitSpacesManager.Revit
         {
             RevitManager.CommandData = commandData;
 
-            if (UserRefusedRun())
+            if(IsCorrectActiveView())
             {
-                return Result.Cancelled;
+                ShowMainWindow();
             }
-            TaskDialog.Show("info", $"Тестовый запуск из документа {RevitManager.Document.Title}");
+            else
+            {
+                ShowActiveViewError();
+            }
 
             return Result.Succeeded;
         }
 
-        /// <summary>
-        /// Данное окно является предохранителем от случайного нажатия на кнопку плагина на панели в Revit.
-        /// Оно является обязательным для плагинов без GUI.
-        /// Если в плагине есть GUI данное окно должно быть удалено.
-        /// </summary>
-        /// <returns></returns>
-        private bool UserRefusedRun()
+        private void ShowMainWindow()
         {
-            var dialog = new TaskDialog("Start")
-            {
-                MainInstruction = "Хотите запустить плагин?",
-                CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No
-            };
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.ShowDialog();
+        }
 
-            if (dialog.Show() == TaskDialogResult.No)
+        private bool IsCorrectActiveView()
+        {
+            View activeView = RevitManager.Document.ActiveView;
+            Parameter activeViewPhase = activeView.get_Parameter(BuiltInParameter.VIEW_PHASE);
+            if (activeViewPhase == null)
             {
-                return true;
+                return false;
             }
+            return true;
+        }
 
-            return false;
+        private void ShowActiveViewError()
+        {
+            string message = "There is no special Phase in the currently active View. Please open definite View and relaunch the Revit Spaces Manager addin.";
+            string title = "ERROR!"; 
+            MessageBox.Show(message, title);
         }
     }
 }
