@@ -8,16 +8,19 @@ namespace RevitSpacesManager.Revit.Services
 {
     internal class RevitDocument
     {
-        internal List<Workset> UserWorksets;
-        internal List<LevelElement> Levels;
-        internal List<SpaceElement> Spaces;
-        internal List<RoomElement> Rooms;
+        internal string Title { get; set; }
+        internal List<Workset> UserWorksets { get; set; }
+        internal List<LevelElement> Levels { get; set; }
+        internal List<SpaceElement> Spaces { get; set; }
+        internal List<RoomElement> Rooms { get; set; }
 
         private readonly Document _document;
 
         internal RevitDocument(Document doc)
         {
             _document = doc;
+            Title = _document.Title;
+
             GetUserWorksets();
             GetLevels();
             GetSpaces();
