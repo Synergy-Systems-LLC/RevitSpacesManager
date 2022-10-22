@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.Mechanical;
+using RevitSpacesManager.Models;
 using System.Collections.Generic;
 
 namespace RevitSpacesManager.Revit.Services
@@ -8,6 +9,9 @@ namespace RevitSpacesManager.Revit.Services
     internal class RevitDocument
     {
         internal List<Workset> UserWorksets;
+        internal List<LevelElement> Levels;
+        internal List<SpaceElement> Spaces;
+        internal List<RoomElement> Rooms;
 
         private readonly Document _document;
 
@@ -15,6 +19,9 @@ namespace RevitSpacesManager.Revit.Services
         {
             _document = doc;
             GetUserWorksets();
+            GetLevels();
+            GetSpaces();
+            GetRooms();
         }
 
         private void GetUserWorksets()
@@ -52,17 +59,43 @@ namespace RevitSpacesManager.Revit.Services
             return 0;
         }
 
-        internal List<Level> GetLevels()
+        private void GetLevels()
         {
             FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
             IList<Element> elements = elementCollector.OfClass(typeof(Level)).WhereElementIsNotElementType().ToElements();
-            List<Level> levels = new List<Level>();
+            Levels = new List<LevelElement>();
             foreach (Element element in elements)
             {
                 Level level = element as Level;
-                levels.Add(level);
+                LevelElement levelElement = new LevelElement(level);
+                Levels.Add(levelElement);
             }
-            return levels;
+        }
+
+        private void GetSpaces()
+        {
+            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            IList<Element> elements = elementCollector.OfCategory(BuiltInCategory.OST_MEPSpaces).WhereElementIsNotElementType().ToElements();
+            Spaces = new List<SpaceElement>();
+            foreach (Element element in elements)
+            {
+                Space space = element as Space;
+                SpaceElement spaceElement = new SpaceElement(space);
+                Spaces.Add(spaceElement);
+            }
+        }
+
+        private void GetRooms()
+        {
+            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            IList<Element> elements = elementCollector.OfCategory(BuiltInCategory.OST_Rooms).WhereElementIsNotElementType().ToElements();
+            Rooms = new List<RoomElement>();
+            foreach (Element element in elements)
+            {
+                Room room = element as Room;
+                RoomElement roomElement = new RoomElement(room);
+                Rooms.Add(roomElement);
+            }
         }
 
         internal List<RevitLinkInstance> GetRevitLinkInstances()
@@ -76,32 +109,6 @@ namespace RevitSpacesManager.Revit.Services
                 revitLinkInstances.Add(revitLinkInstance);
             }
             return revitLinkInstances;
-        }
-
-        internal List<Space> GetMEPSpaces()
-        {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
-            IList<Element> elements = elementCollector.OfCategory(BuiltInCategory.OST_MEPSpaces).WhereElementIsNotElementType().ToElements();
-            List<Space> spaces = new List<Space>();
-            foreach (Element element in elements)
-            {
-                Space space = element as Space;
-                spaces.Add(space);
-            }
-            return spaces;
-        }
-
-        internal List<Room> GetRooms()
-        {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
-            IList<Element> elements = elementCollector.OfCategory(BuiltInCategory.OST_Rooms).WhereElementIsNotElementType().ToElements();
-            List<Room> rooms = new List<Room>();
-            foreach (Element element in elements)
-            {
-                Room room = element as Room;
-                rooms.Add(room);
-            }
-            return rooms;
         }
     }
 }
