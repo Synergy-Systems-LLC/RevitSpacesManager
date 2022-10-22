@@ -47,7 +47,7 @@ namespace RevitSpacesManager.Models
             foreach (RevitDocument linkRevitDocument in _linkRevitDocuments)
             {
                 report = report +
-                         linkRevitDocument.Title +
+                         $"{linkRevitDocument.Title}\n" +
                          $"Levels : {linkRevitDocument.Levels.Count}\n" +
                          $"Spaces : {linkRevitDocument.Spaces.Count}\n" +
                          $"Rooms : {linkRevitDocument.Rooms.Count}\n\n";
