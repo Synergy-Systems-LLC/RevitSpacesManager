@@ -13,7 +13,8 @@ namespace RevitSpacesManager.Models
         private Document _currentDocument;
         private View _activeView;
         private string _activeViewPhaseName;
-        private RevitDocument _currentModelServices;
+
+        private RevitDocument _currentRevitDocument;
 
         private List<LevelElement> _currentDocumentLevelElements;
         private List<RevitLinkElement> _revitLinkElements;
@@ -49,7 +50,7 @@ namespace RevitSpacesManager.Models
             _currentDocument = RevitManager.Document;
             _activeView = _currentDocument.ActiveView;
             _activeViewPhaseName = _activeView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
-            _currentModelServices = new RevitDocument(_currentDocument);
+            _currentRevitDocument = new RevitDocument(_currentDocument);
         }
 
         private void DefineCurrentDocumentLevelElements()
