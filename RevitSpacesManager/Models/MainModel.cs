@@ -17,17 +17,6 @@ namespace RevitSpacesManager.Models
 
         internal MainModel()
         {
-            //TODO
-            //+ get active view phase and check
-            //+ launch window
-            //+ get levels
-            //+ get link documents
-            //+ get spaces by phase
-            //+ get rooms by phase
-            //- get rooms by link and phase
-            //- get spaces workset id
-            //- get rooms workset id
-
             _currentDocument = RevitManager.Document;
             _activeView = _currentDocument.ActiveView;
             _activeViewPhaseName = _activeView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
