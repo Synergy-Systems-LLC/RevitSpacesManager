@@ -34,8 +34,26 @@ namespace RevitSpacesManager.Models
             _currentRevitDocument = new RevitDocument(_currentDocument);
             _linkRevitDocuments = _currentRevitDocument.GetRevitLinkDocuments();
 
-            //string report = $"Levels : {_currentDocumentLevelElements.Count}\nLinks : {_revitLinkElements.Count}\nSpaces : {_currentDocumentSpaceElements.Count}\nRooms : {_currentDocumentRoomElements.Count}";
-            //MessageBox.Show(report, "REPORT");
+            ShowReportMessage();
+        }
+
+        private void ShowReportMessage()
+        {
+            string report = "Current Model:\n" +
+                            $"Levels : {_currentRevitDocument.Levels.Count}\n" +
+                            $"Links : {_linkRevitDocuments.Count}\n" +
+                            $"Spaces : {_currentRevitDocument.Spaces.Count}\n" +
+                            $"Rooms : {_currentRevitDocument.Rooms.Count}\n\n";
+            foreach (RevitDocument linkRevitDocument in _linkRevitDocuments)
+            {
+                report = report +
+                         linkRevitDocument.Title +
+                         $"Levels : {linkRevitDocument.Levels.Count}\n" +
+                         $"Spaces : {linkRevitDocument.Spaces.Count}\n" +
+                         $"Rooms : {linkRevitDocument.Rooms.Count}\n\n";
+            }
+
+            MessageBox.Show(report, "REPORT");
         }
     }
 }
