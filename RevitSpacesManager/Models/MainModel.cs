@@ -39,6 +39,9 @@ namespace RevitSpacesManager.Models
 
             GetCurrentDocumentSpaces();
             GetCurrentDocumentRooms();
+
+            string report = $"Levels : {_currentDocumentLevelElements.Count}\nLinks : {_revitLinkElements.Count}\nSpaces : {_currentDocumentSpaceElements.Count}\nRooms : {_currentDocumentRoomElements.Count}";
+            MessageBox.Show(report, "REPORT");
         }
 
         private void DefineInitialRevitModelData()
