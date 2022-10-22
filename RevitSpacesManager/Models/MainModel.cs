@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.Mechanical;
 using RevitSpacesManager.Revit;
 using RevitSpacesManager.Revit.Services;
@@ -17,6 +18,7 @@ namespace RevitSpacesManager.Models
         private List<LevelElement> _currentDocumentLevelElements;
         private List<RevitLinkElement> _revitLinkElements;
         private List<SpaceElement> _currentDocumentSpaceElements;
+        private List<RoomElement> _currentDocumentRoomElements;
 
         internal MainModel()
         {
@@ -36,6 +38,7 @@ namespace RevitSpacesManager.Models
             DefineRevitLinkElements();
 
             GetCurrentDocumentSpaces();
+            GetCurrentDocumentRooms();
         }
 
         private void DefineInitialRevitModelData()
@@ -76,6 +79,17 @@ namespace RevitSpacesManager.Models
             {
                 SpaceElement spaceElement = new SpaceElement(space);
                 _currentDocumentSpaceElements.Add(spaceElement);
+            }
+        }
+
+        private void GetCurrentDocumentRooms()
+        {
+            _currentDocumentRoomElements = new List<RoomElement>();
+            List<Room> rooms = _currentModelServices.GetRooms();
+            foreach (Room room in rooms)
+            {
+                RoomElement roomElement = new RoomElement(room);
+                _currentDocumentRoomElements.Add(roomElement);
             }
         }
     }
