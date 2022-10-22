@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace RevitSpacesManager.Revit.Services
 {
-    internal class RevitDocumentServices
+    internal class RevitDocument
     {
         private readonly Document _document;
         private readonly FilteredWorksetCollector _worksetCollector;
         private readonly FilteredWorksetCollector _userWorksetCollector;
 
 
-        internal RevitDocumentServices(Document doc)
+        internal RevitDocument(Document doc)
         {
             _document = doc;
             _worksetCollector = new FilteredWorksetCollector(_document);
