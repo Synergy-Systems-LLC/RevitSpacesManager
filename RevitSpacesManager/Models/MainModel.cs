@@ -13,11 +13,7 @@ namespace RevitSpacesManager.Models
         private string _activeViewPhaseName;
 
         private RevitDocument _currentRevitDocument;
-
-        private List<LevelElement> _currentDocumentLevelElements;
         private List<RevitLinkElement> _revitLinkElements;
-        private List<SpaceElement> _currentDocumentSpaceElements;
-        private List<RoomElement> _currentDocumentRoomElements;
 
         internal MainModel()
         {
@@ -50,7 +46,7 @@ namespace RevitSpacesManager.Models
         private void DefineRevitLinkElements()
         {
             _revitLinkElements = new List<RevitLinkElement>();
-            List<RevitLinkInstance> revitLinkInstances = _currentModelServices.GetRevitLinkInstances();
+            List<RevitLinkInstance> revitLinkInstances = _currentRevitDocument.GetRevitLinkInstances();
             foreach (RevitLinkInstance revitLinkInstance in revitLinkInstances)
             {
                 RevitLinkElement revitLinkElement = new RevitLinkElement(revitLinkInstance);
