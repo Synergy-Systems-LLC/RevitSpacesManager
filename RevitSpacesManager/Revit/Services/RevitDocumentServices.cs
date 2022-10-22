@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Mechanical;
 using System.Collections.Generic;
 
 namespace RevitSpacesManager.Revit.Services
@@ -65,6 +66,19 @@ namespace RevitSpacesManager.Revit.Services
                 revitLinkInstances.Add(revitLinkInstance);
             }
             return revitLinkInstances;
+        }
+
+        internal List<Space> GetMEPSpaces()
+        {
+            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            IList<Element> elements = elementCollector.OfCategory(BuiltInCategory.OST_MEPSpaces).WhereElementIsNotElementType().ToElements();
+            List<Space> spaces = new List<Space>();
+            foreach (Element element in elements)
+            {
+                Space space = element as Space;
+                spaces.Add(space);
+            }
+            return spaces;
         }
     }
 }
