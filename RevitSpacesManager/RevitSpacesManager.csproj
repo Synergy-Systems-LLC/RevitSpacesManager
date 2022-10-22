@@ -59,6 +59,7 @@
     <Compile Include="Models\LevelElement.cs" />
     <Compile Include="Models\MainModel.cs" />
     <Compile Include="Models\RevitLinkElement.cs" />
+    <Compile Include="Models\SpaceElement.cs" />
     <Compile Include="Revit\App.cs" />
     <Compile Include="Revit\Command.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

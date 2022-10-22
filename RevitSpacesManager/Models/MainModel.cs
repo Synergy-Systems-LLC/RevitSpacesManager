@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Mechanical;
 using RevitSpacesManager.Revit;
 using RevitSpacesManager.Revit.Services;
 using System.Collections.Generic;
@@ -12,17 +13,19 @@ namespace RevitSpacesManager.Models
         private View _activeView;
         private string _activeViewPhaseName;
         private RevitDocumentServices _currentModelServices;
+
         private List<LevelElement> _currentDocumentLevelElements;
         private List<RevitLinkElement> _revitLinkElements;
+        private List<SpaceElement> _currentDocumentSpaceElements;
 
         internal MainModel()
         {
             //TODO
             //+ get active view phase and check
             //+ launch window
-            //- get levels
-            //- get link documents
-            //- get spaces by phase
+            //+ get levels
+            //+ get link documents
+            //+ get spaces by phase
             //- get rooms by phase
             //- get rooms by link and phase
             //- get spaces workset id
@@ -31,6 +34,8 @@ namespace RevitSpacesManager.Models
             DefineInitialRevitModelData();
             DefineCurrentDocumentLevelElements();
             DefineRevitLinkElements();
+
+            GetCurrentDocumentSpaces();
         }
 
         private void DefineInitialRevitModelData()
@@ -60,6 +65,17 @@ namespace RevitSpacesManager.Models
             {
                 RevitLinkElement revitLinkElement = new RevitLinkElement(revitLinkInstance);
                 _revitLinkElements.Add(revitLinkElement);
+            }
+        }
+
+        private void GetCurrentDocumentSpaces()
+        {
+            _currentDocumentSpaceElements = new List<SpaceElement>();
+            List<Space> spaces = _currentModelServices.GetMEPSpaces();
+            foreach (Space space in spaces)
+            {
+                SpaceElement spaceElement = new SpaceElement(space);
+                _currentDocumentSpaceElements.Add(spaceElement);
             }
         }
     }
