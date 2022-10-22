@@ -7,16 +7,25 @@ namespace RevitSpacesManager.Revit.Services
 {
     internal class RevitDocument
     {
-        private readonly Document _document;
-        private readonly FilteredWorksetCollector _worksetCollector;
-        private readonly FilteredWorksetCollector _userWorksetCollector;
+        internal List<Workset> UserWorksets;
 
+        private readonly Document _document;
 
         internal RevitDocument(Document doc)
         {
             _document = doc;
-            _worksetCollector = new FilteredWorksetCollector(_document);
-            _userWorksetCollector = _worksetCollector.OfKind(WorksetKind.UserWorkset);
+            GetUserWorksets();
+        }
+
+        private void GetUserWorksets()
+        {
+            UserWorksets = new List<Workset>();
+            FilteredWorksetCollector worksetCollector = new FilteredWorksetCollector(_document);
+            FilteredWorksetCollector userWorksetCollector = worksetCollector.OfKind(WorksetKind.UserWorkset);
+            foreach(Workset workset in userWorksetCollector)
+            {
+                UserWorksets.Add(workset);
+            }
         }
 
         internal bool DoesUserWorksetExist(string worksetName)

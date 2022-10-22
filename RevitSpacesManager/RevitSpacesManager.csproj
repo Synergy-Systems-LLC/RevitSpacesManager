@@ -70,7 +70,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Revit\RevitManager.cs" />
-    <Compile Include="Revit\Services\RevitDocumentServices.cs" />
+    <Compile Include="Models\RevitDocument.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
