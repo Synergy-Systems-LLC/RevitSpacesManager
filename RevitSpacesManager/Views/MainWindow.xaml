@@ -42,7 +42,7 @@
         <GroupBox Header="Current Model Spaces/Rooms by Phase">
             <DockPanel>
                 <ComboBox Text="- Select Phase -"
-                          ItemsSource="{Binding Phases}"
+                          ItemsSource="{Binding CurrentDocumentPhases}"
                           DisplayMemberPath="Name"
                           />
                 <UniformGrid Columns="2">
