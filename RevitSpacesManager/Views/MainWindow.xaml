@@ -6,15 +6,66 @@
         xmlns:vm="clr-namespace:RevitSpacesManager.ViewModels" 
         mc:Ignorable="d"
         
-        Title="MainWindow" 
+        Title="Spaces and Rooms Manager" 
         Height="450" 
-        Width="800"
-        ResizeMode="CanMinimize" 
+        Width="300"
+        ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen">
+    
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-    <Grid>
+    
+    <DockPanel>
+        <DockPanel.Resources>
+            <Style TargetType="GroupBox">
+                <Setter Property="DockPanel.Dock" Value="Top"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
 
-    </Grid>
+            <Style TargetType="ComboBox">
+                <Setter Property="DockPanel.Dock" Value="Top"/>
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+
+            <Style TargetType="UniformGrid">
+                <Setter Property="DockPanel.Dock" Value="Top"/>
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+        </DockPanel.Resources>
+        
+        <GroupBox Header="Current Model Spaces/Rooms by Phase">
+            <DockPanel>
+                <ComboBox/>
+                <UniformGrid Columns="2">
+                    <Button Content="Delete All"/>
+                    <Button Content="Delete Selected"/>
+                </UniformGrid>
+            </DockPanel>
+        </GroupBox>
+
+        <GroupBox Header="Linked Model Spaces/Rooms by Phase">
+            <DockPanel>
+                <ComboBox/>
+                <ComboBox/>
+                <UniformGrid Columns="2">
+                    <Button Content="Delete All"/>
+                    <Button Content="Delete Selected"/>
+                </UniformGrid>
+            </DockPanel>
+        </GroupBox>
+
+        <StatusBar Height="20" DockPanel.Dock="Bottom"/>
+
+        <UniformGrid Columns="3"
+                     DockPanel.Dock="Bottom">
+            <Button Content="Help"
+                    Margin="10"/>
+        </UniformGrid>
+        
+        <StackPanel/>
+    </DockPanel>
 </Window>
