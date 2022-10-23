@@ -43,6 +43,7 @@
             <DockPanel>
                 <ComboBox Text="- Select Phase -"
                           ItemsSource="{Binding CurrentDocumentPhases}"
+                          SelectedItem="{Binding CurrentDocumentPhaseSelected, Mode=TwoWay}"
                           DisplayMemberPath="Name"
                           />
                 <UniformGrid Columns="2">
@@ -55,10 +56,13 @@
         <GroupBox Header="Linked Model Spaces/Rooms by Phase">
             <DockPanel>
                 <ComboBox Text="- Select Link -"
-                          ItemsSource="{Binding LinkedRevitDocuments}"
+                          ItemsSource="{Binding LinkedDocuments}"
+                          SelectedItem="{Binding LinkedDocumentSelected, Mode=TwoWay}"
                           DisplayMemberPath="Title"
                           />
                 <ComboBox Text="- Select Phase -"
+                          ItemsSource="{Binding LinkedDocumentPhases}"
+                          SelectedItem="{Binding LinkedDocumentPhaseSelected, Mode=TwoWay}"
                           />
                 <UniformGrid Columns="2">
                     <Button Content="Create All"/>
@@ -82,7 +86,7 @@
             <StackPanel/>
             <Button Content="Exit"/>
         </UniformGrid>
-        
+
         <StackPanel/>
     </DockPanel>
 </Window>
