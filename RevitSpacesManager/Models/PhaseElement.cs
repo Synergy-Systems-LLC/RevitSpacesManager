@@ -5,9 +5,11 @@ namespace RevitSpacesManager.Models
 {
     internal class PhaseElement
     {
-        internal Phase Phase { get; set; }
-        public int Id { get; set; }
         public string Name { get; set; }
+        public int NumberOfSpaces { get => Spaces.Count; }
+        public int NumberOfRooms { get => Rooms.Count; }
+        internal Phase Phase { get; set; }
+        internal int Id { get; set; }
         internal List<SpaceElement> Spaces { get; set; } = new List<SpaceElement>();
         internal List<RoomElement> Rooms { get; set; } = new List<RoomElement>();
 
