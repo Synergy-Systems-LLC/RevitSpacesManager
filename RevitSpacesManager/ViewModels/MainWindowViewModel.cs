@@ -89,6 +89,7 @@ namespace RevitSpacesManager.ViewModels
             CurrentDocumentPhases = _mainModel.CurrentRevitDocument.Phases;
             LinkedDocuments = _mainModel.LinkedRevitDocuments;
             CurrentDocumentSpaceChecked = true;
+            LinkedDocumentSpaceChecked = true;
         }
     }
 }
