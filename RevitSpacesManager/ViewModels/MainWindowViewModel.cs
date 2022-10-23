@@ -72,6 +72,15 @@ namespace RevitSpacesManager.ViewModels
         }
         #endregion
 
+        #region LinkedDocumentSpaceChecked Property
+        private bool _linkedDocumentSpaceChecked;
+        public bool LinkedDocumentSpaceChecked
+        {
+            get => _linkedDocumentSpaceChecked;
+            set => Set(ref _linkedDocumentSpaceChecked, value);
+        }
+        #endregion
+
         private readonly MainModel _mainModel;
 
         public MainWindowViewModel()

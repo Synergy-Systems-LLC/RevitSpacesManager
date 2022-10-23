@@ -36,21 +36,33 @@
                 <Setter Property="Margin" Value="2"/>
             </Style>
 
-            <DataTemplate x:Key="ComboBoxPhaseTemplate">
+            <DataTemplate x:Key="ComboBoxCurrentPhaseTemplate">
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle Name="selectedMark"
+                    <Rectangle Name="selected"
                                Fill="Black" 
                                Width="8" 
                                Height="2"  
                                Visibility="Collapsed"
                                Margin="0,0,5,0"/>
-                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Name="currentNumber"/>
                     <TextBlock Text=" - "/>
-                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Name}"/>
                 </StackPanel>
                 <DataTemplate.Triggers>
                     <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="True">
-                        <Setter TargetName="selectedMark" Property="Visibility" Value="Visible"/>
+                        <Setter TargetName="selected" Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding IsChecked,  ElementName=CurrentIsSpace}" Value="True">
+                        <Setter TargetName="currentNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
+                                                                                           AncestorType=ComboBoxItem},
+                                                                                           Path=Content.NumberOfSpaces}"/>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding IsChecked,  ElementName=CurrentIsSpace}" Value="False">
+                        <Setter TargetName="currentNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
+                                                                                           AncestorType=ComboBoxItem},
+                                                                                           Path=Content.NumberOfRooms}"/>
                     </DataTrigger>
                 </DataTemplate.Triggers>
             </DataTemplate>
@@ -79,10 +91,21 @@
             <DockPanel>
                 <ComboBox ItemsSource="{Binding CurrentDocumentPhases}"
                           SelectedItem="{Binding CurrentDocumentPhaseSelected, Mode=TwoWay}"
-                          ItemTemplate="{StaticResource ComboBoxPhaseTemplate}"
+                          ItemTemplate="{StaticResource ComboBoxCurrentPhaseTemplate}"
                           />
 
-                <UniformGrid Columns="2">
+                <UniformGrid Columns="2" Rows="2">
+                    <StackPanel>
+                        <RadioButton GroupName="current"
+                                     Name="CurrentIsSpace"
+                                     IsChecked="{Binding CurrentDocumentSpaceChecked, Mode=TwoWay}"/>
+                        <TextBlock Text="Spaces"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <RadioButton GroupName="current"/>
+                        <TextBlock Text="Rooms"/>
+                    </StackPanel>
+                    
                     <Button Content="Delete All"/>
                     <Button Content="Delete Selected"/>
                 </UniformGrid>
