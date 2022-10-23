@@ -63,6 +63,7 @@
                 <ComboBox Text="- Select Phase -"
                           ItemsSource="{Binding LinkedDocumentPhases}"
                           SelectedItem="{Binding LinkedDocumentPhaseSelected, Mode=TwoWay}"
+                          DisplayMemberPath="Name"
                           />
                 <UniformGrid Columns="2">
                     <Button Content="Create All"/>
