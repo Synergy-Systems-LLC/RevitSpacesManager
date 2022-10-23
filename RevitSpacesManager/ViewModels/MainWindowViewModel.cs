@@ -24,6 +24,15 @@ namespace RevitSpacesManager.ViewModels
         }
         #endregion
 
+        #region CurrentDocumentIsSpace Property
+        private bool _currentDocumentIsSpace = true;
+        public bool CurrentDocumentIsSpace
+        {
+            get => _currentDocumentIsSpace;
+            set => Set(ref _currentDocumentIsSpace, value);
+        }
+        #endregion
+
         #region LinkedDocuments Property
         private List<RevitDocument> _linkedDocuments;
         public List<RevitDocument> LinkedDocuments
