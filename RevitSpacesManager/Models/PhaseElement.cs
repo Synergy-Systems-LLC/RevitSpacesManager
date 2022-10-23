@@ -4,7 +4,7 @@ namespace RevitSpacesManager.Models
 {
     internal class PhaseElement
     {
-        Phase Phase { get; set; }
+        internal Phase Phase { get; set; }
         internal int Id { get; set; }
         internal string Name { get; set; }
 
