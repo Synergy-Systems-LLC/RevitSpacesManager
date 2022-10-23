@@ -53,16 +53,22 @@
                         <Setter TargetName="currentSelected" Property="Visibility" Value="Visible"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding IsChecked,  ElementName=CurrentIsSpace}" Value="True">
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,  
+                                                   AncestorType=Window},
+                                                   Path=DataContext.CurrentDocumentSpaceChecked}" 
+                                 Value="True">
                         <Setter TargetName="currentNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
                                                                                            AncestorType=ComboBoxItem},
                                                                                            Path=Content.NumberOfSpaces}"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding IsChecked,  ElementName=CurrentIsSpace}" Value="False">
-                        <!--<Setter TargetName="currentNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,  
+                                                   AncestorType=Window},
+                                                   Path=DataContext.CurrentDocumentSpaceChecked}" 
+                                 Value="False">
+                        <Setter TargetName="currentNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
                                                                                            AncestorType=ComboBoxItem},
-                                                                                           Path=Content.NumberOfRooms}"/>-->
+                                                                                           Path=Content.NumberOfRooms}"/>
                     </DataTrigger>
                 </DataTemplate.Triggers>
             </DataTemplate>
@@ -84,13 +90,19 @@
                         <Setter TargetName="linkedSelected" Property="Visibility" Value="Visible"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding IsChecked,  ElementName=LinkedIsSpace}" Value="True">
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,  
+                                                   AncestorType=Window},
+                                                   Path=DataContext.LinkedDocumentSpaceChecked}" 
+                                 Value="True">
                         <Setter TargetName="linkedNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
                                                                                            AncestorType=ComboBoxItem},
                                                                                            Path=Content.NumberOfSpaces}"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding IsChecked,  ElementName=LinkedIsSpace}" Value="False">
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,  
+                                                   AncestorType=Window},
+                                                   Path=DataContext.LinkedDocumentSpaceChecked}" 
+                                 Value="False">
                         <Setter TargetName="linkedNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
                                                                                            AncestorType=ComboBoxItem},
                                                                                            Path=Content.NumberOfRooms}"/>
@@ -101,7 +113,11 @@
             <DataTemplate x:Key="ComboBoxLinkTemplate">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Name="selectedMark"
-                               Visibility="Collapsed"/>
+                               Visibility="Collapsed"
+                               Margin="0,0,5,0"
+                               Fill="Black"
+                               Width="8"
+                               Height="2"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text=" - "/>
                     <TextBlock Text="TEST"/>
@@ -124,7 +140,6 @@
                 <UniformGrid Columns="2" Rows="2">
                     <StackPanel>
                         <RadioButton GroupName="current"
-                                     Name="CurrentIsSpace"
                                      IsChecked="{Binding CurrentDocumentSpaceChecked, Mode=TwoWay}"/>
                         <TextBlock Text="Spaces"/>
                     </StackPanel>
@@ -154,7 +169,6 @@
                 <UniformGrid Columns="2" Rows="2">
                     <StackPanel>
                         <RadioButton GroupName="linked"
-                                     Name="LinkedIsSpace"
                                      IsChecked="{Binding LinkedDocumentSpaceChecked, Mode=TwoWay}"/>
                         <TextBlock Text="Spaces"/>
                     </StackPanel>
