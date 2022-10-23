@@ -38,16 +38,19 @@ namespace RevitSpacesManager.ViewModels
         public RevitDocument LinkedDocumentSelected
         {
             get => _linkedDocumentSelected;
-            set => Set(ref _linkedDocumentSelected, value);
+            set
+            {
+                Set(ref _linkedDocumentSelected, value);
+                OnPropertyChanged("LinkedDocumentPhases");
+                LinkedDocumentPhaseSelected = LinkedDocumentPhases[0];
+            }
         }
         #endregion
 
         #region LinkedDocumentPhases Property
-        private List<PhaseElement> _linkedDocumentPhases;
         public List<PhaseElement> LinkedDocumentPhases
         {
-            get => _linkedDocumentPhases;
-            set => Set(ref _linkedDocumentPhases, value);
+            get => _linkedDocumentSelected.Phases;
         }
         #endregion
 
@@ -59,7 +62,6 @@ namespace RevitSpacesManager.ViewModels
             set => Set(ref _linkedDocumentPhaseSelected, value);
         }
         #endregion
-
 
         private readonly MainModel _mainModel;
 
