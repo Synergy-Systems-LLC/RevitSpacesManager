@@ -62,8 +62,16 @@
 
         <UniformGrid Columns="3"
                      DockPanel.Dock="Bottom">
-            <Button Content="Help"
-                    Margin="10"/>
+
+            <UniformGrid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="10"/>
+                </Style>
+            </UniformGrid.Resources>
+            
+            <Button Content="Help"/>
+            <StackPanel/>
+            <Button Content="Exit"/>
         </UniformGrid>
         
         <StackPanel/>
