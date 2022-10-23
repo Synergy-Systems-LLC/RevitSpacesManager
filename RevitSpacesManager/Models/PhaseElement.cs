@@ -7,7 +7,7 @@ namespace RevitSpacesManager.Models
     {
         internal Phase Phase { get; set; }
         internal int Id { get; set; }
-        internal string Name { get; set; }
+        public string Name { get; set; }
         internal List<SpaceElement> Spaces { get; set; } = new List<SpaceElement>();
         internal List<RoomElement> Rooms { get; set; } = new List<RoomElement>();
 
