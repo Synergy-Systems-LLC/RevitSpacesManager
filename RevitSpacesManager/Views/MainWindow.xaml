@@ -44,7 +44,7 @@
                                Fill="Black"
                                Width="8"
                                Height="2"/>
-                    <TextBlock Name="currentNumber" Text="{Binding Name}"/>
+                    <TextBlock Name="currentNumber"/>
                     <TextBlock Text=" - "/>
                     <TextBlock Text="{Binding Name}"/>
                 </StackPanel>
