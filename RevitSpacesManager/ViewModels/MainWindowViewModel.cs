@@ -6,12 +6,12 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        #region CurrentRevitDocument Property
-        private RevitDocument _currentRevitDocument;
-        public RevitDocument CurrentRevitDocument
+        #region Phases Property
+        private List<PhaseElement> _phases;
+        public List<PhaseElement> Phases
         {
-            get => _currentRevitDocument;
-            set => Set(ref _currentRevitDocument, value);
+            get => _phases;
+            set => Set(ref _phases, value);
         }
         #endregion
 
@@ -29,7 +29,7 @@ namespace RevitSpacesManager.ViewModels
         public MainWindowViewModel()
         {
             _mainModel = new MainModel();
-            CurrentRevitDocument = _mainModel.CurrentRevitDocument;
+            Phases = _mainModel.CurrentRevitDocument.Phases;
             LinkedRevitDocuments = _mainModel.LinkedRevitDocuments;
         }
     }
