@@ -13,6 +13,7 @@ namespace RevitSpacesManager.Revit.Services
         internal List<LevelElement> Levels { get; set; }
         internal List<SpaceElement> Spaces { get; set; }
         internal List<RoomElement> Rooms { get; set; }
+        internal List<PhaseElement> Phases { get; set; }
 
         private readonly Document _document;
 
@@ -25,6 +26,7 @@ namespace RevitSpacesManager.Revit.Services
             GetLevels();
             GetSpaces();
             GetRooms();
+            GetPhases();
         }
 
         internal List<RevitDocument> GetRevitLinkDocuments()
@@ -113,6 +115,17 @@ namespace RevitSpacesManager.Revit.Services
                 Room room = element as Room;
                 RoomElement roomElement = new RoomElement(room);
                 Rooms.Add(roomElement);
+            }
+        }
+
+        private void GetPhases()
+        {
+            PhaseArray phaseArray = _document.Phases;
+            Phases = new List<PhaseElement>();
+            foreach (Phase phase in phaseArray)
+            {
+                PhaseElement phaseElement = new PhaseElement(phase);
+                Phases.Add(phaseElement);
             }
         }
     }
