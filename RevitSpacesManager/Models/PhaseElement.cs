@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using System.Collections.Generic;
 
 namespace RevitSpacesManager.Models
 {
@@ -7,6 +8,8 @@ namespace RevitSpacesManager.Models
         internal Phase Phase { get; set; }
         internal int Id { get; set; }
         internal string Name { get; set; }
+        internal List<SpaceElement> Spaces;
+        internal List<RoomElement> Rooms;
 
         internal PhaseElement(Phase phase)
         {
