@@ -45,7 +45,7 @@ namespace RevitSpacesManager.Revit
 
         private void ShowActiveViewError()
         {
-            string message = "There is no special Phase in the currently active View. Please open definite View and relaunch the Revit Spaces Manager addin.";
+            string message = "There is no special Phase in the currently active View.\nPlease open definite View and relaunch the Revit Spaces\nManager Add-In.";
             string title = "ERROR!"; 
             MessageBox.Show(message, title);
         }

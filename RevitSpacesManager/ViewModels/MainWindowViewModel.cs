@@ -1,19 +1,115 @@
 ﻿using RevitSpacesManager.Models;
-using System;
+using RevitSpacesManager.Revit.Services;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RevitSpacesManager.ViewModels
 {
-    internal class MainWindowViewModel
+    internal class MainWindowViewModel : ViewModel
     {
-        private readonly MainModel _MainModel;
+        #region CurrentDocumentPhases Property
+        private List<PhaseElement> _currentDocumentPhases;
+        public List<PhaseElement> CurrentDocumentPhases
+        {
+            get => _currentDocumentPhases;
+            set => Set(ref _currentDocumentPhases, value);
+        }
+        #endregion
+
+        #region CurrentDocumentPhaseSelected Property
+        private PhaseElement _currentDocumentPhaseSelected;
+        public PhaseElement CurrentDocumentPhaseSelected
+        {
+            get => _currentDocumentPhaseSelected;
+            set => Set(ref _currentDocumentPhaseSelected, value);
+        }
+        #endregion
+
+        #region CurrentDocumentSpaceChecked Property
+        private bool _currentDocumentSpaceChecked;
+        public bool CurrentDocumentSpaceChecked
+        {
+            get => _currentDocumentSpaceChecked;
+            set
+            {
+                Set(ref _currentDocumentSpaceChecked, value);
+                OnPropertyChanged("CurrentPhaseDisplayPath");
+            }
+        }
+        #endregion
+
+        #region CurrentPhaseDisplayPath Property
+        public string CurrentPhaseDisplayPath
+        {
+            get
+            {
+                if (CurrentDocumentSpaceChecked)
+                    return "SpacesItemName";
+                return "RoomsItemName";
+            }
+        }
+        #endregion
+
+        #region LinkedDocuments Property
+        private List<RevitDocument> _linkedDocuments;
+        public List<RevitDocument> LinkedDocuments
+        {
+            get => _linkedDocuments;
+            set => Set(ref _linkedDocuments, value);
+        }
+        #endregion
+
+        #region LinkedDocumentSelected Property
+        private RevitDocument _linkedDocumentSelected;
+        public RevitDocument LinkedDocumentSelected
+        {
+            get => _linkedDocumentSelected;
+            set
+            {
+                Set(ref _linkedDocumentSelected, value);
+                OnPropertyChanged("LinkedDocumentPhases");
+                LinkedDocumentPhaseSelected = LinkedDocumentPhases[0];
+            }
+        }
+        #endregion
+
+        #region LinkedDocumentPhases Property
+        public List<PhaseElement> LinkedDocumentPhases
+        {
+            get => _linkedDocumentSelected.Phases;
+        }
+        #endregion
+
+        #region LinkedDocumentPhaseSelected Property
+        private PhaseElement _linkedDocumentPhaseSelected;
+        public PhaseElement LinkedDocumentPhaseSelected
+        {
+            get => _linkedDocumentPhaseSelected;
+            set => Set(ref _linkedDocumentPhaseSelected, value);
+        }
+        #endregion
+
+        #region LinkedDocumentSpaceChecked Property
+        private bool _linkedDocumentSpaceChecked;
+        public bool LinkedDocumentSpaceChecked
+        {
+            get => _linkedDocumentSpaceChecked;
+            set
+            {
+                Set(ref _linkedDocumentSpaceChecked, value);
+                OnPropertyChanged("LinkedPhaseDisplayPath");
+            }
+        }
+        #endregion
+
+        private readonly MainModel _mainModel;
 
         public MainWindowViewModel()
         {
-            _MainModel = new MainModel();
+            _mainModel = new MainModel();
+            CurrentDocumentPhases = _mainModel.CurrentRevitDocument.Phases;
+            LinkedDocuments = _mainModel.LinkedRevitDocuments;
+            CurrentDocumentSpaceChecked = true;
+            LinkedDocumentSpaceChecked = true;
         }
     }
 }

@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Models\LevelElement.cs" />
     <Compile Include="Models\MainModel.cs" />
+    <Compile Include="Models\PhaseElement.cs" />
     <Compile Include="Models\RoomElement.cs" />
     <Compile Include="Models\SpaceElement.cs" />
     <Compile Include="Revit\App.cs" />
@@ -70,6 +71,7 @@
     </Compile>
     <Compile Include="Revit\RevitManager.cs" />
     <Compile Include="Models\RevitDocument.cs" />
+    <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

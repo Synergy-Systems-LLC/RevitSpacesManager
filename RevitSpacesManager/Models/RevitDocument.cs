@@ -3,16 +3,30 @@ using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.Mechanical;
 using RevitSpacesManager.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RevitSpacesManager.Revit.Services
 {
     internal class RevitDocument
     {
-        internal string Title { get; set; }
+        public string Title { get; set; }
+        public int NumberOfSpaces { get => Spaces.Count; }
+        public int NumberOfRooms { get => Rooms.Count; }
+        public string RoomsItemName
+        {
+            get
+            {
+                if (NumberOfRooms == 1)
+                    return $"{Rooms.Count} Room  - {Title}";
+                return $"{Rooms.Count} Rooms - {Title}";
+            }
+        }
+
         internal List<Workset> UserWorksets { get; set; }
         internal List<LevelElement> Levels { get; set; }
         internal List<SpaceElement> Spaces { get; set; }
         internal List<RoomElement> Rooms { get; set; }
+        internal List<PhaseElement> Phases { get; set; }
 
         private readonly Document _document;
 
@@ -25,6 +39,9 @@ namespace RevitSpacesManager.Revit.Services
             GetLevels();
             GetSpaces();
             GetRooms();
+            GetPhases();
+            SortSpacesByPhase();
+            SortRoomsByPhase();
         }
 
         internal List<RevitDocument> GetRevitLinkDocuments()
@@ -113,6 +130,35 @@ namespace RevitSpacesManager.Revit.Services
                 Room room = element as Room;
                 RoomElement roomElement = new RoomElement(room);
                 Rooms.Add(roomElement);
+            }
+        }
+
+        private void GetPhases()
+        {
+            PhaseArray phaseArray = _document.Phases;
+            Phases = new List<PhaseElement>();
+            foreach (Phase phase in phaseArray)
+            {
+                PhaseElement phaseElement = new PhaseElement(phase);
+                Phases.Add(phaseElement);
+            }
+        }
+        
+        private void SortSpacesByPhase()
+        {
+            foreach (PhaseElement phase in Phases)
+            {
+                List<SpaceElement> phaseSpaces = Spaces.Where(s => s.PhaseName == phase.Name).ToList();
+                phase.SyncSpaces(phaseSpaces);
+            }
+        }
+
+        private void SortRoomsByPhase()
+        {
+            foreach (PhaseElement phase in Phases)
+            {
+                List<RoomElement> phaseRooms = Rooms.Where(r => r.PhaseName == phase.Name).ToList();
+                phase.SyncRooms(phaseRooms);
             }
         }
     }
