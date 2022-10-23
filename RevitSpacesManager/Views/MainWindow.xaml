@@ -55,6 +55,8 @@
         <GroupBox Header="Linked Model Spaces/Rooms by Phase">
             <DockPanel>
                 <ComboBox Text="- Select Link -"
+                          ItemsSource="{Binding LinkedRevitDocuments}"
+                          DisplayMemberPath="Title"
                           />
                 <ComboBox Text="- Select Phase -"
                           />

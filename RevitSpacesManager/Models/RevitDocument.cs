@@ -9,7 +9,7 @@ namespace RevitSpacesManager.Revit.Services
 {
     internal class RevitDocument
     {
-        internal string Title { get; set; }
+        public string Title { get; set; }
         internal List<Workset> UserWorksets { get; set; }
         internal List<LevelElement> Levels { get; set; }
         internal List<SpaceElement> Spaces { get; set; }
