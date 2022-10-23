@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RevitSpacesManager.ViewModels
 {
-    internal class MainWindowViewModel
+    internal class MainWindowViewModel : ViewModel
     {
         private readonly MainModel _MainModel;
 
