@@ -26,6 +26,8 @@
             <Style TargetType="ComboBox">
                 <Setter Property="DockPanel.Dock" Value="Top"/>
                 <Setter Property="Margin" Value="2"/>
+                <Setter Property="IsEditable" Value="True"/>
+                <Setter Property="IsReadOnly" Value="True"/>
             </Style>
 
             <Style TargetType="UniformGrid">
@@ -39,7 +41,10 @@
         
         <GroupBox Header="Current Model Spaces/Rooms by Phase">
             <DockPanel>
-                <ComboBox/>
+                <ComboBox Text="- Select Phase -"
+                          ItemsSource="{Binding Phases}"
+                          DisplayMemberPath="Name"
+                          />
                 <UniformGrid Columns="2">
                     <Button Content="Delete All"/>
                     <Button Content="Delete Selected"/>
@@ -49,8 +54,10 @@
 
         <GroupBox Header="Linked Model Spaces/Rooms by Phase">
             <DockPanel>
-                <ComboBox/>
-                <ComboBox/>
+                <ComboBox Text="- Select Link -"
+                          />
+                <ComboBox Text="- Select Phase -"
+                          />
                 <UniformGrid Columns="2">
                     <Button Content="Create All"/>
                     <Button Content="Create Selected"/>
