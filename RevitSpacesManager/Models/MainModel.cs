@@ -32,14 +32,16 @@ namespace RevitSpacesManager.Models
                             $"Levels : {CurrentRevitDocument.Levels.Count}\n" +
                             $"Links : {LinkedRevitDocuments.Count}\n" +
                             $"Spaces : {CurrentRevitDocument.Spaces.Count}\n" +
-                            $"Rooms : {CurrentRevitDocument.Rooms.Count}\n\n";
+                            $"Rooms : {CurrentRevitDocument.Rooms.Count}\n" +
+                            $"Phases : {CurrentRevitDocument.Phases.Count}\n\n";
             foreach (RevitDocument linkRevitDocument in LinkedRevitDocuments)
             {
                 report = report +
                          $"{linkRevitDocument.Title}\n" +
                          $"Levels : {linkRevitDocument.Levels.Count}\n" +
                          $"Spaces : {linkRevitDocument.Spaces.Count}\n" +
-                         $"Rooms : {linkRevitDocument.Rooms.Count}\n\n";
+                         $"Rooms : {linkRevitDocument.Rooms.Count}\n" +
+                         $"Phases : {linkRevitDocument.Phases.Count}\n\n";
             }
 
             MessageBox.Show(report, "REPORT");
