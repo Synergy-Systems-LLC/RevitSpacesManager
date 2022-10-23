@@ -8,6 +8,25 @@ namespace RevitSpacesManager.Models
         public string Name { get; set; }
         public int NumberOfSpaces { get => Spaces.Count; }
         public int NumberOfRooms { get => Rooms.Count; }
+        public string SpacesItemName 
+        { 
+            get
+            {
+                if(NumberOfSpaces == 1)
+                    return $"{Spaces.Count} Space  - {Name}";
+                return $"{Spaces.Count} Spaces - {Name}";
+            }
+        }
+        public string RoomsItemName 
+        { 
+            get
+            {
+                if (NumberOfRooms == 1)
+                    return $"{Rooms.Count} Room  - {Name}";
+                return $"{Rooms.Count} Rooms - {Name}";
+            }
+        }
+
         internal Phase Phase { get; set; }
         internal int Id { get; set; }
         internal List<SpaceElement> Spaces { get; set; } = new List<SpaceElement>();

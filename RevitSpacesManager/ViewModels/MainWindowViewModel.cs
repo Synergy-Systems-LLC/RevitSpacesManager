@@ -29,7 +29,23 @@ namespace RevitSpacesManager.ViewModels
         public bool CurrentDocumentSpaceChecked
         {
             get => _currentDocumentSpaceChecked;
-            set => Set(ref _currentDocumentSpaceChecked, value);
+            set
+            {
+                Set(ref _currentDocumentSpaceChecked, value);
+                OnPropertyChanged("CurrentPhaseDisplayPath");
+            }
+        }
+        #endregion
+
+        #region CurrentPhaseDisplayPath Property
+        public string CurrentPhaseDisplayPath
+        {
+            get
+            {
+                if (CurrentDocumentSpaceChecked)
+                    return "SpacesItemName";
+                return "RoomsItemName";
+            }
         }
         #endregion
 
@@ -77,7 +93,11 @@ namespace RevitSpacesManager.ViewModels
         public bool LinkedDocumentSpaceChecked
         {
             get => _linkedDocumentSpaceChecked;
-            set => Set(ref _linkedDocumentSpaceChecked, value);
+            set
+            {
+                Set(ref _linkedDocumentSpaceChecked, value);
+                OnPropertyChanged("LinkedPhaseDisplayPath");
+            }
         }
         #endregion
 

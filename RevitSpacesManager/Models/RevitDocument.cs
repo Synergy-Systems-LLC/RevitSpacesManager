@@ -12,6 +12,16 @@ namespace RevitSpacesManager.Revit.Services
         public string Title { get; set; }
         public int NumberOfSpaces { get => Spaces.Count; }
         public int NumberOfRooms { get => Rooms.Count; }
+        public string RoomsItemName
+        {
+            get
+            {
+                if (NumberOfRooms == 1)
+                    return $"{Rooms.Count} Room  - {Title}";
+                return $"{Rooms.Count} Rooms - {Title}";
+            }
+        }
+
         internal List<Workset> UserWorksets { get; set; }
         internal List<LevelElement> Levels { get; set; }
         internal List<SpaceElement> Spaces { get; set; }

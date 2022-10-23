@@ -26,6 +26,8 @@
             <Style TargetType="ComboBox">
                 <Setter Property="DockPanel.Dock" Value="Top"/>
                 <Setter Property="Margin" Value="2"/>
+                <Setter Property="IsEditable" Value="True"/>
+                <Setter Property="IsReadOnly" Value="True"/>
             </Style>
 
             <Style TargetType="UniformGrid">
@@ -35,106 +37,14 @@
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="2"/>
             </Style>
-
-            <DataTemplate x:Key="ComboBoxCurrentPhaseTemplate">
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Name="currentSelected"
-                               Visibility="Collapsed"
-                               Margin="0,0,5,0"
-                               Fill="Black"
-                               Width="8"
-                               Height="2"/>
-                    <TextBlock Name="currentNumber"/>
-                    <TextBlock Text=" - "/>
-                    <TextBlock Text="{Binding Name}"/>
-                </StackPanel>
-                <DataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="True">
-                        <Setter TargetName="currentSelected" Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,  
-                                                   AncestorType=Window},
-                                                   Path=DataContext.CurrentDocumentSpaceChecked}" 
-                                 Value="True">
-                        <Setter TargetName="currentNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
-                                                                                           AncestorType=ComboBoxItem},
-                                                                                           Path=Content.NumberOfSpaces}"/>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,  
-                                                   AncestorType=Window},
-                                                   Path=DataContext.CurrentDocumentSpaceChecked}" 
-                                 Value="False">
-                        <Setter TargetName="currentNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
-                                                                                           AncestorType=ComboBoxItem},
-                                                                                           Path=Content.NumberOfRooms}"/>
-                    </DataTrigger>
-                </DataTemplate.Triggers>
-            </DataTemplate>
-
-            <DataTemplate x:Key="ComboBoxLinkedPhaseTemplate">
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Name="linkedSelected"
-                               Visibility="Collapsed"
-                               Margin="0,0,5,0"
-                               Fill="Black"
-                               Width="8"
-                               Height="2"/>
-                    <TextBlock Name="linkedNumber"/>
-                    <TextBlock Text=" - "/>
-                    <TextBlock Text="{Binding Name}"/>
-                </StackPanel>
-                <DataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="True">
-                        <Setter TargetName="linkedSelected" Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,  
-                                                   AncestorType=Window},
-                                                   Path=DataContext.LinkedDocumentSpaceChecked}" 
-                                 Value="True">
-                        <Setter TargetName="linkedNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
-                                                                                           AncestorType=ComboBoxItem},
-                                                                                           Path=Content.NumberOfSpaces}"/>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,  
-                                                   AncestorType=Window},
-                                                   Path=DataContext.LinkedDocumentSpaceChecked}" 
-                                 Value="False">
-                        <Setter TargetName="linkedNumber" Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor,  
-                                                                                           AncestorType=ComboBoxItem},
-                                                                                           Path=Content.NumberOfRooms}"/>
-                    </DataTrigger>
-                </DataTemplate.Triggers>
-            </DataTemplate>
-
-            <DataTemplate x:Key="ComboBoxLinkTemplate">
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Name="selectedMark"
-                               Visibility="Collapsed"
-                               Margin="0,0,5,0"
-                               Fill="Black"
-                               Width="8"
-                               Height="2"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text=" - "/>
-                    <TextBlock Text="TEST"/>
-                </StackPanel>
-                <DataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="True">
-                        <Setter TargetName="selectedMark" Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-                </DataTemplate.Triggers>
-            </DataTemplate>
         </DockPanel.Resources>
         
         <GroupBox Header="Current Model Spaces/Rooms by Phase">
             <DockPanel>
                 <ComboBox ItemsSource="{Binding CurrentDocumentPhases}"
                           SelectedItem="{Binding CurrentDocumentPhaseSelected, Mode=TwoWay}"
-                          ItemTemplate="{StaticResource ComboBoxCurrentPhaseTemplate}"
+                          DisplayMemberPath="{Binding CurrentPhaseDisplayPath}"
+                          Text=" - Select Phase - "
                           />
 
                 <UniformGrid Columns="2" Rows="2">
@@ -158,12 +68,14 @@
             <DockPanel>
                 <ComboBox ItemsSource="{Binding LinkedDocuments}"
                           SelectedItem="{Binding LinkedDocumentSelected, Mode=TwoWay}"
-                          ItemTemplate="{StaticResource ComboBoxLinkTemplate}"
+                          DisplayMemberPath="RoomsItemName"
+                          Text=" - Select Link - "
                           />
                 
                 <ComboBox ItemsSource="{Binding LinkedDocumentPhases}"
                           SelectedItem="{Binding LinkedDocumentPhaseSelected, Mode=TwoWay}"
-                          ItemTemplate="{StaticResource ComboBoxLinkedPhaseTemplate}"
+                          DisplayMemberPath="RoomsItemName"
+                          Text=" - Select Phase - "
                           />
                 
                 <UniformGrid Columns="2" Rows="2">
