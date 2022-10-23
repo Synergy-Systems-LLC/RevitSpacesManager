@@ -37,6 +37,40 @@
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="2"/>
             </Style>
+
+            <DataTemplate x:Key="ComboBoxPhaseTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse Name="selectedMark"
+                             Fill="Black" 
+                             Width="8" 
+                             Height="8"  
+                             Visibility="Collapsed"
+                             Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding Name}"/>
+                </StackPanel>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="True">
+                        <Setter TargetName="selectedMark" Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ComboBoxLinkTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse Name="selectedMark"
+                             Fill="Black" 
+                             Width="8" 
+                             Height="8"  
+                             Visibility="Collapsed"
+                             Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding Title}"/>
+                </StackPanel>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="True">
+                        <Setter TargetName="selectedMark" Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
         </DockPanel.Resources>
         
         <GroupBox Header="Current Model Spaces/Rooms by Phase">
@@ -44,8 +78,10 @@
                 <ComboBox Text="- Select Phase -"
                           ItemsSource="{Binding CurrentDocumentPhases}"
                           SelectedItem="{Binding CurrentDocumentPhaseSelected, Mode=TwoWay}"
-                          DisplayMemberPath="Name"
-                          />
+                          ItemTemplate="{StaticResource ComboBoxPhaseTemplate}"
+                          TextSearch.TextPath="Name"
+                        />
+
                 <UniformGrid Columns="2">
                     <Button Content="Delete All"/>
                     <Button Content="Delete Selected"/>
@@ -58,13 +94,17 @@
                 <ComboBox Text="- Select Link -"
                           ItemsSource="{Binding LinkedDocuments}"
                           SelectedItem="{Binding LinkedDocumentSelected, Mode=TwoWay}"
-                          DisplayMemberPath="Title"
+                          ItemTemplate="{StaticResource ComboBoxLinkTemplate}"
+                          TextSearch.TextPath="Title"
                           />
+                
                 <ComboBox Text="- Select Phase -"
                           ItemsSource="{Binding LinkedDocumentPhases}"
                           SelectedItem="{Binding LinkedDocumentPhaseSelected, Mode=TwoWay}"
-                          DisplayMemberPath="Name"
+                          ItemTemplate="{StaticResource ComboBoxPhaseTemplate}"
+                          TextSearch.TextPath="Name"
                           />
+                
                 <UniformGrid Columns="2">
                     <Button Content="Create All"/>
                     <Button Content="Create Selected"/>
