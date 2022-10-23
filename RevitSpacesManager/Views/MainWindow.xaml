@@ -26,8 +26,6 @@
             <Style TargetType="ComboBox">
                 <Setter Property="DockPanel.Dock" Value="Top"/>
                 <Setter Property="Margin" Value="2"/>
-                <Setter Property="IsEditable" Value="True"/>
-                <Setter Property="IsReadOnly" Value="True"/>
             </Style>
 
             <Style TargetType="UniformGrid">
@@ -40,13 +38,15 @@
 
             <DataTemplate x:Key="ComboBoxPhaseTemplate">
                 <StackPanel Orientation="Horizontal">
-                    <Ellipse Name="selectedMark"
-                             Fill="Black" 
-                             Width="8" 
-                             Height="8"  
-                             Visibility="Collapsed"
-                             Margin="0,0,5,0"/>
+                    <Rectangle Name="selectedMark"
+                               Fill="Black" 
+                               Width="8" 
+                               Height="2"  
+                               Visibility="Collapsed"
+                               Margin="0,0,5,0"/>
                     <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text=" - "/>
+                    <TextBlock Text="{Binding Id}"/>
                 </StackPanel>
                 <DataTemplate.Triggers>
                     <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="True">
@@ -57,13 +57,15 @@
 
             <DataTemplate x:Key="ComboBoxLinkTemplate">
                 <StackPanel Orientation="Horizontal">
-                    <Ellipse Name="selectedMark"
-                             Fill="Black" 
-                             Width="8" 
-                             Height="8"  
-                             Visibility="Collapsed"
-                             Margin="0,0,5,0"/>
+                    <Rectangle Name="selectedMark"
+                               Fill="Black" 
+                               Width="8" 
+                               Height="2"  
+                               Visibility="Collapsed"
+                               Margin="0,0,5,0"/>
                     <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text=" - "/>
+                    <TextBlock Text="TEST"/>
                 </StackPanel>
                 <DataTemplate.Triggers>
                     <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="True">
@@ -75,12 +77,10 @@
         
         <GroupBox Header="Current Model Spaces/Rooms by Phase">
             <DockPanel>
-                <ComboBox Text="- Select Phase -"
-                          ItemsSource="{Binding CurrentDocumentPhases}"
+                <ComboBox ItemsSource="{Binding CurrentDocumentPhases}"
                           SelectedItem="{Binding CurrentDocumentPhaseSelected, Mode=TwoWay}"
                           ItemTemplate="{StaticResource ComboBoxPhaseTemplate}"
-                          TextSearch.TextPath="Name"
-                        />
+                          />
 
                 <UniformGrid Columns="2">
                     <Button Content="Delete All"/>
@@ -91,18 +91,14 @@
 
         <GroupBox Header="Linked Model Spaces/Rooms by Phase">
             <DockPanel>
-                <ComboBox Text="- Select Link -"
-                          ItemsSource="{Binding LinkedDocuments}"
+                <ComboBox ItemsSource="{Binding LinkedDocuments}"
                           SelectedItem="{Binding LinkedDocumentSelected, Mode=TwoWay}"
                           ItemTemplate="{StaticResource ComboBoxLinkTemplate}"
-                          TextSearch.TextPath="Title"
                           />
                 
-                <ComboBox Text="- Select Phase -"
-                          ItemsSource="{Binding LinkedDocumentPhases}"
+                <ComboBox ItemsSource="{Binding LinkedDocumentPhases}"
                           SelectedItem="{Binding LinkedDocumentPhaseSelected, Mode=TwoWay}"
                           ItemTemplate="{StaticResource ComboBoxPhaseTemplate}"
-                          TextSearch.TextPath="Name"
                           />
                 
                 <UniformGrid Columns="2">
