@@ -29,11 +29,11 @@ namespace RevitSpacesManager.Models
         private void ShowReportMessage()
         {
             string report = "Current Model:\n" +
-                            $"Levels : {_currentRevitDocument.Levels.Count}\n" +
-                            $"Links : {_linkRevitDocuments.Count}\n" +
-                            $"Spaces : {_currentRevitDocument.Spaces.Count}\n" +
-                            $"Rooms : {_currentRevitDocument.Rooms.Count}\n\n";
-            foreach (RevitDocument linkRevitDocument in _linkRevitDocuments)
+                            $"Levels : {CurrentRevitDocument.Levels.Count}\n" +
+                            $"Links : {LinkedRevitDocuments.Count}\n" +
+                            $"Spaces : {CurrentRevitDocument.Spaces.Count}\n" +
+                            $"Rooms : {CurrentRevitDocument.Rooms.Count}\n\n";
+            foreach (RevitDocument linkRevitDocument in LinkedRevitDocuments)
             {
                 report = report +
                          $"{linkRevitDocument.Title}\n" +
