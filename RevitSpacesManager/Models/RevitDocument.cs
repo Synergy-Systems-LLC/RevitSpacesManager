@@ -3,6 +3,7 @@ using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.Mechanical;
 using RevitSpacesManager.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RevitSpacesManager.Revit.Services
 {
@@ -27,6 +28,8 @@ namespace RevitSpacesManager.Revit.Services
             GetSpaces();
             GetRooms();
             GetPhases();
+            SortSpacesByPhase();
+            SortRoomsByPhase();
         }
 
         internal List<RevitDocument> GetRevitLinkDocuments()
@@ -126,6 +129,24 @@ namespace RevitSpacesManager.Revit.Services
             {
                 PhaseElement phaseElement = new PhaseElement(phase);
                 Phases.Add(phaseElement);
+            }
+        }
+        
+        private void SortSpacesByPhase()
+        {
+            foreach (PhaseElement phase in Phases)
+            {
+                List<SpaceElement> phaseSpaces = Spaces.Where(s => s.PhaseName == phase.Name).ToList();
+                phase.SyncSpaces(phaseSpaces);
+            }
+        }
+
+        private void SortRoomsByPhase()
+        {
+            foreach (PhaseElement phase in Phases)
+            {
+                List<RoomElement> phaseRooms = Rooms.Where(r => r.PhaseName == phase.Name).ToList();
+                phase.SyncRooms(phaseRooms);
             }
         }
     }
