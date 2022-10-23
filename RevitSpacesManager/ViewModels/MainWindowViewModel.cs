@@ -24,12 +24,12 @@ namespace RevitSpacesManager.ViewModels
         }
         #endregion
 
-        #region CurrentDocumentIsSpace Property
-        private bool _currentDocumentIsSpace = true;
-        public bool CurrentDocumentIsSpace
+        #region CurrentDocumentSpaceChecked Property
+        private bool _currentDocumentSpaceChecked;
+        public bool CurrentDocumentSpaceChecked
         {
-            get => _currentDocumentIsSpace;
-            set => Set(ref _currentDocumentIsSpace, value);
+            get => _currentDocumentSpaceChecked;
+            set => Set(ref _currentDocumentSpaceChecked, value);
         }
         #endregion
 
@@ -79,6 +79,7 @@ namespace RevitSpacesManager.ViewModels
             _mainModel = new MainModel();
             CurrentDocumentPhases = _mainModel.CurrentRevitDocument.Phases;
             LinkedDocuments = _mainModel.LinkedRevitDocuments;
+            CurrentDocumentSpaceChecked = true;
         }
     }
 }
