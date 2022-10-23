@@ -52,8 +52,8 @@
                 <ComboBox/>
                 <ComboBox/>
                 <UniformGrid Columns="2">
-                    <Button Content="Delete All"/>
-                    <Button Content="Delete Selected"/>
+                    <Button Content="Create All"/>
+                    <Button Content="Create Selected"/>
                 </UniformGrid>
             </DockPanel>
         </GroupBox>
