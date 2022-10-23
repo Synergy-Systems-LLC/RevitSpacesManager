@@ -8,20 +8,20 @@ namespace RevitSpacesManager.Models
 {
     internal class MainModel
     {
+        internal readonly RevitDocument CurrentRevitDocument;
+        internal readonly List<RevitDocument> LinkedRevitDocuments;
+
         private readonly Document _currentDocument;
         private readonly View _activeView;
         private readonly string _activeViewPhaseName;
-
-        private readonly RevitDocument _currentRevitDocument;
-        private readonly List<RevitDocument> _linkRevitDocuments;
 
         internal MainModel()
         {
             _currentDocument = RevitManager.Document;
             _activeView = _currentDocument.ActiveView;
             _activeViewPhaseName = _activeView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
-            _currentRevitDocument = new RevitDocument(_currentDocument);
-            _linkRevitDocuments = _currentRevitDocument.GetRevitLinkDocuments();
+            CurrentRevitDocument = new RevitDocument(_currentDocument);
+            LinkedRevitDocuments = CurrentRevitDocument.GetRevitLinkDocuments();
 
             ShowReportMessage();
         }
