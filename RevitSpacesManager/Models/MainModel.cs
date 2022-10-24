@@ -23,47 +23,49 @@ namespace RevitSpacesManager.Models
             LinkedRevitDocuments = CurrentRevitDocument.GetRevitLinkDocuments();
         }
 
-        internal void DeleteAllSpaces()
+        internal string DeleteAllSpaces()
         {
             foreach(SpaceElement space in CurrentRevitDocument.Spaces)
             {
 
             }
+            return "report";
         }
 
-        internal void DeleteAllRooms()
+        internal string DeleteAllRooms()
         {
 
+            return "report";
         }
 
-        internal void DeleteSelectedSpaces(PhaseElement currentDocumentPhaseSelected)
+        internal string DeleteSelectedSpaces(PhaseElement currentDocumentPhaseSelected)
         {
-
+            return "report";
         }
 
-        internal void DeleteSelectedRooms(PhaseElement currentDocumentPhaseSelected)
+        internal string DeleteSelectedRooms(PhaseElement currentDocumentPhaseSelected)
         {
-
+            return "report";
         }
 
-        internal void CreateAllSpacesByLinkRooms(RevitDocument linkedDocumentSelected)
+        internal string CreateAllSpacesByLinkRooms(RevitDocument linkedDocumentSelected)
         {
-
+            return "report";
         }
 
-        internal void CreateAllRoomsByLinkRooms(RevitDocument linkedDocumentSelected)
+        internal string CreateAllRoomsByLinkRooms(RevitDocument linkedDocumentSelected)
         {
-
+            return "report";
         }
 
-        internal void CreateSelectedSpacesByLinkRooms(PhaseElement linkedDocumentPhaseSelected)
+        internal string CreateSelectedSpacesByLinkRooms(PhaseElement linkedDocumentPhaseSelected)
         {
-
+            return "report";
         }
 
-        internal void CreateSelectedRoomsByLinkRooms(PhaseElement linkedDocumentPhaseSelected)
+        internal string CreateSelectedRoomsByLinkRooms(PhaseElement linkedDocumentPhaseSelected)
         {
-
+            return "report";
         }
     }
 }
