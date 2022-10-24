@@ -1,20 +1,12 @@
 ﻿using RevitSpacesManager.Models;
 using RevitSpacesManager.Revit.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RevitSpacesManager.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        #region CurrentDocumentPhases Property
-        private List<PhaseElement> _currentDocumentPhases;
-        public List<PhaseElement> CurrentDocumentPhases
-        {
-            get => _currentDocumentPhases;
-            set => Set(ref _currentDocumentPhases, value);
-        }
-        #endregion
-
         #region CurrentDocumentPhaseSelected Property
         private PhaseElement _currentDocumentPhaseSelected;
         public PhaseElement CurrentDocumentPhaseSelected
@@ -33,6 +25,19 @@ namespace RevitSpacesManager.ViewModels
             {
                 Set(ref _currentDocumentSpaceChecked, value);
                 OnPropertyChanged("CurrentPhaseDisplayPath");
+                OnPropertyChanged("CurrentDocumentPhases");
+            }
+        }
+        #endregion
+
+        #region CurrentDocumentPhases Property
+        public List<PhaseElement> CurrentDocumentPhases
+        {
+            get
+            {
+                if (CurrentDocumentSpaceChecked)
+                    return _mainModel.CurrentRevitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();
+                return _mainModel.CurrentRevitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();
             }
         }
         #endregion
@@ -75,7 +80,7 @@ namespace RevitSpacesManager.ViewModels
         #region LinkedDocumentPhases Property
         public List<PhaseElement> LinkedDocumentPhases
         {
-            get => _linkedDocumentSelected.Phases;
+            get => _linkedDocumentSelected.Phases.Where(p => p.NumberOfRooms > 0).ToList();
         }
         #endregion
 
@@ -93,11 +98,7 @@ namespace RevitSpacesManager.ViewModels
         public bool LinkedDocumentSpaceChecked
         {
             get => _linkedDocumentSpaceChecked;
-            set
-            {
-                Set(ref _linkedDocumentSpaceChecked, value);
-                OnPropertyChanged("LinkedPhaseDisplayPath");
-            }
+            set => Set(ref _linkedDocumentSpaceChecked, value);
         }
         #endregion
 
@@ -106,7 +107,6 @@ namespace RevitSpacesManager.ViewModels
         public MainWindowViewModel()
         {
             _mainModel = new MainModel();
-            CurrentDocumentPhases = _mainModel.CurrentRevitDocument.Phases;
             LinkedDocuments = _mainModel.LinkedRevitDocuments;
             CurrentDocumentSpaceChecked = true;
             LinkedDocumentSpaceChecked = true;
