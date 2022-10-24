@@ -122,7 +122,7 @@ namespace RevitSpacesManager.ViewModels
         private bool CanHelpCommandExecute(object p) => true;
         private void OnHelpCommandExecuted(object p)
         {
-            MessageBox.Show("HELP");
+            ShowReadmeMessage();
         }
         #endregion
 
@@ -180,6 +180,18 @@ namespace RevitSpacesManager.ViewModels
             DeleteSelectedCommand = new LambdaCommand(OnDeleteSelectedCommandExecuted, CanDeleteSelectedCommandExecute);
             CreateAllCommand = new LambdaCommand(OnCreateAllCommandExecuted, CanCreateAllCommandExecute);
             CreateSelectedCommand = new LambdaCommand(OnCreateSelectedCommandExecuted, CanCreateSelectedCommandExecute);
+        }
+
+        private void ShowReadmeMessage()
+        {
+            string message = "  Алгоритм работы плагина:\n" +
+                 "  - При запуске считываются пространства и помещения из текущей открытой модели для дальнейших действий с ними (полного и частичного удаления). Удаление осуществляется нажатием кнопок Delete All или Delete Selected.\n\n" +
+                 "  - Считываются подгруженные линки и количество помещений в них для дальнейшего создания аналогичных пространств или помещений в текущей модели (полного и частичного создания). Создание осуществляется нажатием кнопок Create All или Create Selected для конкретного линка или конкретной фазы выбранного линка.\n\n" +
+                 "  - Перед созданием пространств и помещений производится проверка на наличие в модели рабочего набора 'Model Spaces' или 'Model Rooms'.\n\n" +
+                 "  - Перед созданием пространств и помещений производится проверка на корректность размещения помещений в выбранном линке, на наличие совпадающих по имени и отметке уровней, содержащих помещения, в линке и текущей модели. Помещения, не прошедшие проверку, не создаются, выводятся в информационном окне подтверждения создания новых пространств или помещений с рекомендациями по устранению ошибок.\n\n" +
+                 "  - При создании новых пространств и помещений производится перенос данных об уровне, координатах расположения, верхней и нижней границе из модели линка. Созданные пространства и помещения автоматически попадают в рабочие наборы 'Model Spaces' и 'Model Rooms'.\n\n" +
+                 "                                                           Молодец, читаешь инструкцию <3";
+            MessageBox.Show(message, "Readme");
         }
     }
 }
