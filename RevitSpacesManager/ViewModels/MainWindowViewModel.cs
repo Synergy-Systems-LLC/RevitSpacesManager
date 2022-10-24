@@ -33,15 +33,7 @@ namespace RevitSpacesManager.ViewModels
         #endregion
 
         #region CurrentDocumentPhases Property
-        public List<PhaseElement> CurrentDocumentPhases
-        {
-            get
-            {
-                if (CurrentDocumentSpaceChecked)
-                    return _mainModel.CurrentRevitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();
-                return _mainModel.CurrentRevitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();
-            }
-        }
+        public List<PhaseElement> CurrentDocumentPhases { get => CurrentPhases(); }
         #endregion
 
         #region CurrentPhaseDisplayPath Property
@@ -131,16 +123,19 @@ namespace RevitSpacesManager.ViewModels
         private bool CanDeleteAllCommandExecute(object p) => true;
         private void OnDeleteAllCommandExecuted(object p)
         {
-            MessageBox.Show("DeleteAll");
-            if (CurrentDocumentSpaceChecked)
+            if(IsAnythingToDelete())
             {
-                _mainModel.DeleteAllSpaces();
+                MessageBoxResult result = ShowDeleteAllDialog();
+                if (result == MessageBoxResult.OK)
+                {
+                    DeleteAll();
+                    CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
+                }
             }
             else
             {
-                _mainModel.DeleteAllRooms();
+                ShowNothingDeleteMessage();
             }
-            CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
         }
         #endregion
 
@@ -228,6 +223,75 @@ namespace RevitSpacesManager.ViewModels
                  "  - При создании новых пространств и помещений производится перенос данных об уровне, координатах расположения, верхней и нижней границе из модели линка. Созданные пространства и помещения автоматически попадают в рабочие наборы 'Model Spaces' и 'Model Rooms'.\n\n" +
                  "                                                           Молодец, читаешь инструкцию <3";
             MessageBox.Show(message, "Readme");
+        }
+        private List<PhaseElement> CurrentPhases()
+        {
+            if (CurrentDocumentSpaceChecked)
+                return _mainModel.CurrentRevitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();
+            return _mainModel.CurrentRevitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();
+        }
+        private bool IsAnythingToDelete()
+        {
+            return CurrentNumber() > 0;
+        }
+        private void ShowNothingDeleteMessage()
+        {
+            string title = "Information";
+            string message = $"There is no {CurrentObject()}s to Delete in the Current Project";
+            MessageBox.Show(message, title);
+        }
+        private MessageBoxResult ShowDeleteAllDialog()
+        {
+            string title = "Information";
+            int number = CurrentNumber();
+            string currentObject = CurrentObject();
+            List<PhaseElement> currentPhases = CurrentPhases();
+            int currentPhasesNumber = currentPhases.Count;
+
+            string message = $"You are going to delete {number} {currentObject}{IsPlural(number)} in {currentPhasesNumber} Phase{IsPlural(currentPhasesNumber)}:\n";
+            foreach (PhaseElement phase in currentPhases)
+                message += $"   - {phase.Name}\n";
+
+            MessageBoxResult result = MessageBox.Show(message, title, MessageBoxButton.OKCancel);
+            return result;
+        }
+        private void DeleteAll()
+        {
+            if (CurrentDocumentSpaceChecked)
+            {
+                _mainModel.DeleteAllSpaces();
+            }
+            else
+            {
+                _mainModel.DeleteAllRooms();
+            }
+        }
+        private void ShowPhaseNotSelectedMessage()
+        {
+            string title = "Information";
+            string message = "Please define project phase to work with.";
+            MessageBox.Show(message, title);
+        }
+        private string CurrentObject()
+        {
+            if (CurrentDocumentSpaceChecked)
+                return "Space";
+            return "Room";
+        }
+        private int CurrentNumber()
+        {
+            int number;
+            if (CurrentDocumentSpaceChecked)
+                number = _mainModel.CurrentRevitDocument.NumberOfSpaces;
+            else
+                number = _mainModel.CurrentRevitDocument.NumberOfRooms;
+            return number;
+        }
+        private string IsPlural(int number)
+        {
+            if (number == 1)
+                return "";
+            return "s";
         }
     }
 }
