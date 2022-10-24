@@ -8,24 +8,8 @@ namespace RevitSpacesManager.Models
         public string Name { get; set; }
         public int NumberOfSpaces { get => Spaces.Count; }
         public int NumberOfRooms { get => Rooms.Count; }
-        public string SpacesItemName 
-        { 
-            get
-            {
-                if(NumberOfSpaces == 1)
-                    return $"{Spaces.Count} Space  - {Name}";
-                return $"{Spaces.Count} Spaces - {Name}";
-            }
-        }
-        public string RoomsItemName 
-        { 
-            get
-            {
-                if (NumberOfRooms == 1)
-                    return $"{Rooms.Count} Room  - {Name}";
-                return $"{Rooms.Count} Rooms - {Name}";
-            }
-        }
+        public string SpacesItemName { get => $"{NumberOfSpaces} Room{IsPlural(NumberOfSpaces)} - {Name}"; } 
+        public string RoomsItemName { get => $"{NumberOfRooms} Room{IsPlural(NumberOfRooms)} - {Name}"; } 
 
         internal Phase Phase { get; set; }
         internal int Id { get; set; }
@@ -47,6 +31,13 @@ namespace RevitSpacesManager.Models
         internal void SyncRooms(List<RoomElement> rooms)
         {
             Rooms = rooms;
+        }
+
+        private string IsPlural(int number)
+        {
+            if (number == 1)
+                return " ";
+            return "s";
         }
     }
 }
