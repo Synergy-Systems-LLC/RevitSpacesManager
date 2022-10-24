@@ -114,10 +114,57 @@ namespace RevitSpacesManager.ViewModels
             {
                 mainWindow.Close();
             }
-        } 
+        }
         #endregion
 
+        #region HelpCommand
+        public ICommand HelpCommand { get; }
+        private bool CanHelpCommandExecute(object p) => true;
+        private void OnHelpCommandExecuted(object p)
+        {
+            MessageBox.Show("HELP");
+        }
+        #endregion
+
+        #region DeleteAllCommand
+        public ICommand DeleteAllCommand { get; }
+        private bool CanDeleteAllCommandExecute(object p) => true;
+        private void OnDeleteAllCommandExecuted(object p)
+        {
+            MessageBox.Show("DeleteAll");
+        }
+        #endregion
+
+        #region DeleteSelectedCommand
+        public ICommand DeleteSelectedCommand { get; }
+        private bool CanDeleteSelectedCommandExecute(object p) => true;
+        private void OnDeleteSelectedCommandExecuted(object p)
+        {
+            MessageBox.Show("DeleteSelected");
+        }
+        #endregion
+
+        #region CreateAllCommand
+        public ICommand CreateAllCommand { get; }
+        private bool CanCreateAllCommandExecute(object p) => true;
+        private void OnCreateAllCommandExecuted(object p)
+        {
+            MessageBox.Show("CreateAll");
+        }
+        #endregion
+
+        #region CreateSelectedCommand
+        public ICommand CreateSelectedCommand { get; }
+        private bool CanCreateSelectedCommandExecute(object p) => true;
+        private void OnCreateSelectedCommandExecuted(object p)
+        {
+            MessageBox.Show("CreateSelected");
+        }
+        #endregion
+
+
         private readonly MainModel _mainModel;
+
 
         public MainWindowViewModel()
         {
@@ -128,6 +175,11 @@ namespace RevitSpacesManager.ViewModels
             LinkedDocumentSpaceChecked = true;
 
             ExitCommand = new LambdaCommand(OnExitCommandExecuted, CanExitCommandExecute);
+            HelpCommand = new LambdaCommand(OnHelpCommandExecuted, CanHelpCommandExecute);
+            DeleteAllCommand = new LambdaCommand(OnDeleteAllCommandExecuted, CanDeleteAllCommandExecute);
+            DeleteSelectedCommand = new LambdaCommand(OnDeleteSelectedCommandExecuted, CanDeleteSelectedCommandExecute);
+            CreateAllCommand = new LambdaCommand(OnCreateAllCommandExecuted, CanCreateAllCommandExecute);
+            CreateSelectedCommand = new LambdaCommand(OnCreateSelectedCommandExecuted, CanCreateSelectedCommandExecute);
         }
     }
 }

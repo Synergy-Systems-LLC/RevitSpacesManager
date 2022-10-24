@@ -59,8 +59,10 @@
                     </StackPanel>
                     
                     <Button Content="Delete All"
+                            Command="{Binding DeleteAllCommand}"
                             />
                     <Button Content="Delete Selected"
+                            Command="{Binding DeleteSelectedCommand}"
                             />
                 </UniformGrid>
             </DockPanel>
@@ -92,8 +94,10 @@
                     </StackPanel>
                     
                     <Button Content="Create All"
+                            Command="{Binding CreateAllCommand}"
                             />
                     <Button Content="Create Selected"
+                            Command="{Binding CreateSelectedCommand}"
                             />
                 </UniformGrid>
             </DockPanel>
@@ -111,6 +115,7 @@
             </UniformGrid.Resources>
             
             <Button Content="Help"
+                    Command="{Binding HelpCommand}"
                     />
             
             <StackPanel/>
