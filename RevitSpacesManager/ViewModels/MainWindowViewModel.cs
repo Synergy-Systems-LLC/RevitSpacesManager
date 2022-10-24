@@ -255,12 +255,11 @@ namespace RevitSpacesManager.ViewModels
         private MessageBoxResult ShowDeleteSelectedDialog()
         {
             string title = "Information";
-            int number = 0;// CurrentDocumentPhaseSelected.;
+            int number = CurrentSelectedNumber();
             string currentObject = CurrentObject();
-            List<PhaseElement> currentPhases = CurrentPhases();
-            int currentPhasesNumber = currentPhases.Count;
+            string phaseName = CurrentDocumentPhaseSelected.Name;
 
-            string message = $"You are going to delete {number} {currentObject}{IsPlural(number)} in {currentPhasesNumber} Phase{IsPlural(currentPhasesNumber)}:\n";
+            string message = $"You are going to delete {number} {currentObject}{IsPlural(number)} in the '{phaseName}' Phase";
 
             MessageBoxResult result = MessageBox.Show(message, title, MessageBoxButton.OKCancel);
             return result;
@@ -296,6 +295,15 @@ namespace RevitSpacesManager.ViewModels
                 number = _mainModel.CurrentRevitDocument.NumberOfSpaces;
             else
                 number = _mainModel.CurrentRevitDocument.NumberOfRooms;
+            return number;
+        }
+        private int CurrentSelectedNumber()
+        {
+            int number;
+            if (CurrentDocumentSpaceChecked)
+                number = CurrentDocumentPhaseSelected.NumberOfSpaces;
+            else
+                number = CurrentDocumentPhaseSelected.NumberOfRooms;
             return number;
         }
 
