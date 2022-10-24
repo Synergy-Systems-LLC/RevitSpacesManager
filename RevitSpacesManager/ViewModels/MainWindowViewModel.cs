@@ -37,15 +37,7 @@ namespace RevitSpacesManager.ViewModels
         #endregion
 
         #region CurrentPhaseDisplayPath Property
-        public string CurrentPhaseDisplayPath
-        {
-            get
-            {
-                if (CurrentDocumentSpaceChecked)
-                    return "SpacesItemName";
-                return "RoomsItemName";
-            }
-        }
+        public string CurrentPhaseDisplayPath { get => CurrentDisplayPath(); }
         #endregion
 
         #region LinkedDocuments Property
@@ -72,10 +64,7 @@ namespace RevitSpacesManager.ViewModels
         #endregion
 
         #region LinkedDocumentPhases Property
-        public List<PhaseElement> LinkedDocumentPhases
-        {
-            get => _linkedDocumentSelected.Phases.Where(p => p.NumberOfRooms > 0).ToList();
-        }
+        public List<PhaseElement> LinkedDocumentPhases { get => _linkedDocumentSelected.Phases.Where(p => p.NumberOfRooms > 0).ToList(); }
         #endregion
 
         #region LinkedDocumentPhaseSelected Property
@@ -123,7 +112,7 @@ namespace RevitSpacesManager.ViewModels
         private bool CanDeleteAllCommandExecute(object p) => true;
         private void OnDeleteAllCommandExecuted(object p)
         {
-            if(IsAnythingToDelete())
+            if (IsAnythingToDelete())
             {
                 MessageBoxResult result = ShowDeleteAllDialog();
                 if (result == MessageBoxResult.OK)
@@ -145,16 +134,27 @@ namespace RevitSpacesManager.ViewModels
         private bool CanDeleteSelectedCommandExecute(object p) => true;
         private void OnDeleteSelectedCommandExecuted(object p)
         {
-            MessageBox.Show("DeleteSelected");
-            if (CurrentDocumentSpaceChecked)
+            if (IsAnythingToDelete())
             {
-                _mainModel.DeleteSelectedSpaces(CurrentDocumentPhaseSelected);
+                if (IsCurrentPhaseSelected())
+                {
+                    MessageBoxResult result = ShowDeleteSelectedDialog();
+                    if (result == MessageBoxResult.OK)
+                    {
+                        string reportMessage = DeleteSelected();
+                        ShowReportMessage(reportMessage);
+                        CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
+                    }
+                }
+                else
+                {
+                    ShowPhaseNotSelectedMessage();
+                }
             }
             else
             {
-                _mainModel.DeleteSelectedRooms(CurrentDocumentPhaseSelected);
+                ShowNothingDeleteMessage();
             }
-            CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
         }
         #endregion
 
@@ -225,16 +225,6 @@ namespace RevitSpacesManager.ViewModels
                  "                                                           Молодец, читаешь инструкцию <3";
             MessageBox.Show(message, "Readme");
         }
-        private List<PhaseElement> CurrentPhases()
-        {
-            if (CurrentDocumentSpaceChecked)
-                return _mainModel.CurrentRevitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();
-            return _mainModel.CurrentRevitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();
-        }
-        private bool IsAnythingToDelete()
-        {
-            return CurrentNumber() > 0;
-        }
         private void ShowNothingDeleteMessage()
         {
             string title = "Information";
@@ -256,22 +246,42 @@ namespace RevitSpacesManager.ViewModels
             MessageBoxResult result = MessageBox.Show(message, title, MessageBoxButton.OKCancel);
             return result;
         }
-        private string DeleteAll()
+        private void ShowPhaseNotSelectedMessage()
         {
-            if (CurrentDocumentSpaceChecked)
-                return _mainModel.DeleteAllSpaces();
-            return _mainModel.DeleteAllRooms();
+            string title = "Information";
+            string message = "Please define Project phase to work with.";
+            MessageBox.Show(message, title);
+        }
+        private MessageBoxResult ShowDeleteSelectedDialog()
+        {
+            string title = "Information";
+            int number = 0;// CurrentDocumentPhaseSelected.;
+            string currentObject = CurrentObject();
+            List<PhaseElement> currentPhases = CurrentPhases();
+            int currentPhasesNumber = currentPhases.Count;
+
+            string message = $"You are going to delete {number} {currentObject}{IsPlural(number)} in {currentPhasesNumber} Phase{IsPlural(currentPhasesNumber)}:\n";
+
+            MessageBoxResult result = MessageBox.Show(message, title, MessageBoxButton.OKCancel);
+            return result;
         }
         private void ShowReportMessage(string reportMessage)
         {
             string title = "Report";
             MessageBox.Show(reportMessage, title);
         }
-        private void ShowPhaseNotSelectedMessage()
+
+        private List<PhaseElement> CurrentPhases()
         {
-            string title = "Information";
-            string message = "Please define project phase to work with.";
-            MessageBox.Show(message, title);
+            if (CurrentDocumentSpaceChecked)
+                return _mainModel.CurrentRevitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();
+            return _mainModel.CurrentRevitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();
+        }
+        private string CurrentDisplayPath()
+        {
+            if (CurrentDocumentSpaceChecked)
+                return "SpacesItemName";
+            return "RoomsItemName";
         }
         private string CurrentObject()
         {
@@ -288,11 +298,33 @@ namespace RevitSpacesManager.ViewModels
                 number = _mainModel.CurrentRevitDocument.NumberOfRooms;
             return number;
         }
+
+        private bool IsAnythingToDelete()
+        {
+            return CurrentNumber() > 0;
+        }
+        private bool IsCurrentPhaseSelected()
+        {
+            return CurrentDocumentPhaseSelected != null;
+        }
         private string IsPlural(int number)
         {
             if (number == 1)
                 return "";
             return "s";
+        }
+
+        private string DeleteAll()
+        {
+            if (CurrentDocumentSpaceChecked)
+                return _mainModel.DeleteAllSpaces();
+            return _mainModel.DeleteAllRooms();
+        }
+        private string DeleteSelected()
+        {
+            if (CurrentDocumentSpaceChecked)
+                return _mainModel.DeleteSelectedSpaces(CurrentDocumentPhaseSelected);
+            return _mainModel.DeleteSelectedRooms(CurrentDocumentPhaseSelected);
         }
     }
 }
