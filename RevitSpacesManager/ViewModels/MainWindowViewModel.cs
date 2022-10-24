@@ -132,6 +132,15 @@ namespace RevitSpacesManager.ViewModels
         private void OnDeleteAllCommandExecuted(object p)
         {
             MessageBox.Show("DeleteAll");
+            if (CurrentDocumentSpaceChecked)
+            {
+                _mainModel.DeleteAllSpaces();
+            }
+            else
+            {
+                _mainModel.DeleteAllRooms();
+            }
+            CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
         }
         #endregion
 
@@ -141,6 +150,15 @@ namespace RevitSpacesManager.ViewModels
         private void OnDeleteSelectedCommandExecuted(object p)
         {
             MessageBox.Show("DeleteSelected");
+            if (CurrentDocumentSpaceChecked)
+            {
+                _mainModel.DeleteSelectedSpaces(CurrentDocumentPhaseSelected);
+            }
+            else
+            {
+                _mainModel.DeleteSelectedRooms(CurrentDocumentPhaseSelected);
+            }
+            CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
         }
         #endregion
 
@@ -150,6 +168,15 @@ namespace RevitSpacesManager.ViewModels
         private void OnCreateAllCommandExecuted(object p)
         {
             MessageBox.Show("CreateAll");
+            if (LinkedDocumentSpaceChecked)
+            {
+                _mainModel.CreateAllSpacesByLinkRooms(LinkedDocumentSelected);
+            }
+            else
+            {
+                _mainModel.CreateAllRoomsByLinkRooms(LinkedDocumentSelected);
+            }
+            CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
         }
         #endregion
 
@@ -159,6 +186,15 @@ namespace RevitSpacesManager.ViewModels
         private void OnCreateSelectedCommandExecuted(object p)
         {
             MessageBox.Show("CreateSelected");
+            if (LinkedDocumentSpaceChecked)
+            {
+                _mainModel.CreateSelectedSpacesByLinkRooms(LinkedDocumentPhaseSelected);
+            }
+            else
+            {
+                _mainModel.CreateSelectedRoomsByLinkRooms(LinkedDocumentPhaseSelected);
+            }
+            CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
         }
         #endregion
 

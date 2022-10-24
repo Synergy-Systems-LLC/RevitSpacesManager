@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using RevitSpacesManager.Revit;
 using RevitSpacesManager.Revit.Services;
+using System;
 using System.Collections.Generic;
 
 namespace RevitSpacesManager.Models
@@ -21,6 +22,46 @@ namespace RevitSpacesManager.Models
             _activeViewPhaseName = _activeView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
             CurrentRevitDocument = new RevitDocument(_currentDocument);
             LinkedRevitDocuments = CurrentRevitDocument.GetRevitLinkDocuments();
+        }
+
+        internal void DeleteAllSpaces()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void DeleteAllRooms()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void DeleteSelectedSpaces(PhaseElement currentDocumentPhaseSelected)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void DeleteSelectedRooms(PhaseElement currentDocumentPhaseSelected)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void CreateAllSpacesByLinkRooms(RevitDocument linkedDocumentSelected)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void CreateAllRoomsByLinkRooms(RevitDocument linkedDocumentSelected)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void CreateSelectedSpacesByLinkRooms(PhaseElement linkedDocumentPhaseSelected)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void CreateSelectedRoomsByLinkRooms(PhaseElement linkedDocumentPhaseSelected)
+        {
+            throw new NotImplementedException();
         }
     }
 }
