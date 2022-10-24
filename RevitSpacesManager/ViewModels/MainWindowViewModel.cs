@@ -2,6 +2,8 @@
 using RevitSpacesManager.Revit.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 
 namespace RevitSpacesManager.ViewModels
 {
@@ -102,14 +104,30 @@ namespace RevitSpacesManager.ViewModels
         }
         #endregion
 
+
+        #region ExitCommand
+        public ICommand ExitCommand { get; }
+        private bool CanExitCommandExecute(object p) => true;
+        private void OnExitCommandExecuted(object p)
+        {
+            if (p is Window mainWindow)
+            {
+                mainWindow.Close();
+            }
+        } 
+        #endregion
+
         private readonly MainModel _mainModel;
 
         public MainWindowViewModel()
         {
             _mainModel = new MainModel();
+
             LinkedDocuments = _mainModel.LinkedRevitDocuments;
             CurrentDocumentSpaceChecked = true;
             LinkedDocumentSpaceChecked = true;
+
+            ExitCommand = new LambdaCommand(OnExitCommandExecuted, CanExitCommandExecute);
         }
     }
 }
