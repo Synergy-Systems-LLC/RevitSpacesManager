@@ -128,7 +128,8 @@ namespace RevitSpacesManager.ViewModels
                 MessageBoxResult result = ShowDeleteAllDialog();
                 if (result == MessageBoxResult.OK)
                 {
-                    DeleteAll();
+                    string reportMessage = DeleteAll();
+                    ShowReportMessage(reportMessage);
                     CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
                 }
             }
@@ -255,16 +256,16 @@ namespace RevitSpacesManager.ViewModels
             MessageBoxResult result = MessageBox.Show(message, title, MessageBoxButton.OKCancel);
             return result;
         }
-        private void DeleteAll()
+        private string DeleteAll()
         {
             if (CurrentDocumentSpaceChecked)
-            {
-                _mainModel.DeleteAllSpaces();
-            }
-            else
-            {
-                _mainModel.DeleteAllRooms();
-            }
+                return _mainModel.DeleteAllSpaces();
+            return _mainModel.DeleteAllRooms();
+        }
+        private void ShowReportMessage(string reportMessage)
+        {
+            string title = "Report";
+            MessageBox.Show(reportMessage, title);
         }
         private void ShowPhaseNotSelectedMessage()
         {
