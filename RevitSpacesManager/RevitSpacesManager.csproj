@@ -99,7 +99,9 @@
     <EmbeddedResource Include="Resources\32x32_icon_for_gui.png" />
     <Resource Include="Resources\32x32_icon_for_gui.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Custom Controls\" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
