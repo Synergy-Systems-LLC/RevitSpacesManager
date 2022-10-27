@@ -23,69 +23,69 @@ namespace RevitSpacesManager.Models
             LinkedRevitDocuments = CurrentRevitDocument.GetRevitLinkDocuments();
         }
 
-        internal string DeleteAllSpaces()
+        internal void DeleteAllSpaces()
         {
-            foreach(SpaceElement space in CurrentRevitDocument.Spaces)
+            foreach(SpaceElement spaceElement in CurrentRevitDocument.Spaces)
             {
-
+                //_currentDocument.Delete(spaceElement.Space.Id);
             }
-            return "report";
+            
         }
 
-        internal string DeleteAllRooms()
+        internal void DeleteAllRooms()
         {
 
-            return "report";
+            
         }
 
-        internal string DeleteSelectedSpaces(PhaseElement currentDocumentPhaseSelected)
+        internal void DeleteSelectedSpaces(PhaseElement currentDocumentPhaseSelected)
         {
-            return "report";
+            
         }
 
-        internal string DeleteSelectedRooms(PhaseElement currentDocumentPhaseSelected)
+        internal void DeleteSelectedRooms(PhaseElement currentDocumentPhaseSelected)
         {
-            return "report";
+            
         }
 
-        internal string CreateAllSpacesByLinkRooms(RevitDocument linkedDocumentSelected)
+        internal void CreateAllSpacesByLinkRooms(RevitDocument linkedDocumentSelected)
         {
-            return "report";
+            
         }
 
-        internal string CreateAllRoomsByLinkRooms(RevitDocument linkedDocumentSelected)
+        internal void CreateAllRoomsByLinkRooms(RevitDocument linkedDocumentSelected)
         {
-            return "report";
+            
         }
 
-        internal string CreateSelectedSpacesByLinkRooms(PhaseElement linkedDocumentPhaseSelected)
+        internal void CreateSelectedSpacesByLinkRooms(PhaseElement linkedDocumentPhaseSelected)
         {
-            return "report";
+            
         }
 
-        internal string CreateSelectedRoomsByLinkRooms(PhaseElement linkedDocumentPhaseSelected)
+        internal void CreateSelectedRoomsByLinkRooms(PhaseElement linkedDocumentPhaseSelected)
         {
-            return "report";
+            
         }
 
-        internal string CreateAllSpaces(RevitDocument linkedDocumentSelected)
+        internal void CreateAllSpaces(RevitDocument linkedDocumentSelected)
         {
-            return "report";
+            
         }
 
-        internal string CreateAllRooms(RevitDocument linkedDocumentSelected)
+        internal void CreateAllRooms(RevitDocument linkedDocumentSelected)
         {
-            return "report";
+            
         }
 
-        internal string CreateSelectedSpaces(PhaseElement linkedDocumentPhaseSelected)
+        internal void CreateSelectedSpaces(PhaseElement linkedDocumentPhaseSelected)
         {
-            return "report";
+            
         }
 
-        internal string CreateSelectedRooms(PhaseElement linkedDocumentPhaseSelected)
+        internal void CreateSelectedRooms(PhaseElement linkedDocumentPhaseSelected)
         {
-            return "report";
+            
         }
     }
 }
