@@ -163,16 +163,27 @@ namespace RevitSpacesManager.ViewModels
         private bool CanCreateAllCommandExecute(object p) => true;
         private void OnCreateAllCommandExecuted(object p)
         {
-            MessageBox.Show("CreateAll");
-            if (LinkedDocumentSpaceChecked)
+            if(IsLinkSelected())
             {
-                _mainModel.CreateAllSpacesByLinkRooms(LinkedDocumentSelected);
+                if (IsAnythingToCreate())
+                {
+                    MessageBoxResult result = ShowCreateAllDialog();
+                    if (result == MessageBoxResult.OK)
+                    {
+                        string reportMessage = CreateAll();
+                        ShowReportMessage(reportMessage);
+                        LinkedDocumentSelected = LinkedDocumentSelected;
+                    }
+                }
+                else
+                {
+                    ShowNothingCreateMessage();
+                }
             }
             else
             {
-                _mainModel.CreateAllRoomsByLinkRooms(LinkedDocumentSelected);
+                ShowLinkNotSelectedMessage();
             }
-            CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
         }
         #endregion
 
@@ -181,16 +192,30 @@ namespace RevitSpacesManager.ViewModels
         private bool CanCreateSelectedCommandExecute(object p) => true;
         private void OnCreateSelectedCommandExecuted(object p)
         {
-            MessageBox.Show("CreateSelected");
-            if (LinkedDocumentSpaceChecked)
+            if (IsLinkSelected())
             {
-                _mainModel.CreateSelectedSpacesByLinkRooms(LinkedDocumentPhaseSelected);
+                if (IsAnythingToCreate())
+                {
+                    if (IsLinkedPhaseSelected())
+                    {
+                        MessageBoxResult result = ShowCreateSelectedDialog();
+                        if (result == MessageBoxResult.OK)
+                        {
+                            string reportMessage = CreateSelected();
+                            ShowReportMessage(reportMessage);
+                            LinkedDocumentSelected = LinkedDocumentSelected;
+                        }
+                    }
+                }
+                else
+                {
+                    ShowNothingCreateMessage();
+                }
             }
             else
             {
-                _mainModel.CreateSelectedRoomsByLinkRooms(LinkedDocumentPhaseSelected);
+                ShowLinkNotSelectedMessage();
             }
-            CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
         }
         #endregion
 
@@ -227,42 +252,78 @@ namespace RevitSpacesManager.ViewModels
         }
         private void ShowNothingDeleteMessage()
         {
-            string title = "Information";
             string message = $"There is no {CurrentObject()}s to Delete in the Current Project";
-            MessageBox.Show(message, title);
-        }
-        private MessageBoxResult ShowDeleteAllDialog()
-        {
-            string title = "Information";
-            int number = CurrentNumber();
-            string currentObject = CurrentObject();
-            List<PhaseElement> currentPhases = CurrentPhases();
-            int currentPhasesNumber = currentPhases.Count;
-
-            string message = $"You are going to delete {number} {currentObject}{IsPlural(number)} in {currentPhasesNumber} Phase{IsPlural(currentPhasesNumber)}:\n";
-            foreach (PhaseElement phase in currentPhases)
-                message += $"   - {phase.Name}\n";
-
-            MessageBoxResult result = MessageBox.Show(message, title, MessageBoxButton.OKCancel);
-            return result;
+            ShowInformationMessage(message);
         }
         private void ShowPhaseNotSelectedMessage()
         {
-            string title = "Information";
             string message = "Please define Project phase to work with.";
-            MessageBox.Show(message, title);
+            ShowInformationMessage(message);
+        }
+        private MessageBoxResult ShowDeleteAllDialog()
+        {
+            int number = CurrentNumber();
+            string currentObject = CurrentObject();
+            int currentPhasesNumber = CurrentDocumentPhases.Count;
+            string message = $"You are going to delete {number} {currentObject}{IsPlural(number)} in {currentPhasesNumber} Phase{IsPlural(currentPhasesNumber)}:\n";
+            foreach (PhaseElement phase in CurrentDocumentPhases)
+                message += $"   - {phase.Name}\n";
+
+            MessageBoxResult result = ShowInformationDialog(message);
+            return result;
         }
         private MessageBoxResult ShowDeleteSelectedDialog()
         {
-            string title = "Information";
             int number = CurrentSelectedNumber();
             string currentObject = CurrentObject();
             string phaseName = CurrentDocumentPhaseSelected.Name;
-
             string message = $"You are going to delete {number} {currentObject}{IsPlural(number)} in the '{phaseName}' Phase";
 
-            MessageBoxResult result = MessageBox.Show(message, title, MessageBoxButton.OKCancel);
+            MessageBoxResult result = ShowInformationDialog(message);
             return result;
+        }
+        private void ShowLinkNotSelectedMessage()
+        {
+            string message = "Please define Linked Model to work with.";
+            ShowInformationMessage(message);
+        }
+        private void ShowNothingCreateMessage()
+        {
+            string message = $"There is no {CurrentObject()}s to Create from the Linked Model";
+            ShowInformationMessage(message);
+        }
+        private MessageBoxResult ShowCreateAllDialog()
+        {
+            int number = LinkedNumber();
+            string currentObject = LinkedObject();
+            int linkedPhasesNumber = LinkedDocumentPhases.Count;
+            string message = $"You are going to create {number} {currentObject}{IsPlural(number)} from {linkedPhasesNumber} Phase{IsPlural(linkedPhasesNumber)}:\n";
+            foreach (PhaseElement phase in LinkedDocumentPhases)
+                message += $"   - {phase.Name}\n";
+
+            MessageBoxResult result = ShowInformationDialog(message);
+            return result;
+        }
+        private MessageBoxResult ShowCreateSelectedDialog()
+        {
+            int number = LinkedSelectedNumber();
+            string currentObject = LinkedObject();
+            string phaseName = LinkedDocumentPhaseSelected.Name;
+            string message = $"You are going to delete {number} {currentObject}{IsPlural(number)} in the '{phaseName}' Phase";
+
+            MessageBoxResult result = ShowInformationDialog(message);
+            return result;
+        }
+        private MessageBoxResult ShowInformationDialog(string informationMessage)
+        {
+            string title = "Information";
+            MessageBoxResult result = MessageBox.Show(informationMessage, title, MessageBoxButton.OKCancel);
+            return result;
+        }
+        private void ShowInformationMessage(string informationMessage)
+        {
+            string title = "Information";
+            MessageBox.Show(informationMessage, title);
         }
         private void ShowReportMessage(string reportMessage)
         {
@@ -306,15 +367,36 @@ namespace RevitSpacesManager.ViewModels
                 number = CurrentDocumentPhaseSelected.NumberOfRooms;
             return number;
         }
+        private string LinkedObject()
+        {
+            if (LinkedDocumentSpaceChecked)
+                return "Space";
+            return "Room";
+        }
+        private int LinkedNumber()
+        {
+            int number;
+            if (LinkedDocumentSpaceChecked)
+                number = LinkedDocumentSelected.NumberOfSpaces;
+            else
+                number = LinkedDocumentSelected.NumberOfRooms;
+            return number;
+        }
+        private int LinkedSelectedNumber()
+        {
+            int number;
+            if (LinkedDocumentSpaceChecked)
+                number = LinkedDocumentPhaseSelected.NumberOfSpaces;
+            else
+                number = LinkedDocumentPhaseSelected.NumberOfRooms;
+            return number;
+        }
 
-        private bool IsAnythingToDelete()
-        {
-            return CurrentNumber() > 0;
-        }
-        private bool IsCurrentPhaseSelected()
-        {
-            return CurrentDocumentPhaseSelected != null;
-        }
+        private bool IsAnythingToDelete() => CurrentNumber() > 0;
+        private bool IsCurrentPhaseSelected() => CurrentDocumentPhaseSelected != null;
+        private bool IsLinkSelected() => LinkedDocumentSelected != null;
+        private bool IsAnythingToCreate() => LinkedDocumentSelected != null;
+        private bool IsLinkedPhaseSelected() => LinkedDocumentPhaseSelected != null;
         private string IsPlural(int number)
         {
             if (number == 1)
@@ -333,6 +415,18 @@ namespace RevitSpacesManager.ViewModels
             if (CurrentDocumentSpaceChecked)
                 return _mainModel.DeleteSelectedSpaces(CurrentDocumentPhaseSelected);
             return _mainModel.DeleteSelectedRooms(CurrentDocumentPhaseSelected);
+        }
+        private string CreateAll()
+        {
+            if (LinkedDocumentSpaceChecked)
+                return _mainModel.CreateAllSpaces(LinkedDocumentSelected);
+            return _mainModel.CreateAllRooms(LinkedDocumentSelected);
+        }
+        private string CreateSelected()
+        {
+            if (CurrentDocumentSpaceChecked)
+                return _mainModel.CreateSelectedSpaces(LinkedDocumentPhaseSelected);
+            return _mainModel.CreateSelectedRooms(LinkedDocumentPhaseSelected);
         }
     }
 }

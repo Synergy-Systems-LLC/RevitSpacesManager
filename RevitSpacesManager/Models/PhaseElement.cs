@@ -8,7 +8,7 @@ namespace RevitSpacesManager.Models
         public string Name { get; set; }
         public int NumberOfSpaces { get => Spaces.Count; }
         public int NumberOfRooms { get => Rooms.Count; }
-        public string SpacesItemName { get => $"{NumberOfSpaces} Room{IsPlural(NumberOfSpaces)} - {Name}"; } 
+        public string SpacesItemName { get => $"{NumberOfSpaces} Space{IsPlural(NumberOfSpaces)} - {Name}"; } 
         public string RoomsItemName { get => $"{NumberOfRooms} Room{IsPlural(NumberOfRooms)} - {Name}"; } 
 
         internal Phase Phase { get; set; }

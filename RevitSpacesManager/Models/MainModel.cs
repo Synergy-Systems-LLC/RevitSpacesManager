@@ -67,5 +67,25 @@ namespace RevitSpacesManager.Models
         {
             return "report";
         }
+
+        internal string CreateAllSpaces(RevitDocument linkedDocumentSelected)
+        {
+            return "report";
+        }
+
+        internal string CreateAllRooms(RevitDocument linkedDocumentSelected)
+        {
+            return "report";
+        }
+
+        internal string CreateSelectedSpaces(PhaseElement linkedDocumentPhaseSelected)
+        {
+            return "report";
+        }
+
+        internal string CreateSelectedRooms(PhaseElement linkedDocumentPhaseSelected)
+        {
+            return "report";
+        }
     }
 }
