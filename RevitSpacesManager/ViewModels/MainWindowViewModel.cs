@@ -252,7 +252,7 @@ namespace RevitSpacesManager.ViewModels
         }
         private void ShowNothingDeleteMessage()
         {
-            string message = $"There is no {CurrentObject()}s to Delete in the Current Project";
+            string message = $"There are no {CurrentObject()}s to Delete in the Current Project";
             ShowInformationMessage(message);
         }
         private void ShowPhaseNotSelectedMessage()
@@ -289,12 +289,12 @@ namespace RevitSpacesManager.ViewModels
         }
         private void ShowNothingCreateMessage()
         {
-            string message = $"There is no {CurrentObject()}s to Create from the Linked Model";
+            string message = $"There are no {CurrentObject()}s to Create from the selected Linked Model";
             ShowInformationMessage(message);
         }
         private MessageBoxResult ShowCreateAllDialog()
         {
-            int number = LinkedNumber();
+            int number = LinkedDocumentSelected.NumberOfRooms;
             string currentObject = LinkedObject();
             int linkedPhasesNumber = LinkedDocumentPhases.Count;
             string message = $"You are going to create {number} {currentObject}{IsPlural(number)} from {linkedPhasesNumber} Phase{IsPlural(linkedPhasesNumber)}:\n";
@@ -306,10 +306,10 @@ namespace RevitSpacesManager.ViewModels
         }
         private MessageBoxResult ShowCreateSelectedDialog()
         {
-            int number = LinkedSelectedNumber();
+            int number = LinkedDocumentPhaseSelected.NumberOfRooms;
             string currentObject = LinkedObject();
             string phaseName = LinkedDocumentPhaseSelected.Name;
-            string message = $"You are going to delete {number} {currentObject}{IsPlural(number)} in the '{phaseName}' Phase";
+            string message = $"You are going to create {number} {currentObject}{IsPlural(number)} from the '{phaseName}' Phase";
 
             MessageBoxResult result = ShowInformationDialog(message);
             return result;
@@ -373,29 +373,11 @@ namespace RevitSpacesManager.ViewModels
                 return "Space";
             return "Room";
         }
-        private int LinkedNumber()
-        {
-            int number;
-            if (LinkedDocumentSpaceChecked)
-                number = LinkedDocumentSelected.NumberOfSpaces;
-            else
-                number = LinkedDocumentSelected.NumberOfRooms;
-            return number;
-        }
-        private int LinkedSelectedNumber()
-        {
-            int number;
-            if (LinkedDocumentSpaceChecked)
-                number = LinkedDocumentPhaseSelected.NumberOfSpaces;
-            else
-                number = LinkedDocumentPhaseSelected.NumberOfRooms;
-            return number;
-        }
 
         private bool IsAnythingToDelete() => CurrentNumber() > 0;
         private bool IsCurrentPhaseSelected() => CurrentDocumentPhaseSelected != null;
         private bool IsLinkSelected() => LinkedDocumentSelected != null;
-        private bool IsAnythingToCreate() => LinkedDocumentSelected != null;
+        private bool IsAnythingToCreate() => LinkedDocumentSelected.NumberOfRooms > 0;
         private bool IsLinkedPhaseSelected() => LinkedDocumentPhaseSelected != null;
         private string IsPlural(int number)
         {
