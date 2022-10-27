@@ -67,25 +67,5 @@ namespace RevitSpacesManager.Models
         {
             
         }
-
-        internal void CreateAllSpaces(RevitDocument linkedDocumentSelected)
-        {
-            
-        }
-
-        internal void CreateAllRooms(RevitDocument linkedDocumentSelected)
-        {
-            
-        }
-
-        internal void CreateSelectedSpaces(PhaseElement linkedDocumentPhaseSelected)
-        {
-            
-        }
-
-        internal void CreateSelectedRooms(PhaseElement linkedDocumentPhaseSelected)
-        {
-            
-        }
     }
 }

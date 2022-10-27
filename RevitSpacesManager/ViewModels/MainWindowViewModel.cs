@@ -369,16 +369,16 @@ namespace RevitSpacesManager.ViewModels
         private void CreateAll()
         {
             if (LinkedDocumentSpaceChecked)
-                _mainModel.CreateAllSpaces(LinkedDocumentSelected);
+                _mainModel.CreateAllSpacesByLinkRooms(LinkedDocumentSelected);
             else
-                _mainModel.CreateAllRooms(LinkedDocumentSelected);
+                _mainModel.CreateAllRoomsByLinkRooms(LinkedDocumentSelected);
         }
         private void CreateSelected()
         {
             if (CurrentDocumentSpaceChecked)
-                _mainModel.CreateSelectedSpaces(LinkedDocumentPhaseSelected);
+                _mainModel.CreateSelectedSpacesByLinkRooms(LinkedDocumentPhaseSelected);
             else
-                _mainModel.CreateSelectedRooms(LinkedDocumentPhaseSelected);
+                _mainModel.CreateSelectedRoomsByLinkRooms(LinkedDocumentPhaseSelected);
         }
     }
 }
