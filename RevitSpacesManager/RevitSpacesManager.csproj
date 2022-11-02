@@ -72,7 +72,7 @@
     <Compile Include="Revit\RevitManager.cs" />
     <Compile Include="Models\RevitDocument.cs" />
     <Compile Include="Models\Actions.cs" />
-    <Compile Include="Models\MessageGenerator.cs" />
+    <Compile Include="ViewModels\MessageGenerator.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Compile Include="ViewModels\Commands\Command.cs" />
     <Compile Include="ViewModels\Commands\LambdaCommand.cs" />

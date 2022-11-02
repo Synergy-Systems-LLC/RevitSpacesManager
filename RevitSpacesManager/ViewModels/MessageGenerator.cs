@@ -1,53 +1,77 @@
-﻿
+﻿using RevitSpacesManager.Models;
 using System.Collections.Generic;
+using System.Text;
 
-namespace RevitSpacesManager.Models
+namespace RevitSpacesManager.ViewModels
 {
     internal class MessageGenerator
     {
         internal string MessageAll
         {
-            get => $"You are going to {_action} " +
-                                    $"{_number} " +
-                                    $"{_objectType}{IsPlural(_number)} " +
-                                    $"{_preposition} " +
-                                    $"{_phasesNumber} " +
-                                    $"Phase{IsPlural(_phasesNumber)} " +
-                                    $"{_suffix}:\n" +
-                                    $"{_phases}";
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append($"You are going to {_action} ");
+                sb.Append($"{_number} ");
+                sb.Append($"{_objectType}{IsPlural(_number)} ");
+                sb.Append($"{_preposition} ");
+                sb.Append($"{_phasesNumber} ");
+                sb.Append($"Phase{IsPlural(_phasesNumber)} ");
+                sb.Append($"{_suffix}:\n");
+                sb.Append($"{_phases}");
+                return sb.ToString();
+            }
+
         }
 
         internal string ReportAll
         {
-            get => $"{_number} " +
-                   $"{_objectType}{IsPlural(_number)} " +
-                   $"ha{IsS(_number)} been " +
-                   $"{_action}d " +
-                   $"{_preposition} " +
-                   $"{_phasesNumber} " +
-                   $"Phase{IsPlural(_phasesNumber)} " +
-                   $"{_suffix}";
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append($"{_number} ");
+                sb.Append($"{_objectType}{IsPlural(_number)} ");
+                sb.Append($"ha{IsS(_number)} been ");
+                sb.Append($"{_action}d ");
+                sb.Append($"{_preposition} ");
+                sb.Append($"{_phasesNumber} ");
+                sb.Append($"Phase{IsPlural(_phasesNumber)} ");
+                sb.Append($"{_suffix}");
+                return sb.ToString();
+            }
+
         }
 
         internal string MessageSelected
         {
-            get => $"You are going to {_action} " +
-                                    $"{_number} " +
-                                    $"{_objectType}{IsPlural(_number)} " +
-                                    $"{_preposition} the " +
-                                    $"'{_phaseName}' Phase " +
-                                    $"\n{_suffix}";
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append($"You are going to {_action} ");
+                sb.Append($"{_number} ");
+                sb.Append($"{_objectType}{IsPlural(_number)} ");
+                sb.Append($"{_preposition} the ");
+                sb.Append($"'{_phaseName}' Phase ");
+                sb.Append($"\n{_suffix}");
+                return sb.ToString();
+            }
+
         }
 
         internal string ReportSelected
         {
-            get => $"{_number} " +
-                   $"{_objectType}{IsPlural(_number)} " +
-                   $"ha{IsS(_number)} been " +
-                   $"{_action}d " +
-                   $"{_preposition} the " +
-                   $"'{_phaseName}' Phase " +
-                   $"\n{_suffix}";
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append($"{_number} ");
+                sb.Append($"{_objectType}{IsPlural(_number)} ");
+                sb.Append($"ha{IsS(_number)} been ");
+                sb.Append($"{_action}d ");
+                sb.Append($"{_preposition} the ");
+                sb.Append($"'{_phaseName}' Phase ");
+                sb.Append($"\n{_suffix}");
+                return sb.ToString();
+            }
         }
 
         private readonly string _action;
