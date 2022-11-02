@@ -12,7 +12,7 @@ namespace RevitSpacesManager.Revit.Services
         public string Title { get; set; }
         public int NumberOfSpaces { get => Spaces.Count; }
         public int NumberOfRooms { get => Rooms.Count; }
-        public string RoomsItemName { get => $"{NumberOfRooms} Room{IsPlural(NumberOfRooms)} - {Title}"; }
+        public string RoomsItemName { get => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Title}"; }
 
         internal List<Workset> UserWorksets { get; set; }
         internal List<LevelElement> Levels { get; set; }
@@ -154,7 +154,7 @@ namespace RevitSpacesManager.Revit.Services
             }
         }
 
-        private string IsPlural(int number)
+        private string PluralSuffix(int number)
         {
             if (number == 1)
                 return " ";

@@ -8,8 +8,8 @@ namespace RevitSpacesManager.Models
         public string Name { get; set; }
         public int NumberOfSpaces { get => Spaces.Count; }
         public int NumberOfRooms { get => Rooms.Count; }
-        public string SpacesItemName { get => $"{NumberOfSpaces} Space{IsPlural(NumberOfSpaces)} - {Name}"; } 
-        public string RoomsItemName { get => $"{NumberOfRooms} Room{IsPlural(NumberOfRooms)} - {Name}"; } 
+        public string SpacesItemName { get => $"{NumberOfSpaces} Space{PluralSuffix(NumberOfSpaces)} - {Name}"; } 
+        public string RoomsItemName { get => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Name}"; } 
 
         internal Phase Phase { get; set; }
         internal int Id { get; set; }
@@ -33,7 +33,7 @@ namespace RevitSpacesManager.Models
             Rooms = rooms;
         }
 
-        private string IsPlural(int number)
+        private string PluralSuffix(int number)
         {
             if (number == 1)
                 return " ";

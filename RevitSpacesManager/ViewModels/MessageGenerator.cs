@@ -13,10 +13,10 @@ namespace RevitSpacesManager.ViewModels
                 StringBuilder sb = new StringBuilder();
                 sb.Append($"You are going to {_action} ");
                 sb.Append($"{_number} ");
-                sb.Append($"{_objectType}{IsPlural(_number)} ");
+                sb.Append($"{_objectType}{PluralSuffix(_number)} ");
                 sb.Append($"{_preposition} ");
                 sb.Append($"{_phasesNumber} ");
-                sb.Append($"Phase{IsPlural(_phasesNumber)} ");
+                sb.Append($"Phase{PluralSuffix(_phasesNumber)} ");
                 sb.Append($"{_suffix}:\n");
                 sb.Append($"{_phases}");
                 return sb.ToString();
@@ -30,12 +30,12 @@ namespace RevitSpacesManager.ViewModels
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append($"{_number} ");
-                sb.Append($"{_objectType}{IsPlural(_number)} ");
-                sb.Append($"ha{IsS(_number)} been ");
+                sb.Append($"{_objectType}{PluralSuffix(_number)} ");
+                sb.Append($"ha{HaveSuffix(_number)} been ");
                 sb.Append($"{_action}d ");
                 sb.Append($"{_preposition} ");
                 sb.Append($"{_phasesNumber} ");
-                sb.Append($"Phase{IsPlural(_phasesNumber)} ");
+                sb.Append($"Phase{PluralSuffix(_phasesNumber)} ");
                 sb.Append($"{_suffix}");
                 return sb.ToString();
             }
@@ -49,7 +49,7 @@ namespace RevitSpacesManager.ViewModels
                 StringBuilder sb = new StringBuilder();
                 sb.Append($"You are going to {_action} ");
                 sb.Append($"{_number} ");
-                sb.Append($"{_objectType}{IsPlural(_number)} ");
+                sb.Append($"{_objectType}{PluralSuffix(_number)} ");
                 sb.Append($"{_preposition} the ");
                 sb.Append($"'{_phaseName}' Phase ");
                 sb.Append($"\n{_suffix}");
@@ -64,8 +64,8 @@ namespace RevitSpacesManager.ViewModels
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append($"{_number} ");
-                sb.Append($"{_objectType}{IsPlural(_number)} ");
-                sb.Append($"ha{IsS(_number)} been ");
+                sb.Append($"{_objectType}{PluralSuffix(_number)} ");
+                sb.Append($"ha{HaveSuffix(_number)} been ");
                 sb.Append($"{_action}d ");
                 sb.Append($"{_preposition} the ");
                 sb.Append($"'{_phaseName}' Phase ");
@@ -136,14 +136,14 @@ namespace RevitSpacesManager.ViewModels
                 return "of the current Model";
         }
 
-        private string IsPlural(int number)
+        private string PluralSuffix(int number)
         {
             if (number == 1)
                 return "";
             return "s";
         }
 
-        private string IsS(int number)
+        private string HaveSuffix(int number)
         {
             if (number == 1)
                 return "s";
