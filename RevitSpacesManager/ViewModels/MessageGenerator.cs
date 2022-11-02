@@ -116,24 +116,21 @@ namespace RevitSpacesManager.ViewModels
         {
             if (action == Actions.Create)
                 return "create";
-            else
-                return "delete";
+            return "delete";
         }
 
         private string GetActionPreposition(Actions action)
         {
             if (action == Actions.Create)
                 return "from";
-            else
-                return "in";
+            return "in";
         }
 
         private string GetActionSuffix(Actions action)
         {
             if (action == Actions.Create)
                 return "of the selected Linked Model";
-            else
-                return "of the current Model";
+            return "of the current Model";
         }
 
         private string PluralSuffix(int number)
