@@ -11,14 +11,10 @@ namespace RevitSpacesManager.Models
         internal readonly List<RevitDocument> LinkedRevitDocuments;
 
         private readonly Document _currentDocument;
-        private readonly View _activeView;
-        private readonly string _activeViewPhaseName;
 
         internal MainModel()
         {
             _currentDocument = RevitManager.Document;
-            _activeView = _currentDocument.ActiveView;
-            _activeViewPhaseName = _activeView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
             CurrentRevitDocument = new RevitDocument(_currentDocument);
             LinkedRevitDocuments = CurrentRevitDocument.GetRevitLinkDocuments();
         }
