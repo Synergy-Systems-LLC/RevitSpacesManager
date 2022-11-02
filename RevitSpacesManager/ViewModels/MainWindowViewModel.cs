@@ -26,8 +26,8 @@ namespace RevitSpacesManager.ViewModels
             set
             {
                 Set(ref _currentDocumentSpaceChecked, value);
-                OnPropertyChanged("CurrentPhaseDisplayPath");
-                OnPropertyChanged("CurrentDocumentPhases");
+                OnPropertyChanged(nameof(CurrentPhaseDisplayPath));
+                OnPropertyChanged(nameof(CurrentDocumentPhases));
             }
         }
         #endregion
@@ -57,7 +57,7 @@ namespace RevitSpacesManager.ViewModels
             set
             {
                 Set(ref _linkedDocumentSelected, value);
-                OnPropertyChanged("LinkedDocumentPhases");
+                OnPropertyChanged(nameof(LinkedDocumentPhases));
                 LinkedDocumentPhaseSelected = LinkedDocumentPhases[0];
             }
         }
