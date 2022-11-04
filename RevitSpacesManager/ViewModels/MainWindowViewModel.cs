@@ -89,7 +89,6 @@ namespace RevitSpacesManager.ViewModels
 
         #region ExitCommand
         public ICommand ExitCommand { get; }
-        private bool CanExitCommandExecute(object p) => true;
         private void OnExitCommandExecuted(object p)
         {
             if (p is Window mainWindow)
@@ -101,7 +100,6 @@ namespace RevitSpacesManager.ViewModels
 
         #region HelpCommand
         public ICommand HelpCommand { get; }
-        private bool CanHelpCommandExecute(object p) => true;
         private void OnHelpCommandExecuted(object p)
         {
             ShowReadmeMessage();
@@ -110,7 +108,6 @@ namespace RevitSpacesManager.ViewModels
 
         #region DeleteAllCommand
         public ICommand DeleteAllCommand { get; }
-        private bool CanDeleteAllCommandExecute(object p) => true;
         private void OnDeleteAllCommandExecuted(object p)
         {
             if (IsAnythingToDelete())
@@ -136,7 +133,6 @@ namespace RevitSpacesManager.ViewModels
 
         #region DeleteSelectedCommand
         public ICommand DeleteSelectedCommand { get; }
-        private bool CanDeleteSelectedCommandExecute(object p) => true;
         private void OnDeleteSelectedCommandExecuted(object p)
         {
             if (IsAnythingToDelete())
@@ -169,7 +165,6 @@ namespace RevitSpacesManager.ViewModels
 
         #region CreateAllCommand
         public ICommand CreateAllCommand { get; }
-        private bool CanCreateAllCommandExecute(object p) => true;
         private void OnCreateAllCommandExecuted(object p)
         {
             if(IsLinkSelected())
@@ -202,7 +197,6 @@ namespace RevitSpacesManager.ViewModels
 
         #region CreateSelectedCommand
         public ICommand CreateSelectedCommand { get; }
-        private bool CanCreateSelectedCommandExecute(object p) => true;
         private void OnCreateSelectedCommandExecuted(object p)
         {
             if (IsLinkSelected())
@@ -248,12 +242,12 @@ namespace RevitSpacesManager.ViewModels
             CurrentDocumentSpaceChecked = true;
             LinkedDocumentSpaceChecked = true;
 
-            ExitCommand = new LambdaCommand(OnExitCommandExecuted, CanExitCommandExecute);
-            HelpCommand = new LambdaCommand(OnHelpCommandExecuted, CanHelpCommandExecute);
-            DeleteAllCommand = new LambdaCommand(OnDeleteAllCommandExecuted, CanDeleteAllCommandExecute);
-            DeleteSelectedCommand = new LambdaCommand(OnDeleteSelectedCommandExecuted, CanDeleteSelectedCommandExecute);
-            CreateAllCommand = new LambdaCommand(OnCreateAllCommandExecuted, CanCreateAllCommandExecute);
-            CreateSelectedCommand = new LambdaCommand(OnCreateSelectedCommandExecuted, CanCreateSelectedCommandExecute);
+            ExitCommand = new LambdaCommand(OnExitCommandExecuted);
+            HelpCommand = new LambdaCommand(OnHelpCommandExecuted);
+            DeleteAllCommand = new LambdaCommand(OnDeleteAllCommandExecuted);
+            DeleteSelectedCommand = new LambdaCommand(OnDeleteSelectedCommandExecuted);
+            CreateAllCommand = new LambdaCommand(OnCreateAllCommandExecuted);
+            CreateSelectedCommand = new LambdaCommand(OnCreateSelectedCommandExecuted);
         }
 
         private void ShowReadmeMessage()
