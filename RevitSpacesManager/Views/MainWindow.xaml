@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:RevitSpacesManager.ViewModels" 
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
         
         Title="Spaces and Rooms Manager" 
         Height="450" 
@@ -12,9 +13,9 @@
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen">
     
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <vm:MainWindowViewModel/>
-    </Window.DataContext>
+    </Window.DataContext>-->
     
     <DockPanel>
         <DockPanel.Resources>

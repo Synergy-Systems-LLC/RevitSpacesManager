@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using RevitSpacesManager.ViewModels;
 using RevitSpacesManager.Views;
 using System.Windows;
 
@@ -14,7 +15,7 @@ namespace RevitSpacesManager.Revit
         {
             RevitManager.CommandData = commandData;
 
-            if(IsCorrectActiveView())
+            if (IsCorrectActiveView())
             {
                 ShowMainWindow();
             }
@@ -28,7 +29,7 @@ namespace RevitSpacesManager.Revit
 
         private void ShowMainWindow()
         {
-            MainWindow mainWindow = new MainWindow();
+            MainWindow mainWindow = new MainWindow { DataContext = new MainWindowViewModel() };
             mainWindow.ShowDialog();
         }
 
@@ -37,9 +38,7 @@ namespace RevitSpacesManager.Revit
             View activeView = RevitManager.Document.ActiveView;
             Parameter activeViewPhase = activeView.get_Parameter(BuiltInParameter.VIEW_PHASE);
             if (activeViewPhase == null)
-            {
                 return false;
-            }
             return true;
         }
 
