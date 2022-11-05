@@ -106,133 +106,13 @@ namespace RevitSpacesManager.ViewModels
         }
         #endregion
 
-        #region DeleteAllCommand
         public ICommand DeleteAllCommand { get; }
-        private void OnDeleteAllCommandExecuted(object p)
-        {
-            if (IsAnythingToDelete())
-            {
-                MessageGenerator messageGenerator = new MessageGenerator(CurrentObject(), 
-                                                                         CurrentNumber(), 
-                                                                         CurrentDocumentPhases, 
-                                                                         Actions.Delete);
-                MessageBoxResult result = ShowConfirmationDialog(messageGenerator.MessageAll);
-                if (result == MessageBoxResult.OK)
-                {
-                    DeleteAll();
-                    ShowReportMessage(messageGenerator.ReportAll);
-                    CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
-                }
-            }
-            else
-            {
-                ShowNothingDeleteMessage();
-            }
-        }
-        #endregion
-
-        #region DeleteSelectedCommand
         public ICommand DeleteSelectedCommand { get; }
-        private void OnDeleteSelectedCommandExecuted(object p)
-        {
-            if (IsAnythingToDelete())
-            {
-                if (IsCurrentPhaseSelected())
-                {
-                    MessageGenerator messageGenerator = new MessageGenerator(CurrentObject(),
-                                                                             CurrentSelectedNumber(),
-                                                                             CurrentDocumentPhaseSelected,
-                                                                             Actions.Delete);
-                    MessageBoxResult result = ShowConfirmationDialog(messageGenerator.MessageSelected);
-                    if (result == MessageBoxResult.OK)
-                    {
-                        DeleteSelected();
-                        ShowReportMessage(messageGenerator.ReportSelected);
-                        CurrentDocumentSpaceChecked = CurrentDocumentSpaceChecked;
-                    }
-                }
-                else
-                {
-                    ShowPhaseNotSelectedMessage();
-                }
-            }
-            else
-            {
-                ShowNothingDeleteMessage();
-            }
-        }
-        #endregion
-
-        #region CreateAllCommand
         public ICommand CreateAllCommand { get; }
-        private void OnCreateAllCommandExecuted(object p)
-        {
-            if(IsLinkSelected())
-            {
-                if (IsAnythingToCreate())
-                {
-                    MessageGenerator messageGenerator = new MessageGenerator(LinkedObject(),
-                                                                             LinkedDocumentSelected.NumberOfRooms,
-                                                                             LinkedDocumentPhases,
-                                                                             Actions.Create);
-                    MessageBoxResult result = ShowConfirmationDialog(messageGenerator.MessageAll);
-                    if (result == MessageBoxResult.OK)
-                    {
-                        CreateAll();
-                        ShowReportMessage(messageGenerator.ReportAll);
-                        LinkedDocumentSelected = LinkedDocumentSelected;
-                    }
-                }
-                else
-                {
-                    ShowNothingCreateMessage();
-                }
-            }
-            else
-            {
-                ShowLinkNotSelectedMessage();
-            }
-        }
-        #endregion
-
-        #region CreateSelectedCommand
         public ICommand CreateSelectedCommand { get; }
-        private void OnCreateSelectedCommandExecuted(object p)
-        {
-            if (IsLinkSelected())
-            {
-                if (IsAnythingToCreate())
-                {
-                    if (IsLinkedPhaseSelected())
-                    {
-                        MessageGenerator messageGenerator = new MessageGenerator(LinkedObject(),
-                                                                                 LinkedDocumentPhaseSelected.NumberOfRooms,
-                                                                                 LinkedDocumentPhaseSelected,
-                                                                                 Actions.Create);
-                        MessageBoxResult result = ShowConfirmationDialog(messageGenerator.MessageSelected);
-                        if (result == MessageBoxResult.OK)
-                        {
-                            CreateSelected();
-                            ShowReportMessage(messageGenerator.ReportSelected);
-                            LinkedDocumentSelected = LinkedDocumentSelected;
-                        }
-                    }
-                }
-                else
-                {
-                    ShowNothingCreateMessage();
-                }
-            }
-            else
-            {
-                ShowLinkNotSelectedMessage();
-            }
-        }
-        #endregion
 
 
         private readonly MainModel _mainModel;
-
 
         public MainWindowViewModel()
         {
@@ -244,61 +124,85 @@ namespace RevitSpacesManager.ViewModels
 
             ExitCommand = new LambdaCommand(OnExitCommandExecuted);
             HelpCommand = new LambdaCommand(OnHelpCommandExecuted);
-            DeleteAllCommand = new LambdaCommand(OnDeleteAllCommandExecuted);
-            DeleteSelectedCommand = new LambdaCommand(OnDeleteSelectedCommandExecuted);
-            CreateAllCommand = new LambdaCommand(OnCreateAllCommandExecuted);
-            CreateSelectedCommand = new LambdaCommand(OnCreateSelectedCommandExecuted);
+
+            DeleteAllCommand = new DeleteAllCommand(this, _mainModel);
+            DeleteSelectedCommand = new DeleteSelectedCommand(this, _mainModel);
+            CreateAllCommand = new CreateAllCommand(this, _mainModel);
+            CreateSelectedCommand = new CreateSelectedCommand(this, _mainModel);
+
+            //TODO
+            // обдумать: заменить выбор (рум\спейс)с условия на полиморфизм и тумблер один на всех
         }
 
-        private void ShowReadmeMessage()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("  Алгоритм работы плагина:\n");
-            sb.AppendLine("  - При запуске считываются пространства и помещения из текущей открытой модели для дальнейших действий с ними (полного и частичного удаления). Удаление осуществляется нажатием кнопок Delete All или Delete Selected.\n\n");
-            sb.AppendLine("  - Считываются подгруженные линки и количество помещений в них для дальнейшего создания аналогичных пространств или помещений в текущей модели (полного и частичного создания). Создание осуществляется нажатием кнопок Create All или Create Selected для конкретного линка или конкретной фазы выбранного линка.\n\n");
-            sb.AppendLine("  - Перед созданием пространств и помещений производится проверка на наличие в модели рабочего набора 'Model Spaces' или 'Model Rooms'.\n\n");
-            sb.AppendLine("  - Перед созданием пространств и помещений производится проверка на корректность размещения помещений в выбранном линке, на наличие совпадающих по имени и отметке уровней, содержащих помещения, в линке и текущей модели. Помещения, не прошедшие проверку, не создаются, выводятся в информационном окне подтверждения создания новых пространств или помещений с рекомендациями по устранению ошибок.\n\n");
-            sb.AppendLine("  - При создании новых пространств и помещений производится перенос данных об уровне, координатах расположения, верхней и нижней границе из модели линка. Созданные пространства и помещения автоматически попадают в рабочие наборы 'Model Spaces' и 'Model Rooms'.\n\n");
-            sb.AppendLine("                                                           Молодец, читаешь инструкцию <3");
-            string message = sb.ToString();
-            MessageBox.Show(message, "Readme");
-        }
-        private void ShowNothingDeleteMessage()
+        internal void ShowNothingDeleteMessage()
         {
             string message = $"There are no {CurrentObject()}s to Delete in the Current Project";
             ShowInformationMessage(message);
         }
-        private void ShowPhaseNotSelectedMessage()
+        internal void ShowPhaseNotSelectedMessage()
         {
             string message = "Please define Project phase to work with.";
             ShowInformationMessage(message);
         }
-        private void ShowLinkNotSelectedMessage()
+        internal void ShowLinkNotSelectedMessage()
         {
             string message = "Please define Linked Model to work with.";
             ShowInformationMessage(message);
         }
-        private void ShowNothingCreateMessage()
+        internal void ShowNothingCreateMessage()
         {
             string message = $"There are no {CurrentObject()}s to Create from the selected Linked Model";
             ShowInformationMessage(message);
         }
-        private MessageBoxResult ShowConfirmationDialog(string message)
+        internal void ShowReportMessage(string reportMessage)
+        {
+            string title = "Report";
+            MessageBox.Show(reportMessage, title);
+        }
+        internal MessageBoxResult ShowConfirmationDialog(string message)
         {
             string title = "Information";
             MessageBoxResult result = MessageBox.Show(message, title, MessageBoxButton.OKCancel);
             return result;
         }
-        private void ShowInformationMessage(string informationMessage)
+
+        internal string CurrentObject()
         {
-            string title = "Information";
-            MessageBox.Show(informationMessage, title);
+            if (CurrentDocumentSpaceChecked)
+                return "Space";
+            return "Room";
         }
-        private void ShowReportMessage(string reportMessage)
+        internal int CurrentNumber()
         {
-            string title = "Report";
-            MessageBox.Show(reportMessage, title);
+            int number;
+            if (CurrentDocumentSpaceChecked)
+                number = _mainModel.CurrentRevitDocument.NumberOfSpaces;
+            else
+                number = _mainModel.CurrentRevitDocument.NumberOfRooms;
+            return number;
         }
+        internal int CurrentSelectedNumber()
+        {
+            int number;
+            if (CurrentDocumentSpaceChecked)
+                number = CurrentDocumentPhaseSelected.NumberOfSpaces;
+            else
+                number = CurrentDocumentPhaseSelected.NumberOfRooms;
+            return number;
+        }
+        internal string LinkedObject()
+        {
+            if (LinkedDocumentSpaceChecked)
+                return "Space";
+            return "Room";
+        }
+
+        internal bool IsNothingToDelete() => CurrentNumber() == 0;
+        internal bool IsCurrentPhaseNotSelected() => CurrentDocumentPhaseSelected == null;
+        internal bool IsLinkNotSelected() => LinkedDocumentSelected == null;
+        internal bool IsNothingToCreate() => LinkedDocumentSelected.NumberOfRooms == 0;
+        internal bool IsLinkedPhaseNotSelected() => LinkedDocumentPhaseSelected == null;
+
 
         private List<PhaseElement> CurrentPhases()
         {
@@ -312,70 +216,23 @@ namespace RevitSpacesManager.ViewModels
                 return "SpacesItemName";
             return "RoomsItemName";
         }
-        private string CurrentObject()
+        private void ShowReadmeMessage()
         {
-            if (CurrentDocumentSpaceChecked)
-                return "Space";
-            return "Room";
+            StringBuilder sb = new StringBuilder();
+            sb.Append("  Алгоритм работы плагина:\n");
+            sb.Append("  - При запуске считываются пространства и помещения из текущей открытой модели для дальнейших действий с ними (полного и частичного удаления). Удаление осуществляется нажатием кнопок Delete All или Delete Selected.\n\n");
+            sb.Append("  - Считываются подгруженные линки и количество помещений в них для дальнейшего создания аналогичных пространств или помещений в текущей модели (полного и частичного создания). Создание осуществляется нажатием кнопок Create All или Create Selected для конкретного линка или конкретной фазы выбранного линка.\n\n");
+            sb.Append("  - Перед созданием пространств и помещений производится проверка на наличие в модели рабочего набора 'Model Spaces' или 'Model Rooms'.\n\n");
+            sb.Append("  - Перед созданием пространств и помещений производится проверка на корректность размещения помещений в выбранном линке, на наличие совпадающих по имени и отметке уровней, содержащих помещения, в линке и текущей модели. Помещения, не прошедшие проверку, не создаются, выводятся в информационном окне подтверждения создания новых пространств или помещений с рекомендациями по устранению ошибок.\n\n");
+            sb.Append("  - При создании новых пространств и помещений производится перенос данных об уровне, координатах расположения, верхней и нижней границе из модели линка. Созданные пространства и помещения автоматически попадают в рабочие наборы 'Model Spaces' и 'Model Rooms'.\n\n");
+            sb.Append("                                                           Молодец, читаешь инструкцию <3");
+            string message = sb.ToString();
+            MessageBox.Show(message, "Readme");
         }
-        private int CurrentNumber()
+        private void ShowInformationMessage(string informationMessage)
         {
-            int number;
-            if (CurrentDocumentSpaceChecked)
-                number = _mainModel.CurrentRevitDocument.NumberOfSpaces;
-            else
-                number = _mainModel.CurrentRevitDocument.NumberOfRooms;
-            return number;
-        }
-        private int CurrentSelectedNumber()
-        {
-            int number;
-            if (CurrentDocumentSpaceChecked)
-                number = CurrentDocumentPhaseSelected.NumberOfSpaces;
-            else
-                number = CurrentDocumentPhaseSelected.NumberOfRooms;
-            return number;
-        }
-        private string LinkedObject()
-        {
-            if (LinkedDocumentSpaceChecked)
-                return "Space";
-            return "Room";
-        }
-
-        private bool IsAnythingToDelete() => CurrentNumber() > 0;
-        private bool IsCurrentPhaseSelected() => CurrentDocumentPhaseSelected != null;
-        private bool IsLinkSelected() => LinkedDocumentSelected != null;
-        private bool IsAnythingToCreate() => LinkedDocumentSelected.NumberOfRooms > 0;
-        private bool IsLinkedPhaseSelected() => LinkedDocumentPhaseSelected != null;
-
-        private void DeleteAll()
-        {
-            if (CurrentDocumentSpaceChecked)
-                _mainModel.DeleteAllSpaces();
-            else
-                _mainModel.DeleteAllRooms();
-        }
-        private void DeleteSelected()
-        {
-            if (CurrentDocumentSpaceChecked)
-                _mainModel.DeleteSelectedSpaces(CurrentDocumentPhaseSelected);
-            else
-                _mainModel.DeleteSelectedRooms(CurrentDocumentPhaseSelected);
-        }
-        private void CreateAll()
-        {
-            if (LinkedDocumentSpaceChecked)
-                _mainModel.CreateAllSpacesByLinkRooms(LinkedDocumentSelected);
-            else
-                _mainModel.CreateAllRoomsByLinkRooms(LinkedDocumentSelected);
-        }
-        private void CreateSelected()
-        {
-            if (CurrentDocumentSpaceChecked)
-                _mainModel.CreateSelectedSpacesByLinkRooms(LinkedDocumentPhaseSelected);
-            else
-                _mainModel.CreateSelectedRoomsByLinkRooms(LinkedDocumentPhaseSelected);
+            string title = "Information";
+            MessageBox.Show(informationMessage, title);
         }
     }
 }
