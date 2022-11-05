@@ -13,10 +13,6 @@
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen">
     
-    <!--<Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>-->
-    
     <DockPanel>
         <DockPanel.Resources>
             <Style TargetType="GroupBox">
