@@ -9,29 +9,28 @@ namespace RevitSpacesManager.Revit.Services
 {
     internal class RevitDocument
     {
-        public string Title { get; set; }
-        public int NumberOfSpaces { get => Spaces.Count; }
-        public int NumberOfRooms { get => Rooms.Count; }
-        public string RoomsItemName { get => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Title}"; }
-
-        internal List<Workset> UserWorksets { get; set; }
-        internal List<LevelElement> Levels { get; set; }
+        public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Title}";
+        internal string Title => _document.Title;
+        internal int NumberOfSpaces => Spaces.Count;
+        internal int NumberOfRooms => Rooms.Count;
         internal List<SpaceElement> Spaces { get; set; }
         internal List<RoomElement> Rooms { get; set; }
         internal List<PhaseElement> Phases { get; set; }
 
         private readonly Document _document;
+        private readonly List<Workset> _userWorksets;
+        private readonly List<LevelElement> _levels;
 
         internal RevitDocument(Document doc)
         {
             _document = doc;
-            Title = _document.Title;
+            _userWorksets = GetUserWorksets(doc);
+            _levels = GetLevels(doc);
 
-            GetUserWorksets();
-            GetLevels();
-            GetSpaces();
-            GetRooms();
-            GetPhases();
+            Spaces = GetSpaces(doc);
+            Rooms = GetRooms(doc);
+            Phases = GetPhases(doc);
+
             SortSpacesByPhase();
             SortRoomsByPhase();
         }
@@ -53,7 +52,7 @@ namespace RevitSpacesManager.Revit.Services
 
         internal bool DoesUserWorksetExist(string worksetName)
         {
-            foreach (Workset workset in UserWorksets)
+            foreach (Workset workset in _userWorksets)
             {
                 if(workset.Name == worksetName)
                 {
@@ -65,7 +64,7 @@ namespace RevitSpacesManager.Revit.Services
 
         internal int GetUserWorksetIntegerIdByName(string worksetName)
         {
-            foreach (Workset workset in UserWorksets)
+            foreach (Workset workset in _userWorksets)
             {
                 if (workset.Name == worksetName)
                 {
@@ -75,65 +74,70 @@ namespace RevitSpacesManager.Revit.Services
             return 0;
         }
 
-        private void GetUserWorksets()
+        private List<Workset> GetUserWorksets(Document document)
         {
-            UserWorksets = new List<Workset>();
-            FilteredWorksetCollector worksetCollector = new FilteredWorksetCollector(_document);
+            List<Workset> userWorksets = new List<Workset>();
+            FilteredWorksetCollector worksetCollector = new FilteredWorksetCollector(document);
             FilteredWorksetCollector userWorksetCollector = worksetCollector.OfKind(WorksetKind.UserWorkset);
             foreach (Workset workset in userWorksetCollector)
             {
-                UserWorksets.Add(workset);
+                userWorksets.Add(workset);
             }
+            return userWorksets;
         }
 
-        private void GetLevels()
+        private List<LevelElement> GetLevels(Document document)
         {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            FilteredElementCollector elementCollector = new FilteredElementCollector(document);
             IList<Element> elements = elementCollector.OfClass(typeof(Level)).WhereElementIsNotElementType().ToElements();
-            Levels = new List<LevelElement>();
+            List<LevelElement>  levels = new List<LevelElement>();
             foreach (Element element in elements)
             {
                 Level level = element as Level;
                 LevelElement levelElement = new LevelElement(level);
-                Levels.Add(levelElement);
+                levels.Add(levelElement);
             }
+            return levels;
         }
 
-        private void GetSpaces()
+        private List<SpaceElement> GetSpaces(Document document)
         {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            FilteredElementCollector elementCollector = new FilteredElementCollector(document);
             IList<Element> elements = elementCollector.OfCategory(BuiltInCategory.OST_MEPSpaces).WhereElementIsNotElementType().ToElements();
-            Spaces = new List<SpaceElement>();
+            List<SpaceElement>  spaces = new List<SpaceElement>();
             foreach (Element element in elements)
             {
                 Space space = element as Space;
                 SpaceElement spaceElement = new SpaceElement(space);
-                Spaces.Add(spaceElement);
+                spaces.Add(spaceElement);
             }
+            return spaces;
         }
 
-        private void GetRooms()
+        private List<RoomElement> GetRooms(Document document)
         {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            FilteredElementCollector elementCollector = new FilteredElementCollector(document);
             IList<Element> elements = elementCollector.OfCategory(BuiltInCategory.OST_Rooms).WhereElementIsNotElementType().ToElements();
-            Rooms = new List<RoomElement>();
+            List<RoomElement>  rooms = new List<RoomElement>();
             foreach (Element element in elements)
             {
                 Room room = element as Room;
                 RoomElement roomElement = new RoomElement(room);
-                Rooms.Add(roomElement);
+                rooms.Add(roomElement);
             }
+            return rooms;
         }
 
-        private void GetPhases()
+        private List<PhaseElement> GetPhases(Document document)
         {
-            PhaseArray phaseArray = _document.Phases;
-            Phases = new List<PhaseElement>();
+            PhaseArray phaseArray = document.Phases;
+            List<PhaseElement>  phases = new List<PhaseElement>();
             foreach (Phase phase in phaseArray)
             {
                 PhaseElement phaseElement = new PhaseElement(phase);
-                Phases.Add(phaseElement);
+                phases.Add(phaseElement);
             }
+            return phases;
         }
         
         private void SortSpacesByPhase()
@@ -141,7 +145,7 @@ namespace RevitSpacesManager.Revit.Services
             foreach (PhaseElement phase in Phases)
             {
                 List<SpaceElement> phaseSpaces = Spaces.Where(s => s.PhaseName == phase.Name).ToList();
-                phase.SyncSpaces(phaseSpaces);
+                phase.Spaces = phaseSpaces;
             }
         }
 
@@ -150,7 +154,7 @@ namespace RevitSpacesManager.Revit.Services
             foreach (PhaseElement phase in Phases)
             {
                 List<RoomElement> phaseRooms = Rooms.Where(r => r.PhaseName == phase.Name).ToList();
-                phase.SyncRooms(phaseRooms);
+                phase.Rooms = phaseRooms;
             }
         }
 
