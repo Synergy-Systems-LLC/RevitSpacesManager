@@ -1,4 +1,4 @@
-﻿namespace RevitSpacesManager.Models
+﻿namespace RevitSpacesManager.ViewModels
 {
     /// <summary>
     /// Определяет тип действия для создания объекта класса MessageGenerator
