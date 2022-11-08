@@ -10,49 +10,29 @@ namespace RevitSpacesManager.Revit.Services
     internal class RevitDocument
     {
         public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Title}";
+
         internal string Title => _document.Title;
         internal int NumberOfSpaces => Spaces.Count;
         internal int NumberOfRooms => Rooms.Count;
-        internal List<SpaceElement> Spaces { get; set; }
-        internal List<RoomElement> Rooms { get; set; }
-        internal List<PhaseElement> Phases { get; set; }
+        internal List<SpaceElement> Spaces => GetSpaces(Phases);
+        internal List<RoomElement> Rooms => GetRooms(Phases);
+        internal List<PhaseElement> Phases => GetPhasesWithRoomsAndSpaces(_document);
+        internal List<RevitDocument> LinkDocuments => GetRevitLinkDocuments(_document);
 
         private readonly Document _document;
-        private readonly List<Workset> _userWorksets;
-        private readonly List<LevelElement> _levels;
+        private List<Workset> UserWorksets => GetUserWorksets(_document);
+        private List<LevelElement> Levels => GetLevels(_document);
+
 
         internal RevitDocument(Document doc)
         {
             _document = doc;
-            _userWorksets = GetUserWorksets(doc);
-            _levels = GetLevels(doc);
-
-            Spaces = GetSpaces(doc);
-            Rooms = GetRooms(doc);
-            Phases = GetPhases(doc);
-
-            SortSpacesByPhase();
-            SortRoomsByPhase();
         }
 
-        internal List<RevitDocument> GetRevitLinkDocuments()
-        {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
-            IList<Element> elements = elementCollector.OfClass(typeof(RevitLinkInstance)).WhereElementIsNotElementType().ToElements();
-            List<RevitDocument> revitLinkDocuments = new List<RevitDocument>();
-            foreach (Element element in elements)
-            {
-                RevitLinkInstance revitLinkInstance = element as RevitLinkInstance;
-                Document linkDocument = revitLinkInstance.GetLinkDocument();
-                RevitDocument revitLinkDocument = new RevitDocument(linkDocument);
-                revitLinkDocuments.Add(revitLinkDocument);
-            }
-            return revitLinkDocuments;
-        }
 
         internal bool DoesUserWorksetExist(string worksetName)
         {
-            foreach (Workset workset in _userWorksets)
+            foreach (Workset workset in UserWorksets)
             {
                 if(workset.Name == worksetName)
                 {
@@ -64,7 +44,7 @@ namespace RevitSpacesManager.Revit.Services
 
         internal int GetUserWorksetIntegerIdByName(string worksetName)
         {
-            foreach (Workset workset in _userWorksets)
+            foreach (Workset workset in UserWorksets)
             {
                 if (workset.Name == worksetName)
                 {
@@ -72,6 +52,35 @@ namespace RevitSpacesManager.Revit.Services
                 }
             }
             return 0;
+        }
+
+        private List<PhaseElement> GetPhasesWithRoomsAndSpaces(Document document)
+        {
+            List<PhaseElement> phases = GetPhases(document);
+            List <SpaceElement> spaces = GetSpaces(document);
+            List <RoomElement> rooms = GetRooms(document);
+
+            foreach (PhaseElement phase in phases)
+            {
+                phase.Spaces = spaces.Where(s => s.PhaseId == phase.Id).ToList();
+                phase.Rooms = rooms.Where(r => r.PhaseId == phase.Id).ToList();
+            }
+            return phases;
+        }
+
+        private List<RevitDocument> GetRevitLinkDocuments(Document document)
+        {
+            FilteredElementCollector elementCollector = new FilteredElementCollector(document);
+            IList<Element> elements = elementCollector.OfClass(typeof(RevitLinkInstance)).WhereElementIsNotElementType().ToElements();
+            List<RevitDocument> revitLinkDocuments = new List<RevitDocument>();
+            foreach (Element element in elements)
+            {
+                RevitLinkInstance revitLinkInstance = element as RevitLinkInstance;
+                Document linkDocument = revitLinkInstance.GetLinkDocument();
+                RevitDocument revitLinkDocument = new RevitDocument(linkDocument);
+                revitLinkDocuments.Add(revitLinkDocument);
+            }
+            return revitLinkDocuments;
         }
 
         private List<Workset> GetUserWorksets(Document document)
@@ -114,6 +123,16 @@ namespace RevitSpacesManager.Revit.Services
             return spaces;
         }
 
+        private List<SpaceElement> GetSpaces(List<PhaseElement> phases)
+        {
+            List<SpaceElement> spaces = new List<SpaceElement>();
+            foreach (PhaseElement phase in phases)
+            {
+                spaces.AddRange(phase.Spaces);
+            }
+            return spaces;
+        }
+
         private List<RoomElement> GetRooms(Document document)
         {
             FilteredElementCollector elementCollector = new FilteredElementCollector(document);
@@ -124,6 +143,16 @@ namespace RevitSpacesManager.Revit.Services
                 Room room = element as Room;
                 RoomElement roomElement = new RoomElement(room);
                 rooms.Add(roomElement);
+            }
+            return rooms;
+        }
+
+        private List<RoomElement> GetRooms(List<PhaseElement> phases)
+        {
+            List<RoomElement> rooms = new List<RoomElement>();
+            foreach (PhaseElement phase in phases)
+            {
+                rooms.AddRange(phase.Rooms);
             }
             return rooms;
         }
@@ -140,24 +169,6 @@ namespace RevitSpacesManager.Revit.Services
             return phases;
         }
         
-        private void SortSpacesByPhase()
-        {
-            foreach (PhaseElement phase in Phases)
-            {
-                List<SpaceElement> phaseSpaces = Spaces.Where(s => s.PhaseName == phase.Name).ToList();
-                phase.Spaces = phaseSpaces;
-            }
-        }
-
-        private void SortRoomsByPhase()
-        {
-            foreach (PhaseElement phase in Phases)
-            {
-                List<RoomElement> phaseRooms = Rooms.Where(r => r.PhaseName == phase.Name).ToList();
-                phase.Rooms = phaseRooms;
-            }
-        }
-
         private string PluralSuffix(int number)
         {
             if (number == 1)

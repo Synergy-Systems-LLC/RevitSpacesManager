@@ -8,15 +8,18 @@ namespace RevitSpacesManager.Models
         public string SpacesItemName => $"{NumberOfSpaces} Space{PluralSuffix(NumberOfSpaces)} - {Name}"; 
         public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Name}";
 
-        internal string Name { get; set; }
+        internal string Name => _phase.Name;
+        internal int Id => _phase.Id.IntegerValue;
         internal List<SpaceElement> Spaces { get; set; } = new List<SpaceElement>();
         internal List<RoomElement> Rooms { get; set; } = new List<RoomElement>();
         internal int NumberOfSpaces => Spaces.Count;
         internal int NumberOfRooms => Rooms.Count;
 
+        private readonly Phase _phase;
+
         internal PhaseElement(Phase phase)
         {
-            Name = phase.Name;
+            _phase = phase;
         }
 
         private string PluralSuffix(int number)
