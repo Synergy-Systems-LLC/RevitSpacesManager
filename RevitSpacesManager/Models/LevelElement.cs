@@ -4,15 +4,14 @@ namespace RevitSpacesManager.Models
 {
     internal class LevelElement
     {
-        internal Level Level { get; set; }
-        internal string Name { get; set; }
-        internal double ProjectElevation { get; set; }
+        internal string Name => _level.Name;
+        internal double ProjectElevation => _level.ProjectElevation;
+
+        private readonly Level _level;
 
         internal LevelElement(Level level)
         {
-            Level = level;
-            Name = level.Name;
-            ProjectElevation = level.ProjectElevation;
+            _level = level;
         }
     }
 }

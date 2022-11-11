@@ -9,55 +9,26 @@ namespace RevitSpacesManager.Revit.Services
 {
     internal class RevitDocument
     {
-        public string Title { get; set; }
-        public int NumberOfSpaces { get => Spaces.Count; }
-        public int NumberOfRooms { get => Rooms.Count; }
-        public string RoomsItemName
-        {
-            get
-            {
-                if (NumberOfRooms == 1)
-                    return $"{Rooms.Count} Room  - {Title}";
-                return $"{Rooms.Count} Rooms - {Title}";
-            }
-        }
+        public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Title}";
 
-        internal List<Workset> UserWorksets { get; set; }
-        internal List<LevelElement> Levels { get; set; }
-        internal List<SpaceElement> Spaces { get; set; }
-        internal List<RoomElement> Rooms { get; set; }
-        internal List<PhaseElement> Phases { get; set; }
+        internal string Title => _document.Title;
+        internal List<PhaseElement> Phases { get; set; } 
+        internal List<SpaceElement> Spaces => GetSpaces(Phases);
+        internal List<RoomElement> Rooms => GetRooms(Phases);
+        internal int NumberOfSpaces => Spaces.Count;
+        internal int NumberOfRooms => Rooms.Count;
 
         private readonly Document _document;
+        private List<Workset> UserWorksets => GetUserWorksets(_document); //TODO Refactor later
+        private List<LevelElement> Levels => GetLevels(_document); //TODO Refactor later
 
-        internal RevitDocument(Document doc)
+
+        internal RevitDocument(Document document)
         {
-            _document = doc;
-            Title = _document.Title;
-
-            GetUserWorksets();
-            GetLevels();
-            GetSpaces();
-            GetRooms();
-            GetPhases();
-            SortSpacesByPhase();
-            SortRoomsByPhase();
+            _document = document;
+            Phases = GetPhasesWithRoomsAndSpaces(_document);
         }
 
-        internal List<RevitDocument> GetRevitLinkDocuments()
-        {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
-            IList<Element> elements = elementCollector.OfClass(typeof(RevitLinkInstance)).WhereElementIsNotElementType().ToElements();
-            List<RevitDocument> revitLinkDocuments = new List<RevitDocument>();
-            foreach (Element element in elements)
-            {
-                RevitLinkInstance revitLinkInstance = element as RevitLinkInstance;
-                Document linkDocument = revitLinkInstance.GetLinkDocument();
-                RevitDocument revitLinkDocument = new RevitDocument(linkDocument);
-                revitLinkDocuments.Add(revitLinkDocument);
-            }
-            return revitLinkDocuments;
-        }
 
         internal bool DoesUserWorksetExist(string worksetName)
         {
@@ -83,83 +54,127 @@ namespace RevitSpacesManager.Revit.Services
             return 0;
         }
 
-        private void GetUserWorksets()
+        internal List<RevitDocument> GetRevitLinkDocuments()
         {
-            UserWorksets = new List<Workset>();
-            FilteredWorksetCollector worksetCollector = new FilteredWorksetCollector(_document);
+            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            IList<Element> elements = elementCollector.OfClass(typeof(RevitLinkInstance)).WhereElementIsNotElementType().ToElements();
+            List<RevitDocument> revitLinkDocuments = new List<RevitDocument>();
+            foreach (Element element in elements)
+            {
+                RevitLinkInstance revitLinkInstance = element as RevitLinkInstance;
+                Document linkDocument = revitLinkInstance.GetLinkDocument();
+                RevitDocument revitLinkDocument = new RevitDocument(linkDocument);
+                revitLinkDocuments.Add(revitLinkDocument);
+            }
+            return revitLinkDocuments;
+        }
+
+
+        private List<PhaseElement> GetPhasesWithRoomsAndSpaces(Document document)
+        {
+            List<PhaseElement> phases = GetPhases(document);
+            List<SpaceElement> spaces = GetSpaces(document);
+            List<RoomElement> rooms = GetRooms(document);
+
+            foreach (PhaseElement phase in phases)
+            {
+                phase.Spaces = spaces.Where(s => s.PhaseId == phase.Id).ToList();
+                phase.Rooms = rooms.Where(r => r.PhaseId == phase.Id).ToList();
+            }
+            return phases;
+        }
+
+        private List<Workset> GetUserWorksets(Document document)
+        {
+            List<Workset> userWorksets = new List<Workset>();
+            FilteredWorksetCollector worksetCollector = new FilteredWorksetCollector(document);
             FilteredWorksetCollector userWorksetCollector = worksetCollector.OfKind(WorksetKind.UserWorkset);
             foreach (Workset workset in userWorksetCollector)
             {
-                UserWorksets.Add(workset);
+                userWorksets.Add(workset);
             }
+            return userWorksets;
         }
 
-        private void GetLevels()
+        private List<LevelElement> GetLevels(Document document)
         {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            FilteredElementCollector elementCollector = new FilteredElementCollector(document);
             IList<Element> elements = elementCollector.OfClass(typeof(Level)).WhereElementIsNotElementType().ToElements();
-            Levels = new List<LevelElement>();
+            List<LevelElement>  levels = new List<LevelElement>();
             foreach (Element element in elements)
             {
                 Level level = element as Level;
                 LevelElement levelElement = new LevelElement(level);
-                Levels.Add(levelElement);
+                levels.Add(levelElement);
             }
+            return levels;
         }
 
-        private void GetSpaces()
+        private List<SpaceElement> GetSpaces(Document document)
         {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            FilteredElementCollector elementCollector = new FilteredElementCollector(document);
             IList<Element> elements = elementCollector.OfCategory(BuiltInCategory.OST_MEPSpaces).WhereElementIsNotElementType().ToElements();
-            Spaces = new List<SpaceElement>();
+            List<SpaceElement>  spaces = new List<SpaceElement>();
             foreach (Element element in elements)
             {
                 Space space = element as Space;
                 SpaceElement spaceElement = new SpaceElement(space);
-                Spaces.Add(spaceElement);
+                spaces.Add(spaceElement);
             }
+            return spaces;
         }
 
-        private void GetRooms()
+        private List<SpaceElement> GetSpaces(List<PhaseElement> phases)
         {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            List<SpaceElement> spaces = new List<SpaceElement>();
+            foreach (PhaseElement phase in phases)
+            {
+                spaces.AddRange(phase.Spaces);
+            }
+            return spaces;
+        }
+
+        private List<RoomElement> GetRooms(Document document)
+        {
+            FilteredElementCollector elementCollector = new FilteredElementCollector(document);
             IList<Element> elements = elementCollector.OfCategory(BuiltInCategory.OST_Rooms).WhereElementIsNotElementType().ToElements();
-            Rooms = new List<RoomElement>();
+            List<RoomElement>  rooms = new List<RoomElement>();
             foreach (Element element in elements)
             {
                 Room room = element as Room;
                 RoomElement roomElement = new RoomElement(room);
-                Rooms.Add(roomElement);
+                rooms.Add(roomElement);
             }
+            return rooms;
         }
 
-        private void GetPhases()
+        private List<RoomElement> GetRooms(List<PhaseElement> phases)
         {
-            PhaseArray phaseArray = _document.Phases;
-            Phases = new List<PhaseElement>();
+            List<RoomElement> rooms = new List<RoomElement>();
+            foreach (PhaseElement phase in phases)
+            {
+                rooms.AddRange(phase.Rooms);
+            }
+            return rooms;
+        }
+
+        private List<PhaseElement> GetPhases(Document document)
+        {
+            PhaseArray phaseArray = document.Phases;
+            List<PhaseElement>  phases = new List<PhaseElement>();
             foreach (Phase phase in phaseArray)
             {
                 PhaseElement phaseElement = new PhaseElement(phase);
-                Phases.Add(phaseElement);
+                phases.Add(phaseElement);
             }
+            return phases;
         }
         
-        private void SortSpacesByPhase()
+        private string PluralSuffix(int number)
         {
-            foreach (PhaseElement phase in Phases)
-            {
-                List<SpaceElement> phaseSpaces = Spaces.Where(s => s.PhaseName == phase.Name).ToList();
-                phase.SyncSpaces(phaseSpaces);
-            }
-        }
-
-        private void SortRoomsByPhase()
-        {
-            foreach (PhaseElement phase in Phases)
-            {
-                List<RoomElement> phaseRooms = Rooms.Where(r => r.PhaseName == phase.Name).ToList();
-                phase.SyncRooms(phaseRooms);
-            }
+            if (number == 1)
+                return " ";
+            return "s";
         }
     }
 }

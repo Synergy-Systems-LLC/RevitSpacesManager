@@ -5,16 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:RevitSpacesManager.ViewModels" 
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
         
         Title="Spaces and Rooms Manager" 
         Height="450" 
         Width="300"
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen">
-    
-    <Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>
     
     <DockPanel>
         <DockPanel.Resources>
@@ -36,6 +33,106 @@
 
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="2"/>
+                <Setter Property="Height" Value="30"/>
+            </Style>
+            
+            <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="13"/>
+            </Style>
+
+            <Style TargetType="CheckBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="CheckBox">
+                            <StackPanel>
+                                <Grid>
+                                    <Border Width="45"
+                                            Height="20"
+                                            Background="LightBlue"
+                                            CornerRadius="10"
+                                            Margin="5,0"
+                                            BorderThickness="0.8"
+                                            BorderBrush="Black">
+                                        
+                                    </Border>
+                                    <Border x:Name="toggle"
+                                            Height="25"
+                                            Width="25"
+                                            CornerRadius="12.5"
+                                            HorizontalAlignment="Left"
+                                            BorderThickness="0.8"
+                                            BorderBrush="Black">
+                                        
+                                    </Border>
+                                </Grid>
+                                <ContentPresenter x:Name="content"
+                                                  Margin="10,0,0,0"
+                                                  Content="{TemplateBinding Content}"
+                                                  VerticalAlignment="Center">
+                                    
+                                </ContentPresenter>
+                            </StackPanel>
+                            <ControlTemplate.Resources>
+                                <Storyboard x:Key="right">
+                                    <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                        Storyboard.TargetName="toggle"
+                                                        Duration="0:0:0:1"
+                                                        From="0,0,0,0"
+                                                        To="28,0,0,0">
+                                        <ThicknessAnimation.EasingFunction>
+                                            <CircleEase EasingMode="EaseOut">
+                                                
+                                            </CircleEase>
+                                        </ThicknessAnimation.EasingFunction>
+                                    </ThicknessAnimation>
+                                </Storyboard>
+                                <Storyboard x:Key="left">
+                                    <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                        Storyboard.TargetName="toggle"
+                                                        Duration="0:0:0:1"
+                                                        From="28,0,0,0"
+                                                        To="0,0,0,0">
+                                        <ThicknessAnimation.EasingFunction>
+                                            <CircleEase EasingMode="EaseOut">
+
+                                            </CircleEase>
+                                        </ThicknessAnimation.EasingFunction>
+                                    </ThicknessAnimation>
+                                </Storyboard>
+                            </ControlTemplate.Resources>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Trigger.ExitActions>
+                                        <RemoveStoryboard BeginStoryboardName="leftt">
+                                            
+                                        </RemoveStoryboard>
+                                        <BeginStoryboard Storyboard="{StaticResource right}" x:Name="rightt">
+                                            
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                    <Setter TargetName="toggle"
+                                            Property="Background"
+                                            Value="#D5D1D1"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Trigger.ExitActions>
+                                        <RemoveStoryboard BeginStoryboardName="rightt">
+
+                                        </RemoveStoryboard>
+                                        <BeginStoryboard Storyboard="{StaticResource left}" x:Name="leftt">
+
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                    <Setter TargetName="toggle"
+                                            Property="Background"
+                                            Value="#D5D1D1"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
         </DockPanel.Resources>
         
@@ -47,19 +144,28 @@
                           Text=" - Select Phase - "
                           />
 
-                <UniformGrid Columns="2" Rows="2">
-                    <StackPanel>
-                        <RadioButton GroupName="current"
-                                     IsChecked="{Binding CurrentDocumentSpaceChecked, Mode=TwoWay}"/>
-                        <TextBlock Text="Spaces"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <RadioButton GroupName="current"/>
-                        <TextBlock Text="Rooms"/>
-                    </StackPanel>
-                    
-                    <Button Content="Delete All"/>
-                    <Button Content="Delete Selected"/>
+                <UniformGrid Rows="2">
+                    <UniformGrid Columns="3">
+                        <TextBlock Text="Spaces"
+                                   />
+
+                        <CheckBox IsChecked="{Binding CurrentDocumentSpaceChecked, Mode=TwoWay}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  />
+
+                        <TextBlock Text="Rooms"
+                                   />
+                    </UniformGrid>
+
+                    <UniformGrid Columns="2">
+                        <Button Content="Delete All"
+                                Command="{Binding DeleteAllCommand}"
+                                />
+                        <Button Content="Delete Selected"
+                                Command="{Binding DeleteSelectedCommand}"
+                                />
+                    </UniformGrid>
                 </UniformGrid>
             </DockPanel>
         </GroupBox>
@@ -78,19 +184,28 @@
                           Text=" - Select Phase - "
                           />
                 
-                <UniformGrid Columns="2" Rows="2">
-                    <StackPanel>
-                        <RadioButton GroupName="linked"
-                                     IsChecked="{Binding LinkedDocumentSpaceChecked, Mode=TwoWay}"/>
-                        <TextBlock Text="Spaces"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <RadioButton GroupName="linked"/>
-                        <TextBlock Text="Rooms"/>
-                    </StackPanel>
+                <UniformGrid Rows="2">
+                    <UniformGrid Columns="3">
+                        <TextBlock Text="Spaces"
+                                   />
+
+                        <CheckBox IsChecked="{Binding LinkedDocumentSpaceChecked, Mode=TwoWay}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  />
+                        
+                        <TextBlock Text="Rooms"
+                                   />
+                    </UniformGrid>
                     
-                    <Button Content="Create All"/>
-                    <Button Content="Create Selected"/>
+                    <UniformGrid Columns="2">
+                        <Button Content="Create All"
+                            Command="{Binding CreateAllCommand}"
+                            />
+                        <Button Content="Create Selected"
+                            Command="{Binding CreateSelectedCommand}"
+                            />
+                    </UniformGrid>                    
                 </UniformGrid>
             </DockPanel>
         </GroupBox>
@@ -106,9 +221,16 @@
                 </Style>
             </UniformGrid.Resources>
             
-            <Button Content="Help"/>
+            <Button Content="Help"
+                    Command="{Binding HelpCommand}"
+                    />
+
             <StackPanel/>
-            <Button Content="Exit"/>
+
+            <Button Content="Exit"
+                    Command="{Binding ExitCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    />
         </UniformGrid>
 
         <StackPanel/>

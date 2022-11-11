@@ -5,18 +5,17 @@ namespace RevitSpacesManager.Models
 {
     internal class RoomElement
     {
-        internal Room Room { get; set; }
-        internal int Id { get; set; }
-        internal string Name { get; set; }
-        internal string PhaseName { get; set; }
+        internal int Id => _room.Id.IntegerValue;
+        internal string Name => _room.Name;
+        internal string PhaseName => PhaseParameter.AsValueString();
+        internal int PhaseId => PhaseParameter.AsElementId().IntegerValue;
 
+        private readonly Room _room;
+        private Parameter PhaseParameter => _room.get_Parameter(BuiltInParameter.ROOM_PHASE);
 
         internal RoomElement(Room room)
         {
-            Room = room;
-            Id = room.Id.IntegerValue;
-            Name = room.Name;
-            PhaseName = room.get_Parameter(BuiltInParameter.ROOM_PHASE).AsValueString();
+            _room = room;
         }
     }
 }

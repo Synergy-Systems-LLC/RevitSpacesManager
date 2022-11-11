@@ -5,48 +5,28 @@ namespace RevitSpacesManager.Models
 {
     internal class PhaseElement
     {
-        public string Name { get; set; }
-        public int NumberOfSpaces { get => Spaces.Count; }
-        public int NumberOfRooms { get => Rooms.Count; }
-        public string SpacesItemName 
-        { 
-            get
-            {
-                if(NumberOfSpaces == 1)
-                    return $"{Spaces.Count} Space  - {Name}";
-                return $"{Spaces.Count} Spaces - {Name}";
-            }
-        }
-        public string RoomsItemName 
-        { 
-            get
-            {
-                if (NumberOfRooms == 1)
-                    return $"{Rooms.Count} Room  - {Name}";
-                return $"{Rooms.Count} Rooms - {Name}";
-            }
-        }
+        public string SpacesItemName => $"{NumberOfSpaces} Space{PluralSuffix(NumberOfSpaces)} - {Name}"; 
+        public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Name}";
 
-        internal Phase Phase { get; set; }
-        internal int Id { get; set; }
+        internal string Name => _phase.Name;
+        internal int Id => _phase.Id.IntegerValue;
         internal List<SpaceElement> Spaces { get; set; } = new List<SpaceElement>();
         internal List<RoomElement> Rooms { get; set; } = new List<RoomElement>();
+        internal int NumberOfSpaces => Spaces.Count;
+        internal int NumberOfRooms => Rooms.Count;
+
+        private readonly Phase _phase;
 
         internal PhaseElement(Phase phase)
         {
-            Phase = phase;
-            Id = Phase.Id.IntegerValue;
-            Name = Phase.Name;
+            _phase = phase;
         }
 
-        internal void SyncSpaces(List<SpaceElement> spaces)
+        private string PluralSuffix(int number)
         {
-            Spaces = spaces;
-        }
-
-        internal void SyncRooms(List<RoomElement> rooms)
-        {
-            Rooms = rooms;
+            if (number == 1)
+                return " ";
+            return "s";
         }
     }
 }
