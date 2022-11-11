@@ -16,7 +16,7 @@ namespace RevitSpacesManager.Models
         {
             _currentDocument = RevitManager.Document;
             CurrentRevitDocument = new RevitDocument(_currentDocument);
-            LinkedRevitDocuments = CurrentRevitDocument.LinkDocuments;
+            LinkedRevitDocuments = CurrentRevitDocument.GetRevitLinkDocuments();
         }
 
         internal void DeleteAllSpaces()
