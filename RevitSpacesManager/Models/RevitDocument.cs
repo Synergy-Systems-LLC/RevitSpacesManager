@@ -1,11 +1,10 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.Mechanical;
-using RevitSpacesManager.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RevitSpacesManager.Revit.Services
+namespace RevitSpacesManager.Models
 {
     internal class RevitDocument
     {

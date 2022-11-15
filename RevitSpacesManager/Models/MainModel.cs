@@ -1,6 +1,5 @@
 ﻿using Autodesk.Revit.DB;
 using RevitSpacesManager.Revit;
-using RevitSpacesManager.Revit.Services;
 using System.Collections.Generic;
 
 namespace RevitSpacesManager.Models
