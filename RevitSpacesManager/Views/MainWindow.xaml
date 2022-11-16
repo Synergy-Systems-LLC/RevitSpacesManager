@@ -135,7 +135,31 @@
                 </Setter>
             </Style>
         </DockPanel.Resources>
-        
+
+        <UniformGrid Columns="3"
+                     Margin="0,20"
+                     >
+            <UniformGrid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="FontStyle" Value="Italic"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </UniformGrid.Resources>
+            
+            <TextBlock Text="Spaces"
+                                   />
+
+            <CheckBox IsChecked="{Binding AreSpacesChecked, Mode=TwoWay}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  />
+
+            <TextBlock Text="Rooms"
+                                   />
+        </UniformGrid>
+
         <GroupBox Header="Current Model Spaces/Rooms by Phase">
             <DockPanel>
                 <ComboBox ItemsSource="{Binding CurrentDocumentPhases}"
@@ -144,28 +168,13 @@
                           Text=" - Select Phase - "
                           />
 
-                <UniformGrid Rows="2">
-                    <UniformGrid Columns="3">
-                        <TextBlock Text="Spaces"
-                                   />
-
-                        <CheckBox IsChecked="{Binding CurrentDocumentSpaceChecked, Mode=TwoWay}"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Center"
-                                  />
-
-                        <TextBlock Text="Rooms"
-                                   />
-                    </UniformGrid>
-
-                    <UniformGrid Columns="2">
-                        <Button Content="Delete All"
+                <UniformGrid Columns="2">
+                    <Button Content="Delete All"
                                 Command="{Binding DeleteAllCommand}"
                                 />
-                        <Button Content="Delete Selected"
+                    <Button Content="Delete Selected"
                                 Command="{Binding DeleteSelectedCommand}"
                                 />
-                    </UniformGrid>
                 </UniformGrid>
             </DockPanel>
         </GroupBox>
@@ -183,29 +192,14 @@
                           DisplayMemberPath="RoomsItemName"
                           Text=" - Select Phase - "
                           />
-                
-                <UniformGrid Rows="2">
-                    <UniformGrid Columns="3">
-                        <TextBlock Text="Spaces"
-                                   />
 
-                        <CheckBox IsChecked="{Binding LinkedDocumentSpaceChecked, Mode=TwoWay}"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Center"
-                                  />
-                        
-                        <TextBlock Text="Rooms"
-                                   />
-                    </UniformGrid>
-                    
-                    <UniformGrid Columns="2">
-                        <Button Content="Create All"
+                <UniformGrid Columns="2">
+                    <Button Content="Create All"
                             Command="{Binding CreateAllCommand}"
                             />
-                        <Button Content="Create Selected"
+                    <Button Content="Create Selected"
                             Command="{Binding CreateSelectedCommand}"
                             />
-                    </UniformGrid>                    
                 </UniformGrid>
             </DockPanel>
         </GroupBox>
