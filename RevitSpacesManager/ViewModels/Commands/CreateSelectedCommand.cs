@@ -5,14 +5,16 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class CreateSelectedCommand : Command
     {
-        private readonly MainWindowViewModel _viewModel;
-        private readonly MainModel _mainModel;
+        public override IModel Model { get; set; }
 
-        public CreateSelectedCommand(MainWindowViewModel mainWindowViewModel, MainModel mainModel)
+        private readonly MainWindowViewModel _viewModel;
+
+
+        public CreateSelectedCommand(MainWindowViewModel mainWindowViewModel)
         {
             _viewModel = mainWindowViewModel;
-            _mainModel = mainModel;
         }
+
 
         public override bool CanExecute(object parameter) => true;
         public override void Execute(object parameter)
@@ -36,7 +38,7 @@ namespace RevitSpacesManager.ViewModels
             }
 
             MessageGenerator messageGenerator = new MessageGenerator(
-                _viewModel.LinkedObject(),
+                Model.ObjectName,
                 _viewModel.LinkedDocumentPhaseSelected.NumberOfRooms,
                 _viewModel.LinkedDocumentPhaseSelected,
                 Actions.Create
@@ -48,10 +50,7 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            if (_viewModel.CurrentDocumentSpaceChecked)
-                _mainModel.CreateSelectedSpacesByLinkRooms(_viewModel.LinkedDocumentPhaseSelected);
-            else
-                _mainModel.CreateSelectedRoomsByLinkRooms(_viewModel.LinkedDocumentPhaseSelected);
+            Model.CreateSelected();
 
             _viewModel.ShowReportMessage(messageGenerator.ReportSelected);
             _viewModel.OnPropertyChanged(nameof(_viewModel.LinkedDocumentSelected));

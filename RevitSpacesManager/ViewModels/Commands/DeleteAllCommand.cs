@@ -5,13 +5,13 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class DeleteAllCommand : Command
     {
-        private readonly MainWindowViewModel _viewModel;
-        private readonly MainModel _mainModel;
+        public override IModel Model { get; set; }
 
-        public DeleteAllCommand(MainWindowViewModel mainWindowViewModel, MainModel mainModel)
+        private readonly MainWindowViewModel _viewModel;
+
+        public DeleteAllCommand(MainWindowViewModel mainWindowViewModel)
         {
             _viewModel = mainWindowViewModel;
-            _mainModel = mainModel;
         }
 
         public override bool CanExecute(object parameter) => true;
@@ -24,8 +24,8 @@ namespace RevitSpacesManager.ViewModels
             }
 
             MessageGenerator messageGenerator = new MessageGenerator(
-                _viewModel.CurrentObject(),
-                _viewModel.CurrentNumber(),
+                Model.ObjectName,
+                Model.NumberOfElements,
                 _viewModel.CurrentDocumentPhases,
                 Actions.Delete
                 );
@@ -36,13 +36,10 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            if (_viewModel.CurrentDocumentSpaceChecked)
-                _mainModel.DeleteAllSpaces();
-            else
-                _mainModel.DeleteAllRooms();
+            Model.DeleteAll();
 
             _viewModel.ShowReportMessage(messageGenerator.ReportAll);
-            _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentSpaceChecked));
+            _viewModel.OnPropertyChanged(nameof(_viewModel.AreSpacesChecked));
         }
     }
 }
