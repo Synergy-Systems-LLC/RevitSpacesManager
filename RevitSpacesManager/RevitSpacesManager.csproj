@@ -58,12 +58,11 @@
   <ItemGroup>
     <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\LevelElement.cs" />
-    <Compile Include="Models\MainModel.cs" />
     <Compile Include="Models\PhaseElement.cs" />
     <Compile Include="Models\RoomElement.cs" />
     <Compile Include="Models\SpaceElement.cs" />
-    <Compile Include="Models\RoomsModel.cs" />
     <Compile Include="Models\SpacesModel.cs" />
+    <Compile Include="Models\RoomsModel.cs" />
     <Compile Include="Revit\App.cs" />
     <Compile Include="Revit\Command.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,9 +107,7 @@
     <EmbeddedResource Include="Resources\32x32_icon_for_gui.png" />
     <Resource Include="Resources\32x32_icon_for_gui.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Custom Controls\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
