@@ -11,6 +11,7 @@ namespace RevitSpacesManager.Models
         public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Title}";
 
         internal string Title => _document.Title;
+        internal string ActiveViewPhaseName => _document.ActiveView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
         internal List<PhaseElement> Phases { get; set; } 
         internal List<SpaceElement> Spaces => GetSpaces(Phases);
         internal List<RoomElement> Rooms => GetRooms(Phases);

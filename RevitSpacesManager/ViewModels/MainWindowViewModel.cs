@@ -21,10 +21,15 @@ namespace RevitSpacesManager.ViewModels
                 Set(ref _areSpacesChecked, value);
 
                 DefineActiveModel(value);
+                OnPropertyChanged(nameof(AreRoomsChecked));
                 OnPropertyChanged(nameof(CurrentDocumentPhases));
                 OnPropertyChanged(nameof(CurrentPhaseDisplayPath));
             }
         }
+        #endregion
+
+        #region AreRoomsChecked Property
+        public bool AreRoomsChecked => !AreSpacesChecked;
         #endregion
 
         #region CurrentDocumentPhaseSelected Property
@@ -80,6 +85,14 @@ namespace RevitSpacesManager.ViewModels
         }
         #endregion
 
+        #region ActiveViewPhaseName Property
+        private string _activeViewPhaseName;
+        public string ActiveViewPhaseName
+        {
+            get => _activeViewPhaseName;
+            set => Set(ref _activeViewPhaseName, value);
+        }
+        #endregion
 
         #region ExitCommand
         public ICommand ExitCommand { get; }
@@ -115,6 +128,7 @@ namespace RevitSpacesManager.ViewModels
         public MainWindowViewModel()
         {
             _currentDocument = new RevitDocument(RevitManager.Document);
+            ActiveViewPhaseName = _currentDocument.ActiveViewPhaseName;
             LinkedDocuments = _currentDocument.GetRevitLinkDocuments();
 
             _spacesModel = new SpacesModel(_currentDocument);

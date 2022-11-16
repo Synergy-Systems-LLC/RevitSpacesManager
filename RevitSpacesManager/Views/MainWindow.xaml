@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
         
         Title="Spaces and Rooms Manager" 
-        Height="450" 
+        Height="520" 
         Width="300"
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen">
@@ -142,22 +142,30 @@
             <UniformGrid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="FontSize" Value="15"/>
-                    <Setter Property="FontStyle" Value="Italic"/>
-                    <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Foreground" Value="CornflowerBlue"/>
+                            <Setter Property="TextDecorations" Value="Underline"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </UniformGrid.Resources>
             
-            <TextBlock Text="Spaces"
-                                   />
+            <TextBlock Text="Spaces" 
+                       IsEnabled="{Binding AreSpacesChecked}"
+                       HorizontalAlignment="Right"
+                       />
 
             <CheckBox IsChecked="{Binding AreSpacesChecked, Mode=TwoWay}"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Center"
-                                  />
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      />
 
             <TextBlock Text="Rooms"
-                                   />
+                       IsEnabled="{Binding AreRoomsChecked}"
+                       HorizontalAlignment="Left"
+                       />
         </UniformGrid>
 
         <GroupBox Header="Current Model Spaces/Rooms by Phase">
@@ -207,7 +215,9 @@
         <StatusBar Height="20" DockPanel.Dock="Bottom"/>
 
         <UniformGrid Columns="3"
-                     DockPanel.Dock="Bottom">
+                     DockPanel.Dock="Bottom"
+                     Height="50"
+                     >
 
             <UniformGrid.Resources>
                 <Style TargetType="Button">
@@ -227,6 +237,29 @@
                     />
         </UniformGrid>
 
-        <StackPanel/>
+        <DockPanel Margin="0,14">
+            <DockPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="Margin" Value="12,0"/>
+                </Style>
+            </DockPanel.Resources>
+            
+            <TextBlock Text="New elements 'Phase':"
+                       DockPanel.Dock="Top"
+                       />
+            <TextBlock Text="{Binding ActiveViewPhaseName}"
+                       FontWeight="Bold"
+                       DockPanel.Dock="Top"
+                       />
+
+            <TextBlock Text="*      Creation 'Phase' depends on the active view&#x0a;'Phase'. If you need to change it close the Add-in&#x0a;and open definite view."
+                       DockPanel.Dock="Bottom"
+                       >
+                
+            </TextBlock>
+
+            <StackPanel/>
+        </DockPanel>
     </DockPanel>
 </Window>
