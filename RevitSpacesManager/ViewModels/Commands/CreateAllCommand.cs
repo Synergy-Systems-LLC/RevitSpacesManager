@@ -10,9 +10,10 @@ namespace RevitSpacesManager.ViewModels
         private readonly MainWindowViewModel _viewModel;
 
 
-        public CreateAllCommand(MainWindowViewModel mainWindowViewModel)
+        public CreateAllCommand(MainWindowViewModel mainWindowViewModel, AreaModel model)
         {
             _viewModel = mainWindowViewModel;
+            Model = model;
         }
 
 

@@ -123,16 +123,15 @@ namespace RevitSpacesManager.ViewModels
 
             _spacesModel = new SpacesModel(_currentDocument);
             _roomsModel = new RoomsModel(_currentDocument);
+            AreSpacesChecked = true;
 
             ExitCommand = new LambdaCommand(OnExitCommandExecuted);
             HelpCommand = new LambdaCommand(OnHelpCommandExecuted);
 
-            DeleteAllCommand = new DeleteAllCommand(this);
-            DeleteSelectedCommand = new DeleteSelectedCommand(this);
-            CreateAllCommand = new CreateAllCommand(this);
-            CreateSelectedCommand = new CreateSelectedCommand(this);
-
-            AreSpacesChecked = true;
+            DeleteAllCommand = new DeleteAllCommand(this, _activeModel);
+            DeleteSelectedCommand = new DeleteSelectedCommand(this, _activeModel);
+            CreateAllCommand = new CreateAllCommand(this, _activeModel);
+            CreateSelectedCommand = new CreateSelectedCommand(this, _activeModel);
         }
 
 

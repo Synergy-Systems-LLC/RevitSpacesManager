@@ -10,9 +10,10 @@ namespace RevitSpacesManager.ViewModels
         private readonly MainWindowViewModel _viewModel;
 
 
-        public DeleteSelectedCommand(MainWindowViewModel mainWindowViewModel)
+        public DeleteSelectedCommand(MainWindowViewModel mainWindowViewModel, AreaModel model)
         {
             _viewModel = mainWindowViewModel;
+            Model = model;
         }
 
 

@@ -9,9 +9,10 @@ namespace RevitSpacesManager.ViewModels
 
         private readonly MainWindowViewModel _viewModel;
 
-        public DeleteAllCommand(MainWindowViewModel mainWindowViewModel)
+        public DeleteAllCommand(MainWindowViewModel mainWindowViewModel, AreaModel model)
         {
             _viewModel = mainWindowViewModel;
+            Model = model;
         }
 
         public override bool CanExecute(object parameter) => true;
