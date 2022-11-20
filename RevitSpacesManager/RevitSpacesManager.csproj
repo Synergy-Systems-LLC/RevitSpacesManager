@@ -56,11 +56,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\IModel.cs" />
-    <Compile Include="Models\LevelElement.cs" />
-    <Compile Include="Models\PhaseElement.cs" />
-    <Compile Include="Models\RoomElement.cs" />
-    <Compile Include="Models\SpaceElement.cs" />
+    <Compile Include="Models\AreaModel.cs" />
+    <Compile Include="Models\Interfaces\ICreating.cs" />
+    <Compile Include="Models\Interfaces\IDeleting.cs" />
+    <Compile Include="Models\Elements\LevelElement.cs" />
+    <Compile Include="Models\Elements\PhaseElement.cs" />
+    <Compile Include="Models\Elements\RoomElement.cs" />
+    <Compile Include="Models\Elements\SpaceElement.cs" />
     <Compile Include="Models\SpacesModel.cs" />
     <Compile Include="Models\RoomsModel.cs" />
     <Compile Include="Revit\App.cs" />
@@ -72,7 +74,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Revit\RevitManager.cs" />
-    <Compile Include="Models\RevitDocument.cs" />
+    <Compile Include="Models\Elements\RevitDocument.cs" />
     <Compile Include="ViewModels\Actions.cs" />
     <Compile Include="ViewModels\Commands\CreateSelectedCommand.cs" />
     <Compile Include="ViewModels\Commands\CreateAllCommand.cs" />

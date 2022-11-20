@@ -172,7 +172,7 @@
             <DockPanel>
                 <ComboBox ItemsSource="{Binding CurrentDocumentPhases}"
                           SelectedItem="{Binding CurrentDocumentPhaseSelected, Mode=TwoWay}"
-                          DisplayMemberPath="{Binding CurrentPhaseDisplayPath}"
+                          DisplayMemberPath="{Binding PhaseDisplayPath}"
                           Text=" - Select Phase - "
                           />
 

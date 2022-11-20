@@ -5,7 +5,7 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class CreateSelectedCommand : Command
     {
-        public override IModel Model { get; set; }
+        internal AreaModel Model { get; set; }
 
         private readonly MainWindowViewModel _viewModel;
 
@@ -38,7 +38,7 @@ namespace RevitSpacesManager.ViewModels
             }
 
             MessageGenerator messageGenerator = new MessageGenerator(
-                Model.ObjectName,
+                _viewModel.ActiveObject,
                 _viewModel.LinkedDocumentPhaseSelected.NumberOfRooms,
                 _viewModel.LinkedDocumentPhaseSelected,
                 Actions.Create

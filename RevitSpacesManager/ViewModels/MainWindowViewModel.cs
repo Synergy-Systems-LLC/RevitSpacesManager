@@ -1,6 +1,5 @@
 ﻿using RevitSpacesManager.Models;
 using RevitSpacesManager.Revit;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,14 +22,15 @@ namespace RevitSpacesManager.ViewModels
                 DefineActiveModel(value);
                 OnPropertyChanged(nameof(AreRoomsChecked));
                 OnPropertyChanged(nameof(CurrentDocumentPhases));
-                OnPropertyChanged(nameof(CurrentPhaseDisplayPath));
+                OnPropertyChanged(nameof(PhaseDisplayPath));
             }
         }
         #endregion
 
-        #region AreRoomsChecked Property
         public bool AreRoomsChecked => !AreSpacesChecked;
-        #endregion
+        public string ActiveObject => GetActiveObject();
+        public string PhaseDisplayPath => $"{ActiveObject}sItemName";
+        public List<PhaseElement> CurrentDocumentPhases => _activeModel.GetPhases();
 
         #region CurrentDocumentPhaseSelected Property
         private PhaseElement _currentDocumentPhaseSelected;
@@ -39,14 +39,6 @@ namespace RevitSpacesManager.ViewModels
             get => _currentDocumentPhaseSelected;
             set => Set(ref _currentDocumentPhaseSelected, value);
         }
-        #endregion
-
-        #region CurrentDocumentPhases Property
-        public List<PhaseElement> CurrentDocumentPhases => _activeModel.GetPhases();
-        #endregion
-
-        #region CurrentPhaseDisplayPath Property
-        public string CurrentPhaseDisplayPath => _activeModel.SelectedPhaseDisplayPath;
         #endregion
 
         #region LinkedDocuments Property
@@ -72,9 +64,7 @@ namespace RevitSpacesManager.ViewModels
         }
         #endregion
 
-        #region LinkedDocumentPhases Property
-        public List<PhaseElement> LinkedDocumentPhases { get => _linkedDocumentSelected.Phases.Where(p => p.NumberOfRooms > 0).ToList(); }
-        #endregion
+        public List<PhaseElement> LinkedDocumentPhases => _linkedDocumentSelected.Phases.Where(p => p.NumberOfRooms > 0).ToList();
 
         #region LinkedDocumentPhaseSelected Property
         private PhaseElement _linkedDocumentPhaseSelected;
@@ -113,17 +103,17 @@ namespace RevitSpacesManager.ViewModels
         }
         #endregion
 
-        public Command DeleteAllCommand { get; }
-        public Command DeleteSelectedCommand { get; }
-        public Command CreateAllCommand { get; }
-        public Command CreateSelectedCommand { get; }
+        public DeleteAllCommand DeleteAllCommand { get; }
+        public DeleteSelectedCommand DeleteSelectedCommand { get; }
+        public CreateAllCommand CreateAllCommand { get; }
+        public CreateSelectedCommand CreateSelectedCommand { get; }
 
 
-        private IModel _activeModel;
-
+        private AreaModel _activeModel;
         private readonly RevitDocument _currentDocument;
         private readonly SpacesModel _spacesModel;
         private readonly RoomsModel _roomsModel;
+
 
         public MainWindowViewModel()
         {
@@ -143,14 +133,12 @@ namespace RevitSpacesManager.ViewModels
             CreateSelectedCommand = new CreateSelectedCommand(this);
 
             AreSpacesChecked = true;
-
-            //TODO
-            // на view выделять цветом Space Room
         }
+
 
         internal void ShowNothingDeleteMessage()
         {
-            string message = $"There are no {_activeModel.ObjectName}s to Delete in the Current Project";
+            string message = $"There are no {ActiveObject}s to Delete in the Current Project";
             ShowInformationMessage(message);
         }
         internal void ShowPhaseNotSelectedMessage()
@@ -165,7 +153,7 @@ namespace RevitSpacesManager.ViewModels
         }
         internal void ShowNothingCreateMessage()
         {
-            string message = $"There are no {_activeModel.ObjectName}s to Create from the selected Linked Model";
+            string message = $"There are no {ActiveObject}s to Create from the selected Linked Model";
             ShowInformationMessage(message);
         }
         internal void ShowReportMessage(string reportMessage)
@@ -180,6 +168,7 @@ namespace RevitSpacesManager.ViewModels
             return result;
         }
 
+        internal int GetCurrentNumberOfElements() => _activeModel.NumberOfElements;
         internal int GetCurrentSelectedPhaseNumberOfElements()
         {
             if (AreSpacesChecked)
@@ -187,15 +176,16 @@ namespace RevitSpacesManager.ViewModels
             return CurrentDocumentPhaseSelected.NumberOfRooms;
         }
 
-        internal bool IsNothingToDelete() => _activeModel.NumberOfElements == 0;
+        internal bool IsNothingToDelete() => GetCurrentNumberOfElements() == 0;
         internal bool IsCurrentPhaseNotSelected() => CurrentDocumentPhaseSelected == null;
         internal bool IsLinkNotSelected() => LinkedDocumentSelected == null;
         internal bool IsNothingToCreate() => LinkedDocumentSelected.NumberOfRooms == 0;
         internal bool IsLinkedPhaseNotSelected() => LinkedDocumentPhaseSelected == null;
 
-        private void DefineActiveModel(bool value)
+
+        private void DefineActiveModel(bool areSpacesChecked)
         {
-            if (value)
+            if (areSpacesChecked)
             {
                 _activeModel = _spacesModel;
             }
@@ -208,6 +198,12 @@ namespace RevitSpacesManager.ViewModels
             DeleteSelectedCommand.Model = _activeModel;
             CreateAllCommand.Model = _activeModel;
             CreateSelectedCommand.Model = _activeModel;
+        }
+        private string GetActiveObject()
+        {
+            if(AreSpacesChecked)
+                return "Space";
+            return "Room";
         }
         private void ShowReadmeMessage()
         {

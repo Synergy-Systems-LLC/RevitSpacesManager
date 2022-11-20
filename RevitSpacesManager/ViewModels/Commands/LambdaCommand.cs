@@ -1,5 +1,4 @@
-﻿using RevitSpacesManager.Models;
-using System;
+﻿using System;
 
 namespace RevitSpacesManager.ViewModels
 {
@@ -7,8 +6,6 @@ namespace RevitSpacesManager.ViewModels
     {
         private readonly Action<object> _execute;
         private readonly Func<object, bool> _canExecute;
-
-        public override IModel Model { get; set; }
 
         public LambdaCommand(Action<object> execute, Func<object, bool> canExecute = null)
         {

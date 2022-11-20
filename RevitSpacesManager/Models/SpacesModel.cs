@@ -4,42 +4,39 @@ using System.Linq;
 
 namespace RevitSpacesManager.Models
 {
-    internal class SpacesModel : IModel
+    internal class SpacesModel : AreaModel
     {
-        public RevitDocument RevitDocument { get; set; }
-        public int NumberOfElements => RevitDocument.NumberOfSpaces;
-        public string ObjectName { get; }
-        public string SelectedPhaseDisplayPath { get; }
+        internal override int NumberOfElements => _revitDocument.NumberOfSpaces;
+
+        private readonly RevitDocument _revitDocument;
 
 
         internal SpacesModel(RevitDocument revitDocument)
         {
-            RevitDocument = revitDocument;
-            ObjectName = "Space";
-            SelectedPhaseDisplayPath = $"{ObjectName}sItemName";
+            _revitDocument = revitDocument;
         }
 
 
-        public List<PhaseElement> GetPhases() => RevitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();
-
-        public void CreateAll()
+        public override void CreateAll()
         {
             throw new NotImplementedException();
         }
 
-        public void CreateSelected()
+        public override void CreateSelected()
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteAll()
+        public override void DeleteAll()
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteSelected()
+        public override void DeleteSelected()
         {
             throw new NotImplementedException();
         }
+
+        internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();
     }
 }

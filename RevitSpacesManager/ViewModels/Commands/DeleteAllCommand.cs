@@ -5,7 +5,7 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class DeleteAllCommand : Command
     {
-        public override IModel Model { get; set; }
+        internal AreaModel Model { get; set; }
 
         private readonly MainWindowViewModel _viewModel;
 
@@ -24,8 +24,8 @@ namespace RevitSpacesManager.ViewModels
             }
 
             MessageGenerator messageGenerator = new MessageGenerator(
-                Model.ObjectName,
-                Model.NumberOfElements,
+                _viewModel.ActiveObject,
+                _viewModel.GetCurrentNumberOfElements(),
                 _viewModel.CurrentDocumentPhases,
                 Actions.Delete
                 );
