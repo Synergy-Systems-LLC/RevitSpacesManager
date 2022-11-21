@@ -3,10 +3,11 @@ using Autodesk.Revit.DB.Architecture;
 
 namespace RevitSpacesManager.Models
 {
-    internal class RoomElement
+    internal class RoomElement : RevitElement
     {
-        internal int Id => _room.Id.IntegerValue;
-        internal string Name => _room.Name;
+        internal override ElementId ElementId => _room.Id;
+        internal int Id => ElementId.IntegerValue;
+        internal string Name => _room.Name;    
         internal string PhaseName => PhaseParameter.AsValueString();
         internal int PhaseId => PhaseParameter.AsElementId().IntegerValue;
 

@@ -2,7 +2,7 @@
 {
     internal interface IDeleting
     {
-        void DeleteAll();
-        void DeleteSelected();
+        void DeleteAll(string activeObject);
+        void DeleteSelected(string activeObject, PhaseElement phaseElement);
     }
 }
