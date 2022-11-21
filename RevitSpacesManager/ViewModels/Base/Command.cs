@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RevitSpacesManager.Models;
+using System;
 using System.Windows.Input;
 
 namespace RevitSpacesManager.ViewModels

@@ -1,17 +1,17 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.Mechanical;
-using RevitSpacesManager.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RevitSpacesManager.Revit.Services
+namespace RevitSpacesManager.Models
 {
     internal class RevitDocument
     {
         public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Title}";
 
         internal string Title => _document.Title;
+        internal string ActiveViewPhaseName => _document.ActiveView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
         internal List<PhaseElement> Phases { get; set; } 
         internal List<SpaceElement> Spaces => GetSpaces(Phases);
         internal List<RoomElement> Rooms => GetRooms(Phases);

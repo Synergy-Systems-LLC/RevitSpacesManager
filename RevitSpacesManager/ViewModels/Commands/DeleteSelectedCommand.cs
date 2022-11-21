@@ -5,14 +5,17 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class DeleteSelectedCommand : Command
     {
-        private readonly MainWindowViewModel _viewModel;
-        private readonly MainModel _mainModel;
+        internal IDeleting Model { get; set; }
 
-        public DeleteSelectedCommand(MainWindowViewModel mainWindowViewModel, MainModel mainModel)
+        private readonly MainWindowViewModel _viewModel;
+
+
+        public DeleteSelectedCommand(MainWindowViewModel mainWindowViewModel, IDeleting model)
         {
             _viewModel = mainWindowViewModel;
-            _mainModel = mainModel;
+            Model = model;
         }
+
 
         public override bool CanExecute(object parameter) => true;
         public override void Execute(object parameter)
@@ -30,8 +33,8 @@ namespace RevitSpacesManager.ViewModels
             }
 
             MessageGenerator messageGenerator = new MessageGenerator(
-                _viewModel.CurrentObject(),
-                _viewModel.CurrentSelectedNumber(),
+                _viewModel.ActiveObject,
+                _viewModel.GetCurrentSelectedPhaseNumberOfElements(),
                 _viewModel.CurrentDocumentPhaseSelected,
                 Actions.Delete
             );
@@ -41,13 +44,10 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            if (_viewModel.CurrentDocumentSpaceChecked)
-                _mainModel.DeleteSelectedSpaces(_viewModel.CurrentDocumentPhaseSelected);
-            else
-                _mainModel.DeleteSelectedRooms(_viewModel.CurrentDocumentPhaseSelected);
+            Model.DeleteSelected();
 
             _viewModel.ShowReportMessage(messageGenerator.ReportSelected);
-            _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentSpaceChecked));
+            _viewModel.OnPropertyChanged(nameof(_viewModel.AreSpacesChecked));
         }
     }
 }

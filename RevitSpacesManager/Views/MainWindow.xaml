@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
         
         Title="Spaces and Rooms Manager" 
-        Height="450" 
+        Height="520" 
         Width="300"
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen">
@@ -135,37 +135,54 @@
                 </Setter>
             </Style>
         </DockPanel.Resources>
-        
+
+        <UniformGrid Columns="3"
+                     Margin="0,20"
+                     >
+            <UniformGrid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="15"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Foreground" Value="CornflowerBlue"/>
+                            <Setter Property="TextDecorations" Value="Underline"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </UniformGrid.Resources>
+            
+            <TextBlock Text="Spaces" 
+                       IsEnabled="{Binding AreSpacesChecked}"
+                       HorizontalAlignment="Right"
+                       />
+
+            <CheckBox IsChecked="{Binding AreSpacesChecked, Mode=TwoWay}"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      />
+
+            <TextBlock Text="Rooms"
+                       IsEnabled="{Binding AreRoomsChecked}"
+                       HorizontalAlignment="Left"
+                       />
+        </UniformGrid>
+
         <GroupBox Header="Current Model Spaces/Rooms by Phase">
             <DockPanel>
                 <ComboBox ItemsSource="{Binding CurrentDocumentPhases}"
                           SelectedItem="{Binding CurrentDocumentPhaseSelected, Mode=TwoWay}"
-                          DisplayMemberPath="{Binding CurrentPhaseDisplayPath}"
+                          DisplayMemberPath="{Binding PhaseDisplayPath}"
                           Text=" - Select Phase - "
                           />
 
-                <UniformGrid Rows="2">
-                    <UniformGrid Columns="3">
-                        <TextBlock Text="Spaces"
-                                   />
-
-                        <CheckBox IsChecked="{Binding CurrentDocumentSpaceChecked, Mode=TwoWay}"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Center"
-                                  />
-
-                        <TextBlock Text="Rooms"
-                                   />
-                    </UniformGrid>
-
-                    <UniformGrid Columns="2">
-                        <Button Content="Delete All"
+                <UniformGrid Columns="2">
+                    <Button Content="Delete All"
                                 Command="{Binding DeleteAllCommand}"
                                 />
-                        <Button Content="Delete Selected"
+                    <Button Content="Delete Selected"
                                 Command="{Binding DeleteSelectedCommand}"
                                 />
-                    </UniformGrid>
                 </UniformGrid>
             </DockPanel>
         </GroupBox>
@@ -183,29 +200,14 @@
                           DisplayMemberPath="RoomsItemName"
                           Text=" - Select Phase - "
                           />
-                
-                <UniformGrid Rows="2">
-                    <UniformGrid Columns="3">
-                        <TextBlock Text="Spaces"
-                                   />
 
-                        <CheckBox IsChecked="{Binding LinkedDocumentSpaceChecked, Mode=TwoWay}"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Center"
-                                  />
-                        
-                        <TextBlock Text="Rooms"
-                                   />
-                    </UniformGrid>
-                    
-                    <UniformGrid Columns="2">
-                        <Button Content="Create All"
+                <UniformGrid Columns="2">
+                    <Button Content="Create All"
                             Command="{Binding CreateAllCommand}"
                             />
-                        <Button Content="Create Selected"
+                    <Button Content="Create Selected"
                             Command="{Binding CreateSelectedCommand}"
                             />
-                    </UniformGrid>                    
                 </UniformGrid>
             </DockPanel>
         </GroupBox>
@@ -213,7 +215,9 @@
         <StatusBar Height="20" DockPanel.Dock="Bottom"/>
 
         <UniformGrid Columns="3"
-                     DockPanel.Dock="Bottom">
+                     DockPanel.Dock="Bottom"
+                     Height="50"
+                     >
 
             <UniformGrid.Resources>
                 <Style TargetType="Button">
@@ -233,6 +237,29 @@
                     />
         </UniformGrid>
 
-        <StackPanel/>
+        <DockPanel Margin="0,14">
+            <DockPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="Margin" Value="12,0"/>
+                </Style>
+            </DockPanel.Resources>
+            
+            <TextBlock Text="New elements 'Phase':"
+                       DockPanel.Dock="Top"
+                       />
+            <TextBlock Text="{Binding ActiveViewPhaseName}"
+                       FontWeight="Bold"
+                       DockPanel.Dock="Top"
+                       />
+
+            <TextBlock Text="*      Creation 'Phase' depends on the active view&#x0a;'Phase'. If you need to change it close the Add-in&#x0a;and open definite view."
+                       DockPanel.Dock="Bottom"
+                       >
+                
+            </TextBlock>
+
+            <StackPanel/>
+        </DockPanel>
     </DockPanel>
 </Window>
