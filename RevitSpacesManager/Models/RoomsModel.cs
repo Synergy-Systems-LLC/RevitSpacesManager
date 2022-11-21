@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace RevitSpacesManager.Models
 {
@@ -19,22 +20,22 @@ namespace RevitSpacesManager.Models
 
         public override void CreateAll()
         {
-            throw new NotImplementedException();
+            MessageBox.Show("СОЗДАНИЕ...");
         }
 
         public override void CreateSelected()
         {
-            throw new NotImplementedException();
+            MessageBox.Show("СОЗДАНИЕ...");
         }
 
         public override void DeleteAll()
         {
-            throw new NotImplementedException();
+            MessageBox.Show("УДАЛЕНИЕ...");
         }
 
         public override void DeleteSelected()
         {
-            throw new NotImplementedException();
+            MessageBox.Show("УДАЛЕНИЕ...");
         }
 
         internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();
