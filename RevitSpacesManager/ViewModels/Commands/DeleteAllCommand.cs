@@ -5,11 +5,11 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class DeleteAllCommand : Command
     {
-        internal AreaModel Model { get; set; }
+        internal IDeleting Model { get; set; }
 
         private readonly MainWindowViewModel _viewModel;
 
-        public DeleteAllCommand(MainWindowViewModel mainWindowViewModel, AreaModel model)
+        public DeleteAllCommand(MainWindowViewModel mainWindowViewModel, IDeleting model)
         {
             _viewModel = mainWindowViewModel;
             Model = model;

@@ -5,12 +5,12 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class CreateSelectedCommand : Command
     {
-        internal AreaModel Model { get; set; }
+        internal ICreating Model { get; set; }
 
         private readonly MainWindowViewModel _viewModel;
 
 
-        public CreateSelectedCommand(MainWindowViewModel mainWindowViewModel, AreaModel model)
+        public CreateSelectedCommand(MainWindowViewModel mainWindowViewModel, ICreating model)
         {
             _viewModel = mainWindowViewModel;
             Model = model;

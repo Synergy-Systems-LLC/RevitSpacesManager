@@ -5,12 +5,12 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class DeleteSelectedCommand : Command
     {
-        internal AreaModel Model { get; set; }
+        internal IDeleting Model { get; set; }
 
         private readonly MainWindowViewModel _viewModel;
 
 
-        public DeleteSelectedCommand(MainWindowViewModel mainWindowViewModel, AreaModel model)
+        public DeleteSelectedCommand(MainWindowViewModel mainWindowViewModel, IDeleting model)
         {
             _viewModel = mainWindowViewModel;
             Model = model;
