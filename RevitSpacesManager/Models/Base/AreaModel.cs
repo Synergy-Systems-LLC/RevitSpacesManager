@@ -4,8 +4,8 @@ namespace RevitSpacesManager.Models
 {
     internal abstract class AreaModel : ICreating, IDeleting
     {
-        public abstract void DeleteAll(string activeObject);
-        public abstract void DeleteSelected(string activeObject, PhaseElement phaseElement);
+        public abstract void DeleteAll();
+        public abstract void DeleteSelected(PhaseElement phaseElement);
         public abstract void CreateAll();
         public abstract void CreateSelected();
 

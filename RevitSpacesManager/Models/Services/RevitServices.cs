@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Autodesk.Revit.DB;
 
-namespace RevitSpacesManager.Models
+namespace RevitSpacesManager.Models.Services
 {
     internal static class RevitServices
     {

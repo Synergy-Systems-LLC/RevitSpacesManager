@@ -37,7 +37,7 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            Model.DeleteAll(_viewModel.ActiveObject);
+            Model.DeleteAll();
 
             _viewModel.ShowReportMessage(messageGenerator.ReportAll);
             _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
