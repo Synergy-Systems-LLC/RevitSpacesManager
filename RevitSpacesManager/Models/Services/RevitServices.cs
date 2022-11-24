@@ -6,13 +6,17 @@ namespace RevitSpacesManager.Models.Services
 {
     internal static class RevitServices
     {
-        internal static void DeleteElements(Document document, List<RevitElement> elementsList, string transactionName)
+        internal static void DeleteElements(
+            Document document, 
+            List<RevitElement> elementsList, 
+            string transactionName
+            )
         {
             DocumentTransaction(
                 document,
-                transactionName, 
+                elementsList,
                 DeleteRevitElements,
-                elementsList
+                transactionName
                 );
         }
 
@@ -24,7 +28,12 @@ namespace RevitSpacesManager.Models.Services
             }
         }
 
-        private static void DocumentTransaction(Document document, string transactionName, Action<Document, List<RevitElement>> action, List<RevitElement> elementsList)
+        private static void DocumentTransaction(
+            Document document, 
+            List<RevitElement> elementsList, 
+            Action<Document, List<RevitElement>> action, 
+            string transactionName = "RevitSpaceManager"
+            )
         {
             using (Transaction transaction = new Transaction(document, transactionName))
             {
