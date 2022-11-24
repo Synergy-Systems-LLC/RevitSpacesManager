@@ -3,6 +3,6 @@
     internal interface ICreating
     {
         void CreateAll(); 
-        void CreateSelected();
+        void CreateByPhase();
     }
 }

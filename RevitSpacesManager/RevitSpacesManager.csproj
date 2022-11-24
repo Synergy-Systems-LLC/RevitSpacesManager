@@ -78,9 +78,9 @@
     <Compile Include="Revit\RevitManager.cs" />
     <Compile Include="Models\Elements\RevitDocument.cs" />
     <Compile Include="ViewModels\Actions.cs" />
-    <Compile Include="ViewModels\Commands\CreateSelectedCommand.cs" />
+    <Compile Include="ViewModels\Commands\CreateByPhaseCommand.cs" />
     <Compile Include="ViewModels\Commands\CreateAllCommand.cs" />
-    <Compile Include="ViewModels\Commands\DeleteSelectedCommand.cs" />
+    <Compile Include="ViewModels\Commands\DeleteByPhaseCommand.cs" />
     <Compile Include="ViewModels\Commands\DeleteAllCommand.cs" />
     <Compile Include="ViewModels\MessageGenerator.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />

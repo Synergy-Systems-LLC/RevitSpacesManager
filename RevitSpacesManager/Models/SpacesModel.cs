@@ -23,7 +23,7 @@ namespace RevitSpacesManager.Models
             MessageBox.Show("СОЗДАНИЕ...");
         }
 
-        public override void CreateSelected()
+        public override void CreateByPhase()
         {
             MessageBox.Show("СОЗДАНИЕ...");
         }
@@ -36,7 +36,7 @@ namespace RevitSpacesManager.Models
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
-        public override void DeleteSelected(PhaseElement phaseElement)
+        public override void DeleteByPhase(PhaseElement phaseElement)
         {
             List<RevitElement> elements = phaseElement.Spaces.Cast<RevitElement>().ToList();
             string phaseName = phaseElement.Name;
