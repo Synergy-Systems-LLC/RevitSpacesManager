@@ -1,7 +1,6 @@
-﻿using RevitSpacesManager.Models.Services;
+﻿ using RevitSpacesManager.Models.Services;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 
 namespace RevitSpacesManager.Models
 {
@@ -18,14 +17,21 @@ namespace RevitSpacesManager.Models
         }
 
 
-        public override void CreateAll()
+        public override void CreateAllByLinkedDocument(RevitDocument linkDocument)
         {
-            MessageBox.Show("СОЗДАНИЕ...");
+            List<RevitElement> elements = linkDocument.Rooms.Cast<RevitElement>().ToList();
+            string transactionName = "Create All Rooms";
+            RevitServices.CreateRoomsByLinkDocumentRooms(_revitDocument.Document, elements, transactionName);
+            _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
-        public override void CreateByPhase()
+        public override void CreateByLinkedDocumentPhase(PhaseElement phaseElement)
         {
-            MessageBox.Show("СОЗДАНИЕ...");
+            List<RevitElement> elements = phaseElement.Rooms.Cast<RevitElement>().ToList();
+            string phaseName = phaseElement.Name;
+            string transactionName = $"Create Rooms by '{phaseName}' phase";
+            RevitServices.CreateRoomsByLinkDocumentPhaseRooms(_revitDocument.Document, elements, transactionName);
+            _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
         public override void DeleteAll()

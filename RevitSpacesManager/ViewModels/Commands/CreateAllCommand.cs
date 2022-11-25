@@ -45,7 +45,7 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            Model.CreateAll();
+            Model.CreateAllByLinkedDocument(_viewModel.LinkedDocumentSelected);
 
             _viewModel.ShowReportMessage(messageGenerator.ReportAll);
             _viewModel.OnPropertyChanged(nameof(_viewModel.LinkedDocumentSelected));

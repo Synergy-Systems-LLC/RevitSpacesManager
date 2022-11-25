@@ -2,7 +2,7 @@
 {
     internal interface ICreating
     {
-        void CreateAll(); 
-        void CreateByPhase();
+        void CreateAllByLinkedDocument(RevitDocument linkDocument); 
+        void CreateByLinkedDocumentPhase(PhaseElement phaseElement);
     }
 }

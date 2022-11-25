@@ -51,7 +51,7 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            Model.CreateByPhase();
+            Model.CreateByLinkedDocumentPhase(_viewModel.LinkedDocumentPhaseSelected);
 
             _viewModel.ShowReportMessage(messageGenerator.ReportSelected);
             _viewModel.OnPropertyChanged(nameof(_viewModel.LinkedDocumentSelected));

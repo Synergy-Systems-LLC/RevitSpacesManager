@@ -20,6 +20,27 @@ namespace RevitSpacesManager.Models.Services
                 );
         }
 
+        internal static void CreateSpacesByLinkDocumentRooms(Document document, List<RevitElement> elements, string transactionName)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void CreateSpacesByLinkDocumentPhaseRooms(Document document, List<RevitElement> elements, string transactionName)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void CreateRoomsByLinkDocumentRooms(Document document, List<RevitElement> elements, string transactionName)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void CreateRoomsByLinkDocumentPhaseRooms(Document document, List<RevitElement> elements, string transactionName)
+        {
+            throw new NotImplementedException();
+        }
+
+
         private static void DeleteRevitElements(Document document, List<RevitElement> elementsList)
         {
             foreach (RevitElement element in elementsList)
