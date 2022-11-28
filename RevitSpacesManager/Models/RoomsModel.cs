@@ -1,4 +1,4 @@
-﻿ using RevitSpacesManager.Models.Services;
+﻿using RevitSpacesManager.Models.Services;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,9 +19,17 @@ namespace RevitSpacesManager.Models
 
         public override void CreateAllByLinkedDocument(RevitDocument linkDocument)
         {
+            // TODO Check workset
+            // TODO Check room correct
+            // TODO - area !=0 (placed and enclosed)
+            // TODO - level available
+            // TODO - level same elevation
+            // TODO - level upper limit available
+            // TODO - level upper limit same elevation
+            // TODO Report with IDs
             List<RevitElement> elements = linkDocument.Rooms.Cast<RevitElement>().ToList();
             string transactionName = "Create All Rooms";
-            RevitServices.CreateRoomsByLinkDocumentRooms(_revitDocument.Document, elements, transactionName);
+            RevitServices.CreateRoomsByRooms(_revitDocument.Document, elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
@@ -30,7 +38,7 @@ namespace RevitSpacesManager.Models
             List<RevitElement> elements = phaseElement.Rooms.Cast<RevitElement>().ToList();
             string phaseName = phaseElement.Name;
             string transactionName = $"Create Rooms by '{phaseName}' phase";
-            RevitServices.CreateRoomsByLinkDocumentPhaseRooms(_revitDocument.Document, elements, transactionName);
+            RevitServices.CreateRoomsByRooms(_revitDocument.Document, elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 

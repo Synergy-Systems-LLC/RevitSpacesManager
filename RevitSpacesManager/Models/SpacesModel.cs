@@ -21,7 +21,7 @@ namespace RevitSpacesManager.Models
         {
             List<RevitElement> elements = _revitDocument.Spaces.Cast<RevitElement>().ToList();
             string transactionName = "Create All Spaces";
-            RevitServices.CreateSpacesByLinkDocumentRooms(_revitDocument.Document, elements, transactionName);
+            RevitServices.CreateSpacesByRooms(_revitDocument.Document, elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
@@ -30,7 +30,7 @@ namespace RevitSpacesManager.Models
             List<RevitElement> elements = phaseElement.Spaces.Cast<RevitElement>().ToList();
             string phaseName = phaseElement.Name;
             string transactionName = $"Create Spaces by '{phaseName}' phase";
-            RevitServices.CreateSpacesByLinkDocumentPhaseRooms(_revitDocument.Document, elements, transactionName);
+            RevitServices.CreateSpacesByRooms(_revitDocument.Document, elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 

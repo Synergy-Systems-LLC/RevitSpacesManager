@@ -12,34 +12,51 @@ namespace RevitSpacesManager.Models.Services
             string transactionName
             )
         {
-            DocumentTransaction(
-                document,
-                elementsList,
-                DeleteRevitElements,
-                transactionName
-                );
+            DocumentTransaction(document, elementsList, DeleteRevitElements, transactionName);
         }
 
-        internal static void CreateSpacesByLinkDocumentRooms(Document document, List<RevitElement> elements, string transactionName)
+        internal static void CreateSpacesByRooms(
+            Document document, 
+            List<RevitElement> elementsList, 
+            string transactionName
+            )
         {
-            throw new NotImplementedException();
+            DocumentTransaction(document, elementsList, CreateSpacesByRevitElements, transactionName);
         }
 
-        internal static void CreateSpacesByLinkDocumentPhaseRooms(Document document, List<RevitElement> elements, string transactionName)
+        internal static void CreateRoomsByRooms(
+            Document document, 
+            List<RevitElement> elementsList, 
+            string transactionName
+            )
         {
-            throw new NotImplementedException();
+            DocumentTransaction(document, elementsList, CreateRoomsByRevitElements, transactionName);
         }
 
-        internal static void CreateRoomsByLinkDocumentRooms(Document document, List<RevitElement> elements, string transactionName)
+
+        private static void CreateSpacesByRevitElements(Document document, List<RevitElement> elementsList)
         {
-            throw new NotImplementedException();
+            foreach (RevitElement element in elementsList)
+            {
+                RoomElement room = element as RoomElement;
+
+                //element = document.Create.NewSpace(level, UV(roomLocationPoint.X, roomLocationPoint.Y));
+                //element.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM).Set(worksetSpacesId);
+                //document.Regenerate()
+            }
         }
 
-        internal static void CreateRoomsByLinkDocumentPhaseRooms(Document document, List<RevitElement> elements, string transactionName)
+        private static void CreateRoomsByRevitElements(Document document, List<RevitElement> elementsList)
         {
-            throw new NotImplementedException();
-        }
+            foreach (RevitElement element in elementsList)
+            {
+                RoomElement room = element as RoomElement;
 
+                //element = document.Create.NewRoom(level, UV(roomLocationPoint.X, roomLocationPoint.Y));
+                //element.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM).Set(self.worksetRoomsId);
+                //document.Regenerate()
+            }
+        }
 
         private static void DeleteRevitElements(Document document, List<RevitElement> elementsList)
         {
