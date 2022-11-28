@@ -104,9 +104,9 @@ namespace RevitSpacesManager.ViewModels
         #endregion
 
         public DeleteAllCommand DeleteAllCommand { get; }
-        public DeleteSelectedCommand DeleteSelectedCommand { get; }
+        public DeleteByPhaseCommand DeleteByPhaseCommand { get; }
         public CreateAllCommand CreateAllCommand { get; }
-        public CreateSelectedCommand CreateSelectedCommand { get; }
+        public CreateByPhaseCommand CreateByPhaseCommand { get; }
 
 
         private AreaModel _activeModel;
@@ -129,9 +129,9 @@ namespace RevitSpacesManager.ViewModels
             HelpCommand = new LambdaCommand(OnHelpCommandExecuted);
 
             DeleteAllCommand = new DeleteAllCommand(this, _activeModel);
-            DeleteSelectedCommand = new DeleteSelectedCommand(this, _activeModel);
+            DeleteByPhaseCommand = new DeleteByPhaseCommand(this, _activeModel);
             CreateAllCommand = new CreateAllCommand(this, _activeModel);
-            CreateSelectedCommand = new CreateSelectedCommand(this, _activeModel);
+            CreateByPhaseCommand = new CreateByPhaseCommand(this, _activeModel);
             AreSpacesChecked = true;
         }
 
@@ -195,9 +195,9 @@ namespace RevitSpacesManager.ViewModels
             }
 
             DeleteAllCommand.Model = _activeModel;
-            DeleteSelectedCommand.Model = _activeModel;
+            DeleteByPhaseCommand.Model = _activeModel;
             CreateAllCommand.Model = _activeModel;
-            CreateSelectedCommand.Model = _activeModel;
+            CreateByPhaseCommand.Model = _activeModel;
         }
         private string GetActiveObject()
         {

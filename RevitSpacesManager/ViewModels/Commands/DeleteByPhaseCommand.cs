@@ -3,14 +3,14 @@ using System.Windows;
 
 namespace RevitSpacesManager.ViewModels
 {
-    internal class DeleteSelectedCommand : Command
+    internal class DeleteByPhaseCommand : Command
     {
         internal IDeleting Model { get; set; }
 
         private readonly MainWindowViewModel _viewModel;
 
 
-        public DeleteSelectedCommand(MainWindowViewModel mainWindowViewModel, IDeleting model)
+        public DeleteByPhaseCommand(MainWindowViewModel mainWindowViewModel, IDeleting model)
         {
             _viewModel = mainWindowViewModel;
             Model = model;
@@ -44,10 +44,10 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            Model.DeleteSelected();
+            Model.DeleteByPhase(_viewModel.CurrentDocumentPhaseSelected);
 
             _viewModel.ShowReportMessage(messageGenerator.ReportSelected);
-            _viewModel.OnPropertyChanged(nameof(_viewModel.AreSpacesChecked));
+            _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }
 }

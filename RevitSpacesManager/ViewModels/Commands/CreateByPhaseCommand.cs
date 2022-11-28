@@ -3,14 +3,14 @@ using System.Windows;
 
 namespace RevitSpacesManager.ViewModels
 {
-    internal class CreateSelectedCommand : Command
+    internal class CreateByPhaseCommand : Command
     {
         internal ICreating Model { get; set; }
 
         private readonly MainWindowViewModel _viewModel;
 
 
-        public CreateSelectedCommand(MainWindowViewModel mainWindowViewModel, ICreating model)
+        public CreateByPhaseCommand(MainWindowViewModel mainWindowViewModel, ICreating model)
         {
             _viewModel = mainWindowViewModel;
             Model = model;
@@ -51,7 +51,7 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            Model.CreateSelected();
+            Model.CreateByPhase();
 
             _viewModel.ShowReportMessage(messageGenerator.ReportSelected);
             _viewModel.OnPropertyChanged(nameof(_viewModel.LinkedDocumentSelected));

@@ -3,9 +3,10 @@ using Autodesk.Revit.DB.Mechanical;
 
 namespace RevitSpacesManager.Models
 {
-    internal class SpaceElement
+    internal class SpaceElement : RevitElement
     {
-        internal int Id => _space.Id.IntegerValue;
+        internal override ElementId ElementId => _space.Id;
+        internal int Id => ElementId.IntegerValue;
         internal string Name => _space.Name;
         internal string PhaseName => PhaseParameter.AsValueString();
         internal int PhaseId => PhaseParameter.AsElementId().IntegerValue;

@@ -10,25 +10,30 @@ namespace RevitSpacesManager.Models
     {
         public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Title}";
 
-        internal string Title => _document.Title;
-        internal string ActiveViewPhaseName => _document.ActiveView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
+        internal readonly Document Document;
+        internal string Title => Document.Title;
+        internal string ActiveViewPhaseName => Document.ActiveView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
         internal List<PhaseElement> Phases { get; set; } 
         internal List<SpaceElement> Spaces => GetSpaces(Phases);
         internal List<RoomElement> Rooms => GetRooms(Phases);
         internal int NumberOfSpaces => Spaces.Count;
         internal int NumberOfRooms => Rooms.Count;
 
-        private readonly Document _document;
-        private List<Workset> UserWorksets => GetUserWorksets(_document); //TODO Refactor later
-        private List<LevelElement> Levels => GetLevels(_document); //TODO Refactor later
+        private List<Workset> UserWorksets => GetUserWorksets(Document); //TODO Refactor later
+        private List<LevelElement> Levels => GetLevels(Document); //TODO Refactor later
 
 
         internal RevitDocument(Document document)
         {
-            _document = document;
-            Phases = GetPhasesWithRoomsAndSpaces(_document);
+            Document = document;
+            Phases = GetPhasesWithRoomsAndSpaces(Document);
         }
 
+
+        internal void RefreshPhasesRoomsAndSpaces()
+        {
+            Phases = GetPhasesWithRoomsAndSpaces(Document);
+        }
 
         internal bool DoesUserWorksetExist(string worksetName)
         {
@@ -56,7 +61,7 @@ namespace RevitSpacesManager.Models
 
         internal List<RevitDocument> GetRevitLinkDocuments()
         {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
+            FilteredElementCollector elementCollector = new FilteredElementCollector(Document);
             IList<Element> elements = elementCollector.OfClass(typeof(RevitLinkInstance)).WhereElementIsNotElementType().ToElements();
             List<RevitDocument> revitLinkDocuments = new List<RevitDocument>();
             foreach (Element element in elements)

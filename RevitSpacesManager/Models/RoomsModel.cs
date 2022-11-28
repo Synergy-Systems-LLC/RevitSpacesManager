@@ -1,4 +1,4 @@
-﻿using System;
+﻿using RevitSpacesManager.Models.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -23,19 +23,26 @@ namespace RevitSpacesManager.Models
             MessageBox.Show("СОЗДАНИЕ...");
         }
 
-        public override void CreateSelected()
+        public override void CreateByPhase()
         {
             MessageBox.Show("СОЗДАНИЕ...");
         }
 
         public override void DeleteAll()
         {
-            MessageBox.Show("УДАЛЕНИЕ...");
+            List<RevitElement> elements = _revitDocument.Rooms.Cast<RevitElement>().ToList();
+            string transactionName = "Delete All Rooms";
+            RevitServices.DeleteElements(_revitDocument.Document, elements, transactionName);
+            _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
-        public override void DeleteSelected()
+        public override void DeleteByPhase(PhaseElement phaseElement)
         {
-            MessageBox.Show("УДАЛЕНИЕ...");
+            List<RevitElement> elements = phaseElement.Rooms.Cast<RevitElement>().ToList();
+            string phaseName = phaseElement.Name;
+            string transactionName = $"Delete '{phaseName}' phase Rooms";
+            RevitServices.DeleteElements(_revitDocument.Document, elements, transactionName);
+            _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
         internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();

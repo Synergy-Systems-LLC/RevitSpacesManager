@@ -40,7 +40,7 @@ namespace RevitSpacesManager.ViewModels
             Model.DeleteAll();
 
             _viewModel.ShowReportMessage(messageGenerator.ReportAll);
-            _viewModel.OnPropertyChanged(nameof(_viewModel.AreSpacesChecked));
+            _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }
 }

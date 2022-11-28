@@ -3,6 +3,6 @@
     internal interface IDeleting
     {
         void DeleteAll();
-        void DeleteSelected();
+        void DeleteByPhase(PhaseElement phaseElement);
     }
 }

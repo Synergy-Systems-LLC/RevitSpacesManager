@@ -181,7 +181,7 @@
                                 Command="{Binding DeleteAllCommand}"
                                 />
                     <Button Content="Delete Selected"
-                                Command="{Binding DeleteSelectedCommand}"
+                                Command="{Binding DeleteByPhaseCommand}"
                                 />
                 </UniformGrid>
             </DockPanel>
@@ -206,7 +206,7 @@
                             Command="{Binding CreateAllCommand}"
                             />
                     <Button Content="Create Selected"
-                            Command="{Binding CreateSelectedCommand}"
+                            Command="{Binding CreateByPhaseCommand}"
                             />
                 </UniformGrid>
             </DockPanel>
