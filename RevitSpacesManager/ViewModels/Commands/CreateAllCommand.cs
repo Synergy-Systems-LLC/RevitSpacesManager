@@ -38,7 +38,7 @@ namespace RevitSpacesManager.ViewModels
                 _viewModel.LinkedDocumentPhases,
                 Actions.Create
                 );
-            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageAll);
+            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageAll());
 
             if (result == MessageBoxResult.Cancel)
             {
@@ -47,7 +47,7 @@ namespace RevitSpacesManager.ViewModels
 
             Model.CreateAllByLinkedDocument(_viewModel.LinkedDocumentSelected);
 
-            _viewModel.ShowReportMessage(messageGenerator.ReportAll);
+            _viewModel.ShowReportMessage(messageGenerator.ReportAll());
             _viewModel.OnPropertyChanged(nameof(_viewModel.LinkedDocumentSelected));
         }
     }

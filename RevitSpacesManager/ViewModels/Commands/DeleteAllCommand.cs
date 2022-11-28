@@ -30,7 +30,7 @@ namespace RevitSpacesManager.ViewModels
                 _viewModel.CurrentDocumentPhases,
                 Actions.Delete
                 );
-            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageAll);
+            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageAll());
 
             if (result == MessageBoxResult.Cancel)
             {
@@ -39,7 +39,7 @@ namespace RevitSpacesManager.ViewModels
 
             Model.DeleteAll();
 
-            _viewModel.ShowReportMessage(messageGenerator.ReportAll);
+            _viewModel.ShowReportMessage(messageGenerator.ReportAll());
             _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }

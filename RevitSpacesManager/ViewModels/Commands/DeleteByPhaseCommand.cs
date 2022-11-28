@@ -39,14 +39,14 @@ namespace RevitSpacesManager.ViewModels
                 Actions.Delete
             );
 
-            if (_viewModel.ShowConfirmationDialog(messageGenerator.MessageSelected) == MessageBoxResult.Cancel)
+            if (_viewModel.ShowConfirmationDialog(messageGenerator.MessageSelected()) == MessageBoxResult.Cancel)
             {
                 return;
             }
 
             Model.DeleteByPhase(_viewModel.CurrentDocumentPhaseSelected);
 
-            _viewModel.ShowReportMessage(messageGenerator.ReportSelected);
+            _viewModel.ShowReportMessage(messageGenerator.ReportSelected());
             _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }
