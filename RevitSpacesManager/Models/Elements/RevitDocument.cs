@@ -58,8 +58,11 @@ namespace RevitSpacesManager.Models
             {
                 RevitLinkInstance revitLinkInstance = element as RevitLinkInstance;
                 Document linkDocument = revitLinkInstance.GetLinkDocument();
-                RevitDocument revitLinkDocument = new RevitDocument(linkDocument);
-                revitLinkDocuments.Add(revitLinkDocument);
+                if(linkDocument != null)
+                {
+                    RevitDocument revitLinkDocument = new RevitDocument(linkDocument);
+                    revitLinkDocuments.Add(revitLinkDocument);
+                }
             }
             return revitLinkDocuments;
         }
