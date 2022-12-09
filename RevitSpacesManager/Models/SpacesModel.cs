@@ -1,5 +1,4 @@
-﻿using RevitSpacesManager.Models.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace RevitSpacesManager.Models
@@ -21,7 +20,7 @@ namespace RevitSpacesManager.Models
         {
             List<RevitElement> elements = _revitDocument.Spaces.Cast<RevitElement>().ToList();
             string transactionName = "Create All Spaces";
-            RevitServices.CreateSpacesByRooms(_revitDocument.Document, elements, transactionName);
+            _revitDocument.CreateSpacesByRooms(elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
@@ -30,7 +29,7 @@ namespace RevitSpacesManager.Models
             List<RevitElement> elements = phaseElement.Spaces.Cast<RevitElement>().ToList();
             string phaseName = phaseElement.Name;
             string transactionName = $"Create Spaces by '{phaseName}' phase";
-            RevitServices.CreateSpacesByRooms(_revitDocument.Document, elements, transactionName);
+            _revitDocument.CreateSpacesByRooms(elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
@@ -38,7 +37,7 @@ namespace RevitSpacesManager.Models
         {
             List<RevitElement> elements = _revitDocument.Spaces.Cast<RevitElement>().ToList();
             string transactionName = "Delete All Spaces";
-            RevitServices.DeleteElements(_revitDocument.Document, elements, transactionName);
+            _revitDocument.DeleteElements(elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
@@ -47,10 +46,12 @@ namespace RevitSpacesManager.Models
             List<RevitElement> elements = phaseElement.Spaces.Cast<RevitElement>().ToList();
             string phaseName = phaseElement.Name;
             string transactionName = $"Delete '{phaseName}' phase Spaces";
-            RevitServices.DeleteElements(_revitDocument.Document, elements, transactionName);
+            _revitDocument.DeleteElements(elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
         internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();
+
+        internal override bool IsWorksetAvailable() => _revitDocument.DoesUserWorksetExist("Model Spaces");
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.Mechanical;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,58 +11,47 @@ namespace RevitSpacesManager.Models
     {
         public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Title}";
 
-        internal readonly Document Document;
-        internal string Title => Document.Title;
-        internal string ActiveViewPhaseName => Document.ActiveView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
+        internal string Title => _document.Title;
+        internal string ActiveViewPhaseName => _document.ActiveView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
         internal List<PhaseElement> Phases { get; set; } 
         internal List<SpaceElement> Spaces => GetSpaces(Phases);
         internal List<RoomElement> Rooms => GetRooms(Phases);
         internal int NumberOfSpaces => Spaces.Count;
         internal int NumberOfRooms => Rooms.Count;
-
-        private List<Workset> UserWorksets => GetUserWorksets(Document); //TODO Refactor later
-        private List<LevelElement> Levels => GetLevels(Document); //TODO Refactor later
+        
+        private readonly Document _document;
 
 
         internal RevitDocument(Document document)
         {
-            Document = document;
-            Phases = GetPhasesWithRoomsAndSpaces(Document);
+            _document = document;
+            Phases = GetPhasesWithRoomsAndSpaces(_document);
         }
 
+
+        internal void CreateSpacesByRooms(List<RevitElement> elementsList, string transactionName)
+        {
+            DocumentTransaction(elementsList, CreateSpacesByRevitElements, transactionName);
+        }
+
+        internal void CreateRoomsByRooms(List<RevitElement> elementsList, string transactionName)
+        {
+            DocumentTransaction(elementsList, CreateRoomsByRevitElements, transactionName);
+        }
+
+        internal void DeleteElements(List<RevitElement> elementsList, string transactionName)
+        {
+            DocumentTransaction(elementsList, DeleteRevitElements, transactionName);
+        }
 
         internal void RefreshPhasesRoomsAndSpaces()
         {
-            Phases = GetPhasesWithRoomsAndSpaces(Document);
-        }
-
-        internal bool DoesUserWorksetExist(string worksetName)
-        {
-            foreach (Workset workset in UserWorksets)
-            {
-                if(workset.Name == worksetName)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        internal int GetUserWorksetIntegerIdByName(string worksetName)
-        {
-            foreach (Workset workset in UserWorksets)
-            {
-                if (workset.Name == worksetName)
-                {
-                    return workset.Id.IntegerValue;
-                }
-            }
-            return 0;
+            Phases = GetPhasesWithRoomsAndSpaces(_document);
         }
 
         internal List<RevitDocument> GetRevitLinkDocuments()
         {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(Document);
+            FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
             IList<Element> elements = elementCollector.OfClass(typeof(RevitLinkInstance)).WhereElementIsNotElementType().ToElements();
             List<RevitDocument> revitLinkDocuments = new List<RevitDocument>();
             foreach (Element element in elements)
@@ -74,6 +64,78 @@ namespace RevitSpacesManager.Models
             return revitLinkDocuments;
         }
 
+        internal bool DoesUserWorksetExist(string worksetName)
+        {
+            List<Workset> userWorksets = GetUserWorksets(_document);
+            foreach (Workset workset in userWorksets)
+            {
+                if (workset.Name == worksetName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        internal int GetUserWorksetIntegerIdByName(string worksetName)
+        {
+            List<Workset> userWorksets = GetUserWorksets(_document);
+            foreach (Workset workset in userWorksets)
+            {
+                if (workset.Name == worksetName)
+                {
+                    return workset.Id.IntegerValue;
+                }
+            }
+            return 0;
+        }
+
+
+        private void CreateSpacesByRevitElements(Document document, List<RevitElement> elementsList)
+        {
+            foreach (RevitElement element in elementsList)
+            {
+                RoomElement room = element as RoomElement;
+
+                //element = document.Create.NewSpace(level, UV(roomLocationPoint.X, roomLocationPoint.Y));
+                //element.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM).Set(worksetSpacesId);
+                //document.Regenerate()
+            }
+        }
+
+        private void CreateRoomsByRevitElements(Document document, List<RevitElement> elementsList)
+        {
+            foreach (RevitElement element in elementsList)
+            {
+                RoomElement room = element as RoomElement;
+
+                //element = document.Create.NewRoom(level, UV(roomLocationPoint.X, roomLocationPoint.Y));
+                //element.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM).Set(self.worksetRoomsId);
+                //document.Regenerate()
+            }
+        }
+
+        private void DeleteRevitElements(Document document, List<RevitElement> elementsList)
+        {
+            foreach (RevitElement element in elementsList)
+            {
+                document.Delete(element.ElementId);
+            }
+        }
+
+        private void DocumentTransaction(
+            List<RevitElement> elementsList,
+            Action<Document, List<RevitElement>> action,
+            string transactionName = "RevitSpaceManager Transaction"
+            )
+        {
+            using (Transaction transaction = new Transaction(_document, transactionName))
+            {
+                transaction.Start();
+                action(_document, elementsList);
+                transaction.Commit();
+            }
+        }
 
         private List<PhaseElement> GetPhasesWithRoomsAndSpaces(Document document)
         {
