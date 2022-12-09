@@ -135,7 +135,14 @@ namespace RevitSpacesManager.ViewModels
             AreSpacesChecked = true;
         }
 
-
+        internal void ShowMissingWorksetMessage()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"'Model {ActiveObject}s' workset doesn't exist in the Current model. ");
+            sb.Append("Please close the Add-In and Add the missing workset before creation.");
+            string message = sb.ToString();
+            ShowInformationMessage(message);
+        }
         internal void ShowNothingDeleteMessage()
         {
             string message = $"There are no {ActiveObject}s to Delete in the Current Project";
@@ -205,6 +212,11 @@ namespace RevitSpacesManager.ViewModels
                 return "Space";
             return "Room";
         }
+        private void ShowInformationMessage(string informationMessage)
+        {
+            string title = "Information";
+            MessageBox.Show(informationMessage, title);
+        }
         private void ShowReadmeMessage()
         {
             StringBuilder sb = new StringBuilder();
@@ -217,11 +229,6 @@ namespace RevitSpacesManager.ViewModels
             sb.Append("                                                           Молодец, читаешь инструкцию <3");
             string message = sb.ToString();
             MessageBox.Show(message, "Readme");
-        }
-        private void ShowInformationMessage(string informationMessage)
-        {
-            string title = "Information";
-            MessageBox.Show(informationMessage, title);
         }
     }
 }

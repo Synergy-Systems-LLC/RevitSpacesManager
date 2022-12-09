@@ -18,7 +18,6 @@ namespace RevitSpacesManager.Models
 
         public override void CreateAllByLinkedDocument(RevitDocument linkDocument)
         {
-            // TODO Check workset
             // TODO Check room correct
             // TODO - area !=0 (placed and enclosed)
             // TODO - level available
@@ -58,8 +57,8 @@ namespace RevitSpacesManager.Models
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
-        internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();
+        public override bool IsWorksetNotAvailable() => !_revitDocument.DoesUserWorksetExist("Model Rooms");
 
-        internal override bool IsWorksetAvailable() => _revitDocument.DoesUserWorksetExist("Model Rooms");
+        internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();
     }
 }

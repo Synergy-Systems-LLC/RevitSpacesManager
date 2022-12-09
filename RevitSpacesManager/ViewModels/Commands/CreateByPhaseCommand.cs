@@ -35,7 +35,13 @@ namespace RevitSpacesManager.ViewModels
             if (_viewModel.IsLinkedPhaseNotSelected())
             {
                 _viewModel.ShowPhaseNotSelectedMessage();
-                return ;
+                return;
+            }
+
+            if (Model.IsWorksetNotAvailable())
+            {
+                _viewModel.ShowMissingWorksetMessage();
+                return;
             }
 
             MessageGenerator messageGenerator = new MessageGenerator(

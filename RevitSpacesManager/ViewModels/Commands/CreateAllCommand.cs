@@ -32,6 +32,12 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
+            if (Model.IsWorksetNotAvailable())
+            {
+                _viewModel.ShowMissingWorksetMessage();
+                return;
+            }
+
             MessageGenerator messageGenerator = new MessageGenerator(
                 _viewModel.ActiveObject,
                 _viewModel.LinkedDocumentSelected.NumberOfRooms,

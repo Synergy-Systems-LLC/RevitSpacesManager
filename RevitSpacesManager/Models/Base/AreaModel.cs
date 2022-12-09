@@ -8,8 +8,9 @@ namespace RevitSpacesManager.Models
         public abstract void DeleteByPhase(PhaseElement phaseElement);
         public abstract void CreateAllByLinkedDocument(RevitDocument linkDocument);
         public abstract void CreateByLinkedDocumentPhase(PhaseElement phaseElement);
+        public abstract bool IsWorksetNotAvailable();
 
-        internal abstract List<PhaseElement> GetPhases();
         internal abstract int NumberOfElements { get; }
+        internal abstract List<PhaseElement> GetPhases();
     }
 }
