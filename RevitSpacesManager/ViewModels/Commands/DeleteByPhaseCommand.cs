@@ -32,21 +32,22 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
+            ElementsDeletionVerificationReport verificationReport = Model.VerifyElementsForDeletion();
+
             MessageGenerator messageGenerator = new MessageGenerator(
                 _viewModel.ActiveObject,
                 _viewModel.GetCurrentSelectedPhaseNumberOfElements(),
-                _viewModel.CurrentDocumentPhaseSelected,
-                Actions.Delete
+                _viewModel.CurrentDocumentPhaseSelected
             );
 
-            if (_viewModel.ShowConfirmationDialog(messageGenerator.MessageSelected()) == MessageBoxResult.Cancel)
+            if (_viewModel.ShowConfirmationDialog(messageGenerator.MessageDeleteSelected()) == MessageBoxResult.Cancel)
             {
                 return;
             }
 
             Model.DeleteByPhase(_viewModel.CurrentDocumentPhaseSelected);
 
-            _viewModel.ShowReportMessage(messageGenerator.ReportSelected());
+            _viewModel.ShowReportMessage(messageGenerator.ReportDeleteSelected());
             _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }

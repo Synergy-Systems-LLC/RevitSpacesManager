@@ -4,5 +4,7 @@
     {
         void DeleteAll();
         void DeleteByPhase(PhaseElement phaseElement);
+        ElementsDeletionVerificationReport VerifyElementsForDeletion();
+
     }
 }

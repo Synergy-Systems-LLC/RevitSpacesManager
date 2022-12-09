@@ -38,13 +38,14 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
+            RoomsCreationVerificationReport verificationReport = Model.VerifyDocumentRoomsForCreation();
+
             MessageGenerator messageGenerator = new MessageGenerator(
                 _viewModel.ActiveObject,
                 _viewModel.LinkedDocumentSelected.NumberOfRooms,
-                _viewModel.LinkedDocumentPhases,
-                Actions.Create
+                _viewModel.LinkedDocumentPhases
                 );
-            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageAll());
+            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageCreateAll());
 
             if (result == MessageBoxResult.Cancel)
             {
@@ -53,7 +54,7 @@ namespace RevitSpacesManager.ViewModels
 
             Model.CreateAllByLinkedDocument(_viewModel.LinkedDocumentSelected);
 
-            _viewModel.ShowReportMessage(messageGenerator.ReportAll());
+            _viewModel.ShowReportMessage(messageGenerator.ReportCreateAll());
             _viewModel.OnPropertyChanged(nameof(_viewModel.LinkedDocumentSelected));
         }
     }

@@ -24,13 +24,14 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
+            ElementsDeletionVerificationReport verificationReport = Model.VerifyElementsForDeletion();
+
             MessageGenerator messageGenerator = new MessageGenerator(
                 _viewModel.ActiveObject,
                 _viewModel.GetCurrentNumberOfElements(),
-                _viewModel.CurrentDocumentPhases,
-                Actions.Delete
+                _viewModel.CurrentDocumentPhases
                 );
-            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageAll());
+            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageDeleteAll());
 
             if (result == MessageBoxResult.Cancel)
             {
@@ -39,7 +40,7 @@ namespace RevitSpacesManager.ViewModels
 
             Model.DeleteAll();
 
-            _viewModel.ShowReportMessage(messageGenerator.ReportAll());
+            _viewModel.ShowReportMessage(messageGenerator.ReportDeleteAll());
             _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }

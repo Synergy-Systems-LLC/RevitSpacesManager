@@ -5,5 +5,6 @@
         void CreateAllByLinkedDocument(RevitDocument linkDocument); 
         void CreateByLinkedDocumentPhase(PhaseElement phaseElement);
         bool IsWorksetNotAvailable();
+        RoomsCreationVerificationReport VerifyDocumentRoomsForCreation();
     }
 }

@@ -59,6 +59,20 @@ namespace RevitSpacesManager.Models
 
         public override bool IsWorksetNotAvailable() => !_revitDocument.DoesUserWorksetExist("Model Rooms");
 
+        public override RoomsCreationVerificationReport VerifyDocumentRoomsForCreation()
+        {
+            RoomsCreationVerificationReport report = new RoomsCreationVerificationReport();
+
+            return report;
+        }
+
+        public override ElementsDeletionVerificationReport VerifyElementsForDeletion()
+        {
+            ElementsDeletionVerificationReport report = new ElementsDeletionVerificationReport();
+
+            return report;
+        }
+
         internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();
     }
 }
