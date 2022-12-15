@@ -24,7 +24,11 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            ElementsDeletionVerificationReport verificationReport = Model.VerifyElementsForDeletion();
+            if (Model.AreAllNotEditable())
+            {
+                _viewModel.ShowNoAccessMessage();
+                return;
+            }
 
             MessageGenerator messageGenerator = new MessageGenerator(
                 _viewModel.ActiveObject,

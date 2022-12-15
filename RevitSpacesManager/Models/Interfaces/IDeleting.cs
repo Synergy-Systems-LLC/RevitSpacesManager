@@ -4,7 +4,7 @@
     {
         void DeleteAll();
         void DeleteByPhase(PhaseElement phaseElement);
-        ElementsDeletionVerificationReport VerifyElementsForDeletion();
-
+        bool AreAllNotEditable();
+        bool ArePhaseElementsNotEditable(PhaseElement phaseElement);
     }
 }

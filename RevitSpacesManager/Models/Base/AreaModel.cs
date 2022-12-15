@@ -10,7 +10,8 @@ namespace RevitSpacesManager.Models
         public abstract void CreateByLinkedDocumentPhase(PhaseElement phaseElement);
         public abstract bool IsWorksetNotAvailable();
         public abstract RoomsCreationVerificationReport VerifyDocumentRoomsForCreation();
-        public abstract ElementsDeletionVerificationReport VerifyElementsForDeletion();
+        public abstract bool AreAllNotEditable();
+        public abstract bool ArePhaseElementsNotEditable(PhaseElement phaseElement);
 
         internal abstract int NumberOfElements { get; }
         internal abstract List<PhaseElement> GetPhases();

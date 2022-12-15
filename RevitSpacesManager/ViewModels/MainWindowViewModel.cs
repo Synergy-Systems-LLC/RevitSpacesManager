@@ -138,7 +138,7 @@ namespace RevitSpacesManager.ViewModels
         internal void ShowMissingWorksetMessage()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"'Model {ActiveObject}s' workset doesn't exist in the Current model. ");
+            sb.Append($"'Model {ActiveObject}s' workset doesn't exist in the Current Project. ");
             sb.Append("Please close the Add-In and Add the missing workset before creation.");
             string message = sb.ToString();
             ShowInformationMessage(message);
@@ -146,6 +146,14 @@ namespace RevitSpacesManager.ViewModels
         internal void ShowNothingDeleteMessage()
         {
             string message = $"There are no {ActiveObject}s to Delete in the Current Project";
+            ShowInformationMessage(message);
+        }
+        internal void ShowNoAccessMessage()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"Some {ActiveObject}s in the Current Project are owned by other user. ");
+            sb.Append("Please close the Add-In and try to Sync your Project with Central.");
+            string message = sb.ToString();
             ShowInformationMessage(message);
         }
         internal void ShowPhaseNotSelectedMessage()

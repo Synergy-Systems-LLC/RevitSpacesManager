@@ -44,6 +44,11 @@ namespace RevitSpacesManager.Models
             DocumentTransaction(elementsList, DeleteRevitElements, transactionName);
         }
 
+        internal bool AreElementsEditable(List<RevitElement> elementsList)
+        {
+            return AreRevitElementsEditable(_document, elementsList); ;
+        }
+
         internal void RefreshPhasesRoomsAndSpaces()
         {
             Phases = GetPhasesWithRoomsAndSpaces(_document);
@@ -138,6 +143,25 @@ namespace RevitSpacesManager.Models
                 action(_document, elementsList);
                 transaction.Commit();
             }
+        }
+
+        private bool AreRevitElementsEditable(Document document, List<RevitElement> elementsList)
+        {
+            foreach (RevitElement element in elementsList)
+            {
+                if (IsRevitElementNotEditable(document, element))
+                    return false;
+            }
+            return true;
+        }
+
+        private bool IsRevitElementNotEditable(Document document, RevitElement element)
+        {
+            ElementId elementId = element.ElementId;
+            CheckoutStatus status = WorksharingUtils.GetCheckoutStatus(document, elementId);
+            if (status == CheckoutStatus.OwnedByOtherUser)
+                return true;
+            return false;
         }
 
         private List<PhaseElement> GetPhasesWithRoomsAndSpaces(Document document)
