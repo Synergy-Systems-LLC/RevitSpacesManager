@@ -59,11 +59,16 @@ namespace RevitSpacesManager.Models
             return report;
         }
 
-        public override ElementsDeletionVerificationReport VerifyElementsForDeletion()
+        public override bool AreAllNotEditable()
         {
-            ElementsDeletionVerificationReport report = new ElementsDeletionVerificationReport();
+            List<RevitElement> elements = _revitDocument.Spaces.Cast<RevitElement>().ToList();
+            return !_revitDocument.AreElementsEditable(elements);
+        }
 
-            return report;
+        public override bool ArePhaseElementsNotEditable(PhaseElement phaseElement)
+        {
+            List<RevitElement> elements = phaseElement.Spaces.Cast<RevitElement>().ToList();
+            return !_revitDocument.AreElementsEditable(elements);
         }
 
         internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();
