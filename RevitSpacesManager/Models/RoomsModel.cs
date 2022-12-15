@@ -18,13 +18,6 @@ namespace RevitSpacesManager.Models
 
         public override void CreateAllByLinkedDocument(RevitDocument linkDocument)
         {
-            // TODO Check room correct
-            // TODO - area !=0 (placed and enclosed)
-            // TODO - level available
-            // TODO - level same elevation
-            // TODO - level upper limit available
-            // TODO - level upper limit same elevation
-            // TODO Report with IDs
             List<RevitElement> elements = linkDocument.Rooms.Cast<RevitElement>().ToList();
             string transactionName = "Create All Rooms";
             _revitDocument.CreateRoomsByRooms(elements, transactionName);
@@ -58,13 +51,6 @@ namespace RevitSpacesManager.Models
         }
 
         public override bool IsWorksetNotAvailable() => !_revitDocument.DoesUserWorksetExist("Model Rooms");
-
-        public override RoomsCreationVerificationReport VerifyDocumentRoomsForCreation()
-        {
-            RoomsCreationVerificationReport report = new RoomsCreationVerificationReport();
-
-            return report;
-        }
 
         public override bool AreAllNotEditable()
         {

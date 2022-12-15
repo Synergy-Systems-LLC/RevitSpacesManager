@@ -38,7 +38,8 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            RoomsCreationVerificationReport verificationReport = Model.VerifyDocumentRoomsForCreation();
+            RoomsVerificationReport verificationReport = Model.VerifyLinkRooms(_viewModel.LinkedDocumentSelected);
+            // TODO ReportMessage
 
             MessageGenerator messageGenerator = new MessageGenerator(
                 _viewModel.ActiveObject,

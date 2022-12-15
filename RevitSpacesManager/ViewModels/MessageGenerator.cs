@@ -57,11 +57,9 @@ namespace RevitSpacesManager.ViewModels
             StringBuilder sb = new StringBuilder();
             sb.Append($"You are going to delete ");
             sb.Append($"{_number} ");
-            sb.Append($"{_objectType}{PluralSuffix(_number)} ");
-            sb.Append($"in ");
+            sb.Append($"{_objectType}{PluralSuffix(_number)} in ");
             sb.Append($"{_phasesNumber} ");
-            sb.Append($"Phase{PluralSuffix(_phasesNumber)} ");
-            sb.Append($"of the current Model:\n");
+            sb.Append($"Phase{PluralSuffix(_phasesNumber)} of the current Model:\n");
             sb.Append($"{_phases}");
             return sb.ToString();
         }
@@ -71,12 +69,9 @@ namespace RevitSpacesManager.ViewModels
             StringBuilder sb = new StringBuilder();
             sb.Append($"{_number} ");
             sb.Append($"{_objectType}{PluralSuffix(_number)} ");
-            sb.Append($"ha{HaveSuffix(_number)} been ");
-            sb.Append($"deleted ");
-            sb.Append($"in ");
+            sb.Append($"ha{HaveSuffix(_number)} been deleted in ");
             sb.Append($"{_phasesNumber} ");
-            sb.Append($"Phase{PluralSuffix(_phasesNumber)} ");
-            sb.Append($"of the current Model");
+            sb.Append($"Phase{PluralSuffix(_phasesNumber)} of the current Model");
             return sb.ToString();
         }
 
@@ -85,10 +80,8 @@ namespace RevitSpacesManager.ViewModels
             StringBuilder sb = new StringBuilder();
             sb.Append($"You are going to delete ");
             sb.Append($"{_number} ");
-            sb.Append($"{_objectType}{PluralSuffix(_number)} ");
-            sb.Append($"in the ");
-            sb.Append($"'{_phaseName}' Phase ");
-            sb.Append($"\nof the current Model");
+            sb.Append($"{_objectType}{PluralSuffix(_number)} in the ");
+            sb.Append($"'{_phaseName}' Phase \nof the current Model");
             return sb.ToString();
         }
 
@@ -97,11 +90,8 @@ namespace RevitSpacesManager.ViewModels
             StringBuilder sb = new StringBuilder();
             sb.Append($"{_number} ");
             sb.Append($"{_objectType}{PluralSuffix(_number)} ");
-            sb.Append($"ha{HaveSuffix(_number)} been ");
-            sb.Append($"deleted ");
-            sb.Append($"in the ");
-            sb.Append($"'{_phaseName}' Phase ");
-            sb.Append($"\nof the current Model");
+            sb.Append($"ha{HaveSuffix(_number)} been deleted in the ");
+            sb.Append($"'{_phaseName}' Phase \nof the current Model");
             return sb.ToString();
         }
 

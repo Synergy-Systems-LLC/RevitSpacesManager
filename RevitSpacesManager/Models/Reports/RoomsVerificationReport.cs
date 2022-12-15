@@ -1,6 +1,6 @@
 ﻿namespace RevitSpacesManager.Models
 {
-    internal class RoomsCreationVerificationReport
+    internal class RoomsVerificationReport
     {
     }
 }

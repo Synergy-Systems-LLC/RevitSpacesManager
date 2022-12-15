@@ -64,7 +64,7 @@
     <Compile Include="Models\Elements\PhaseElement.cs" />
     <Compile Include="Models\Elements\RoomElement.cs" />
     <Compile Include="Models\Elements\SpaceElement.cs" />
-    <Compile Include="Models\Reports\RoomsCreationVerificationReport.cs" />
+    <Compile Include="Models\Reports\RoomsVerificationReport.cs" />
     <Compile Include="Models\SpacesModel.cs" />
     <Compile Include="Models\RoomsModel.cs" />
     <Compile Include="Revit\App.cs" />

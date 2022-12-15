@@ -52,13 +52,6 @@ namespace RevitSpacesManager.Models
 
         public override bool IsWorksetNotAvailable() => !_revitDocument.DoesUserWorksetExist("Model Spaces");
 
-        public override RoomsCreationVerificationReport VerifyDocumentRoomsForCreation()
-        {
-            RoomsCreationVerificationReport report = new RoomsCreationVerificationReport();
-
-            return report;
-        }
-
         public override bool AreAllNotEditable()
         {
             List<RevitElement> elements = _revitDocument.Spaces.Cast<RevitElement>().ToList();
