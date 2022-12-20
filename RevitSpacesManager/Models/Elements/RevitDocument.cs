@@ -44,9 +44,9 @@ namespace RevitSpacesManager.Models
             DocumentTransaction(elementsList, DeleteRevitElements, transactionName);
         }
 
-        internal bool AreElementsEditable(List<RevitElement> elementsList)
+        internal bool AreNotAllElementsEditable(List<RevitElement> elementsList)
         {
-            return AreRevitElementsEditable(_document, elementsList); ;
+            return AreNotAllRevitElementsEditable(_document, elementsList); ;
         }
 
         internal void RefreshPhasesRoomsAndSpaces()
@@ -145,14 +145,14 @@ namespace RevitSpacesManager.Models
             }
         }
 
-        private bool AreRevitElementsEditable(Document document, List<RevitElement> elementsList)
+        private bool AreNotAllRevitElementsEditable(Document document, List<RevitElement> elementsList)
         {
             foreach (RevitElement element in elementsList)
             {
                 if (IsRevitElementNotEditable(document, element))
-                    return false;
+                    return true;
             }
-            return true;
+            return false;
         }
 
         private bool IsRevitElementNotEditable(Document document, RevitElement element)

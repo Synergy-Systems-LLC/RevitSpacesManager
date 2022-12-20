@@ -2,9 +2,9 @@
 {
     internal interface IDeleting
     {
+        bool AreNotAllElementsEditable();
+        bool AreNotAllPhaseElementsEditable(PhaseElement phaseElement);
         void DeleteAll();
         void DeleteByPhase(PhaseElement phaseElement);
-        bool AreAllNotEditable();
-        bool ArePhaseElementsNotEditable(PhaseElement phaseElement);
     }
 }

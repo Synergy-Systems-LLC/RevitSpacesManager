@@ -6,7 +6,7 @@ namespace RevitSpacesManager.Models
     internal class SpacesModel : AreaModel
     {
         internal override int NumberOfElements => _revitDocument.NumberOfSpaces;
-
+        internal override RevitDocument RevitDocument => _revitDocument;
         private readonly RevitDocument _revitDocument;
 
 
@@ -52,16 +52,16 @@ namespace RevitSpacesManager.Models
 
         public override bool IsWorksetNotAvailable() => !_revitDocument.DoesUserWorksetExist("Model Spaces");
 
-        public override bool AreAllNotEditable()
+        public override bool AreNotAllElementsEditable()
         {
             List<RevitElement> elements = _revitDocument.Spaces.Cast<RevitElement>().ToList();
-            return !_revitDocument.AreElementsEditable(elements);
+            return _revitDocument.AreNotAllElementsEditable(elements);
         }
 
-        public override bool ArePhaseElementsNotEditable(PhaseElement phaseElement)
+        public override bool AreNotAllPhaseElementsEditable(PhaseElement phaseElement)
         {
             List<RevitElement> elements = phaseElement.Spaces.Cast<RevitElement>().ToList();
-            return !_revitDocument.AreElementsEditable(elements);
+            return _revitDocument.AreNotAllElementsEditable(elements);
         }
 
         internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();

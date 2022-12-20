@@ -32,7 +32,7 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            if (Model.ArePhaseElementsNotEditable(_viewModel.CurrentDocumentPhaseSelected))
+            if (Model.AreNotAllPhaseElementsEditable(_viewModel.CurrentDocumentPhaseSelected))
             {
                 _viewModel.ShowNoAccessMessage();
                 return;

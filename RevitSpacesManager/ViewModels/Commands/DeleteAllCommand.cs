@@ -24,7 +24,7 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            if (Model.AreAllNotEditable())
+            if (Model.AreNotAllElementsEditable())
             {
                 _viewModel.ShowNoAccessMessage();
                 return;
