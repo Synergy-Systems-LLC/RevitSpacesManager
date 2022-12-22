@@ -39,11 +39,13 @@ namespace RevitSpacesManager.Models
 
         private bool IsRoomLevelNotAvailableInRevitDocument(RevitDocument revitDocument, RoomElement roomElement)
         {
-            // TODO - level available 
-            // TODO - level upper limit available
-            // TODO - level same elevation
-            // TODO - level upper limit same elevation
-            return true;
+            LevelElement roomLevel = roomElement.Level;
+            if (revitDocument.IsLevelNotAvailable(roomLevel))
+                return true;
+            LevelElement roomUpperLimit = roomElement.UpperLimit;
+            if (revitDocument.IsLevelNotAvailable(roomUpperLimit))
+                return true;
+            return false;
         }
     }
 }

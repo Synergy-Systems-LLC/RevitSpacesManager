@@ -44,6 +44,7 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
+            Model.MatchLevels(_viewModel.LinkedDocumentPhaseSelected);
             RoomsVerificationReport verificationReport = Model.VerifyPhaseRooms(_viewModel.LinkedDocumentPhaseSelected);
             // TODO ReportMessage
 

@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Models\Base\AreaModel.cs" />
     <Compile Include="Models\Base\RevitElement.cs" />
+    <Compile Include="Models\Interfaces\IRoomLevelsMatchable.cs" />
     <Compile Include="Models\Interfaces\ICreating.cs" />
     <Compile Include="Models\Interfaces\IDeleting.cs" />
     <Compile Include="Models\Elements\LevelElement.cs" />

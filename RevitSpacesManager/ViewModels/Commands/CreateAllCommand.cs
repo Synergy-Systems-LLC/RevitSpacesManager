@@ -38,6 +38,7 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
+            Model.MatchLevels(_viewModel.LinkedDocumentSelected);
             RoomsVerificationReport verificationReport = Model.VerifyLinkRooms(_viewModel.LinkedDocumentSelected);
             // TODO ReportMessage
 

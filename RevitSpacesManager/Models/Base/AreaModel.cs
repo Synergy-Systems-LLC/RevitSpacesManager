@@ -13,6 +13,11 @@ namespace RevitSpacesManager.Models
         public abstract void CreateAllByLinkedDocument(RevitDocument linkDocument);
         public abstract void CreateByLinkedDocumentPhase(PhaseElement phaseElement);
 
+        public void MatchLevels(IRoomLevelsMatchable levelMatchable)
+        {
+            RevitDocument.MatchLevels(levelMatchable);
+        }
+
         public RoomsVerificationReport VerifyLinkRooms(RevitDocument linkDocument)
         {
             List<RoomElement> roomElements = linkDocument.Rooms.ToList();

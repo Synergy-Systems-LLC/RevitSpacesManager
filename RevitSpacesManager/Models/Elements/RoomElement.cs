@@ -11,22 +11,26 @@ namespace RevitSpacesManager.Models
         internal int PhaseId => PhaseParameter.AsElementId().IntegerValue;
 
         internal double Area => _room.Area;
+        internal LevelElement Level => _level;
+        internal LevelElement UpperLimit => _upperLimit;
         internal XYZ LocationPoint => GetLocationPoint();
-        internal string LevelName => _room.Level.Name;
         internal double BaseOffset => _room.BaseOffset;
         internal double LimitOffset => _room.LimitOffset;
         internal string Number => _room.Number;
         internal string Name => _room.get_Parameter(BuiltInParameter.ROOM_NAME).AsString();
-        internal string UpperLimitName => _room.UpperLimit.Name;
 
 
         private readonly Room _room;
+        private readonly LevelElement _level;
+        private readonly LevelElement _upperLimit;
         private Parameter PhaseParameter => _room.get_Parameter(BuiltInParameter.ROOM_PHASE);
 
 
         internal RoomElement(Room room)
         {
             _room = room;
+            _level = new LevelElement(room.Level);
+            _upperLimit = GetUpperLimit();
         }
 
 
@@ -35,6 +39,14 @@ namespace RevitSpacesManager.Models
             LocationPoint location = _room.Location as LocationPoint;
             XYZ point = location.Point;
             return point;
+        }
+
+        private LevelElement GetUpperLimit()
+        {
+            Level upperLimit = _room.UpperLimit;
+            if (upperLimit == null)
+                return _level;
+            return new LevelElement(upperLimit);
         }
     }
 }

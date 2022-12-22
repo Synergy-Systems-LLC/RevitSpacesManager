@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RevitSpacesManager.Models
 {
-    internal class PhaseElement
+    internal class PhaseElement : IRoomLevelsMatchable
     {
         public string SpacesItemName => $"{NumberOfSpaces} Space{PluralSuffix(NumberOfSpaces)} - {Name}"; 
         public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Name}";
@@ -11,7 +11,7 @@ namespace RevitSpacesManager.Models
         internal string Name => _phase.Name;
         internal int Id => _phase.Id.IntegerValue;
         internal List<SpaceElement> Spaces { get; set; } = new List<SpaceElement>();
-        internal List<RoomElement> Rooms { get; set; } = new List<RoomElement>();
+        public List<RoomElement> Rooms { get; set; } = new List<RoomElement>();
         internal int NumberOfSpaces => Spaces.Count;
         internal int NumberOfRooms => Rooms.Count;
 

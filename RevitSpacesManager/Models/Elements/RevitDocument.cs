@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace RevitSpacesManager.Models
 {
-    internal class RevitDocument
+    internal class RevitDocument : IRoomLevelsMatchable
     {
         public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Title}";
 
@@ -15,42 +15,18 @@ namespace RevitSpacesManager.Models
         internal string ActiveViewPhaseName => _document.ActiveView.get_Parameter(BuiltInParameter.VIEW_PHASE).AsValueString();
         internal List<PhaseElement> Phases { get; set; } 
         internal List<SpaceElement> Spaces => GetSpaces(Phases);
-        internal List<RoomElement> Rooms => GetRooms(Phases);
+        public List<RoomElement> Rooms => GetRooms(Phases);
         internal int NumberOfSpaces => Spaces.Count;
         internal int NumberOfRooms => Rooms.Count;
         
         private readonly Document _document;
+        private readonly List<LevelElement> _levels;
 
 
         internal RevitDocument(Document document)
         {
             _document = document;
-            Phases = GetPhasesWithRoomsAndSpaces(_document);
-        }
-
-
-        internal void CreateSpacesByRooms(List<RevitElement> elementsList, string transactionName)
-        {
-            DocumentTransaction(elementsList, CreateSpacesByRevitElements, transactionName);
-        }
-
-        internal void CreateRoomsByRooms(List<RevitElement> elementsList, string transactionName)
-        {
-            DocumentTransaction(elementsList, CreateRoomsByRevitElements, transactionName);
-        }
-
-        internal void DeleteElements(List<RevitElement> elementsList, string transactionName)
-        {
-            DocumentTransaction(elementsList, DeleteRevitElements, transactionName);
-        }
-
-        internal bool AreNotAllElementsEditable(List<RevitElement> elementsList)
-        {
-            return AreNotAllRevitElementsEditable(_document, elementsList); ;
-        }
-
-        internal void RefreshPhasesRoomsAndSpaces()
-        {
+            _levels = GetLevels(document);
             Phases = GetPhasesWithRoomsAndSpaces(_document);
         }
 
@@ -72,6 +48,21 @@ namespace RevitSpacesManager.Models
             return revitLinkDocuments;
         }
 
+        internal void RefreshPhasesRoomsAndSpaces()
+        {
+            Phases = GetPhasesWithRoomsAndSpaces(_document);
+        }
+
+        internal bool AreNotAllElementsEditable(List<RevitElement> elementsList)
+        {
+            return AreNotAllRevitElementsEditable(_document, elementsList); ;
+        }
+
+        internal void DeleteElements(List<RevitElement> elementsList, string transactionName)
+        {
+            DocumentTransaction(elementsList, DeleteRevitElements, transactionName);
+        }
+
         internal bool DoesUserWorksetExist(string worksetName)
         {
             List<Workset> userWorksets = GetUserWorksets(_document);
@@ -84,7 +75,41 @@ namespace RevitSpacesManager.Models
             }
             return false;
         }
+        
+        internal void MatchLevels(IRoomLevelsMatchable levelsMatchable)
+        {
+            ClearLevelsMatching();
+            List<LevelElement> linkedMatchingLevels = GetLevelsForMatching(levelsMatchable);
 
+            foreach (LevelElement linkedLevel in linkedMatchingLevels)
+            {
+                IEnumerable<LevelElement> currentModelMatchingLevels = _levels.Where(l => l.Name == linkedLevel.Name);
+                if (currentModelMatchingLevels.Any())
+                {
+                    LevelElement currentModelLevel = currentModelMatchingLevels.First();
+                    currentModelLevel.CompareByElevationWith(linkedLevel);
+                }
+            }
+        }
+
+        internal bool IsLevelNotAvailable(LevelElement linkedLevel)
+        {
+            IEnumerable<LevelElement> availableLevels = _levels.Where(l => l.MatchedLevelId == linkedLevel.Id);
+            if (availableLevels.Any())
+                return false;
+            return true;
+        }
+
+        internal void CreateSpacesByRooms(List<RevitElement> elementsList, string transactionName)
+        {
+            DocumentTransaction(elementsList, CreateSpacesByRevitElements, transactionName);
+        }
+
+        internal void CreateRoomsByRooms(List<RevitElement> elementsList, string transactionName)
+        {
+            DocumentTransaction(elementsList, CreateRoomsByRevitElements, transactionName);
+        }
+        
         internal int GetUserWorksetIntegerIdByName(string worksetName)
         {
             List<Workset> userWorksets = GetUserWorksets(_document);
@@ -145,6 +170,24 @@ namespace RevitSpacesManager.Models
             }
         }
 
+        private void ClearLevelsMatching()
+        {
+            foreach (LevelElement levelElement in _levels)
+            {
+                levelElement.ClearMatching();
+            }
+        }
+
+        private List<LevelElement> GetLevelsForMatching(IRoomLevelsMatchable levelsMatchable)
+        {
+            List<RoomElement> roomElements = levelsMatchable.Rooms;
+            List<LevelElement> roomLevelsForMatching = roomElements.Select(r => r.Level).ToList();
+            List<LevelElement> upperLimitsForMatching = roomElements.Select(r => r.UpperLimit).ToList();
+            roomLevelsForMatching.AddRange(upperLimitsForMatching);
+            List<LevelElement> levelsForMatching = roomLevelsForMatching.GroupBy(l => l.Id).Select(l => l.First()).ToList();
+            return levelsForMatching;
+        }
+
         private bool AreNotAllRevitElementsEditable(Document document, List<RevitElement> elementsList)
         {
             foreach (RevitElement element in elementsList)
@@ -163,7 +206,7 @@ namespace RevitSpacesManager.Models
                 return true;
             return false;
         }
-
+       
         private List<PhaseElement> GetPhasesWithRoomsAndSpaces(Document document)
         {
             List<PhaseElement> phases = GetPhases(document);
@@ -188,20 +231,6 @@ namespace RevitSpacesManager.Models
                 userWorksets.Add(workset);
             }
             return userWorksets;
-        }
-
-        private List<LevelElement> GetLevels(Document document)
-        {
-            FilteredElementCollector elementCollector = new FilteredElementCollector(document);
-            IList<Element> elements = elementCollector.OfClass(typeof(Level)).WhereElementIsNotElementType().ToElements();
-            List<LevelElement>  levels = new List<LevelElement>();
-            foreach (Element element in elements)
-            {
-                Level level = element as Level;
-                LevelElement levelElement = new LevelElement(level);
-                levels.Add(levelElement);
-            }
-            return levels;
         }
 
         private List<SpaceElement> GetSpaces(Document document)
@@ -262,6 +291,20 @@ namespace RevitSpacesManager.Models
                 phases.Add(phaseElement);
             }
             return phases;
+        }
+        
+        private List<LevelElement> GetLevels(Document document)
+        {
+            FilteredElementCollector elementCollector = new FilteredElementCollector(document);
+            IList<Element> elements = elementCollector.OfClass(typeof(Level)).WhereElementIsNotElementType().ToElements();
+            List<LevelElement>  levels = new List<LevelElement>();
+            foreach (Element element in elements)
+            {
+                Level level = element as Level;
+                LevelElement levelElement = new LevelElement(level);
+                levels.Add(levelElement);
+            }
+            return levels;
         }
         
         private string PluralSuffix(int number)
