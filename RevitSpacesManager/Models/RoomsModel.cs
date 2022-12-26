@@ -8,7 +8,8 @@ namespace RevitSpacesManager.Models
         internal override int NumberOfElements => _revitDocument.NumberOfRooms;
         internal override RevitDocument RevitDocument => _revitDocument;
         private readonly RevitDocument _revitDocument;
-        
+        private const string _areaName = "Room";
+
 
         internal RoomsModel(RevitDocument revitDocument)
         {
@@ -16,19 +17,10 @@ namespace RevitSpacesManager.Models
         }
 
 
-        public override void CreateAllByLinkedDocument(RevitDocument linkDocument)
+        public override void CreateByRooms(List<RoomElement> roomElements)
         {
-            List<RevitElement> elements = linkDocument.Rooms.Cast<RevitElement>().ToList();
+            List<RevitElement> elements = roomElements.Cast<RevitElement>().ToList();
             string transactionName = "Create All Rooms";
-            _revitDocument.CreateRoomsByRooms(elements, transactionName);
-            _revitDocument.RefreshPhasesRoomsAndSpaces();
-        }
-
-        public override void CreateByLinkedDocumentPhase(PhaseElement phaseElement)
-        {
-            List<RevitElement> elements = phaseElement.Rooms.Cast<RevitElement>().ToList();
-            string phaseName = phaseElement.Name;
-            string transactionName = $"Create Rooms by '{phaseName}' phase";
             _revitDocument.CreateRoomsByRooms(elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
@@ -65,5 +57,6 @@ namespace RevitSpacesManager.Models
         }
 
         internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfRooms > 0).ToList();
+        internal override string GetAreaName() => _areaName;
     }
 }

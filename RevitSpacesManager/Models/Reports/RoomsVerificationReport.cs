@@ -9,8 +9,11 @@ namespace RevitSpacesManager.Models
         internal List<RoomElement> IncorrectLevelRooms { get; } = new List<RoomElement>();
 
 
-        internal RoomsVerificationReport(RevitDocument revitDocument, List<RoomElement> roomElements)
+        internal RoomsVerificationReport(RevitDocument revitDocument, IRoomLevelsMatchable levelMatchable)
         {
+            List<RoomElement> roomElements = levelMatchable.Rooms;
+            revitDocument.MatchLevels(roomElements);
+
             foreach (RoomElement roomElement in roomElements)
             {
                 if (IsRoomNotPlacedCorrectly(roomElement))

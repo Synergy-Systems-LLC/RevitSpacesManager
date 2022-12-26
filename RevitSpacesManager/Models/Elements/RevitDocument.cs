@@ -76,10 +76,10 @@ namespace RevitSpacesManager.Models
             return false;
         }
         
-        internal void MatchLevels(IRoomLevelsMatchable levelsMatchable)
+        internal void MatchLevels(List<RoomElement> roomElements)
         {
             ClearLevelsMatching();
-            List<LevelElement> linkedMatchingLevels = GetLevelsForMatching(levelsMatchable);
+            List<LevelElement> linkedMatchingLevels = GetLevelsForMatching(roomElements);
 
             foreach (LevelElement linkedLevel in linkedMatchingLevels)
             {
@@ -88,6 +88,7 @@ namespace RevitSpacesManager.Models
                 {
                     LevelElement currentModelLevel = currentModelMatchingLevels.First();
                     currentModelLevel.CompareByElevationWith(linkedLevel);
+                    linkedLevel.CompareByElevationWith(currentModelLevel);
                 }
             }
         }
@@ -178,9 +179,8 @@ namespace RevitSpacesManager.Models
             }
         }
 
-        private List<LevelElement> GetLevelsForMatching(IRoomLevelsMatchable levelsMatchable)
+        private List<LevelElement> GetLevelsForMatching(List<RoomElement> roomElements)
         {
-            List<RoomElement> roomElements = levelsMatchable.Rooms;
             List<LevelElement> roomLevelsForMatching = roomElements.Select(r => r.Level).ToList();
             List<LevelElement> upperLimitsForMatching = roomElements.Select(r => r.UpperLimit).ToList();
             roomLevelsForMatching.AddRange(upperLimitsForMatching);

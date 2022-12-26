@@ -38,25 +38,19 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            Model.MatchLevels(_viewModel.LinkedDocumentSelected);
-            RoomsVerificationReport verificationReport = Model.VerifyLinkRooms(_viewModel.LinkedDocumentSelected);
-            // TODO ReportMessage
-
-            MessageGenerator messageGenerator = new MessageGenerator(
-                _viewModel.ActiveObject,
-                _viewModel.LinkedDocumentSelected.NumberOfRooms,
-                _viewModel.LinkedDocumentPhases
-                );
-            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageCreateAll());
+            RevitDocument selectedLinkedDocument = _viewModel.LinkedDocumentSelected;
+            var verificationReport = Model.VerifyRooms(selectedLinkedDocument);
+            var messageGenerator = new MessageGenerator(_viewModel, verificationReport);
+            string createAllMessage = messageGenerator.MessageCreateAll();
+            MessageBoxResult result = _viewModel.ShowConfirmationDialog(createAllMessage);
 
             if (result == MessageBoxResult.Cancel)
-            {
                 return;
-            }
 
-            Model.CreateAllByLinkedDocument(_viewModel.LinkedDocumentSelected);
+            Model.CreateByRooms(verificationReport.VerifiedRooms);
 
-            _viewModel.ShowReportMessage(messageGenerator.ReportCreateAll());
+            string createAllReport = messageGenerator.ReportCreateAll();
+            _viewModel.ShowReportMessage(createAllReport);
             _viewModel.OnPropertyChanged(nameof(_viewModel.LinkedDocumentSelected));
         }
     }
