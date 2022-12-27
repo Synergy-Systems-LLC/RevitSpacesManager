@@ -53,7 +53,7 @@ namespace RevitSpacesManager.ViewModels
             if (result == MessageBoxResult.Cancel)
                 return;
 
-            Model.CreateByRooms(verificationReport.VerifiedRooms);
+            Model.CreateByPhaseRooms(verificationReport.VerifiedRooms, selectedPhase);
 
             string createSelectedReport = messageGenerator.ReportCreateSelected();
             _viewModel.ShowReportMessage(createSelectedReport);

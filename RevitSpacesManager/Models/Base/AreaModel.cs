@@ -10,7 +10,8 @@ namespace RevitSpacesManager.Models
         public abstract void DeleteAll();
         public abstract void DeleteByPhase(PhaseElement phaseElement);
         public abstract bool IsWorksetNotAvailable();
-        public abstract void CreateByRooms(List<RoomElement> roomElements);
+        public abstract void CreateAllByRooms(List<RoomElement> roomElements);
+        public abstract void CreateByPhaseRooms(List<RoomElement> roomElements, PhaseElement phaseElement);
 
         public RoomsVerificationReport VerifyRooms(IRoomLevelsMatchable levelMatchable)
         {

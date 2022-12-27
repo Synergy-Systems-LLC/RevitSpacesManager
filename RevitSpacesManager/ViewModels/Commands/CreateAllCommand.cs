@@ -47,7 +47,7 @@ namespace RevitSpacesManager.ViewModels
             if (result == MessageBoxResult.Cancel)
                 return;
 
-            Model.CreateByRooms(verificationReport.VerifiedRooms);
+            Model.CreateAllByRooms(verificationReport.VerifiedRooms);
 
             string createAllReport = messageGenerator.ReportCreateAll();
             _viewModel.ShowReportMessage(createAllReport);

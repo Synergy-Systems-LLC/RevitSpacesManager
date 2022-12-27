@@ -9,7 +9,7 @@ namespace RevitSpacesManager.Models
         internal ElementId ElementId => _level.Id;
         internal int Id => ElementId.IntegerValue;
         internal double ProjectElevation => _level.ProjectElevation;
-        internal double MatchedLevelId { get; set; } = 0;
+        internal int MatchedLevelId { get; set; } = 0;
 
         private readonly Level _level;
         private const int _roundingDigit = 2;

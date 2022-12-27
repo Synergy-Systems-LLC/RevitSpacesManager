@@ -1,5 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RevitSpacesManager.Models
 {
@@ -26,11 +28,11 @@ namespace RevitSpacesManager.Models
         private Parameter PhaseParameter => _room.get_Parameter(BuiltInParameter.ROOM_PHASE);
 
 
-        internal RoomElement(Room room)
+        internal RoomElement(Room room, List<LevelElement> documentLevels)
         {
             _room = room;
-            _level = new LevelElement(room.Level);
-            _upperLimit = GetUpperLimit();
+            _level = documentLevels.FirstOrDefault(l => l.Id == room.Level.Id.IntegerValue);
+            _upperLimit = GetUpperLimit(documentLevels);
         }
 
 
@@ -41,12 +43,12 @@ namespace RevitSpacesManager.Models
             return point;
         }
 
-        private LevelElement GetUpperLimit()
+        private LevelElement GetUpperLimit(List<LevelElement> documentLevels)
         {
             Level upperLimit = _room.UpperLimit;
             if (upperLimit == null)
                 return _level;
-            return new LevelElement(upperLimit);
+            return documentLevels.FirstOrDefault(l => l.Id == upperLimit.Id.IntegerValue);
         }
     }
 }

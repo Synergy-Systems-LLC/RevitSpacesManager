@@ -30,6 +30,7 @@ namespace RevitSpacesManager.Models
             Phases = GetPhasesWithRoomsAndSpaces(_document);
         }
 
+
         internal List<RevitDocument> GetRevitLinkDocuments()
         {
             FilteredElementCollector elementCollector = new FilteredElementCollector(_document);
@@ -110,8 +111,71 @@ namespace RevitSpacesManager.Models
         {
             DocumentTransaction(elementsList, CreateRoomsByRevitElements, transactionName);
         }
-        
-        internal int GetUserWorksetIntegerIdByName(string worksetName)
+
+
+        private void CreateSpacesByRevitElements(Document document, List<RevitElement> elementsList)
+        {
+            foreach (RevitElement revitElement in elementsList)
+            {
+                RoomElement room = revitElement as RoomElement;
+                Space newSpace = CreateSpaceByRoomElement(document, room);
+                DefineElementPropertiesByRoomElement(document, newSpace, room);
+            }
+            document.Regenerate();
+        }
+
+        private Space CreateSpaceByRoomElement(Document document, RoomElement room)
+        {
+            ElementId matchingLevelElementId = new ElementId(room.Level.MatchedLevelId);
+            Level level = document.GetElement(matchingLevelElementId) as Level;
+            XYZ locationPoint = room.LocationPoint;
+            UV spaceUV = new UV(locationPoint.X, locationPoint.Y);
+            Space newSpace = document.Create.NewSpace(level, spaceUV);
+            int worksetId = GetUserWorksetIdByName("Model Spaces");
+            newSpace.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM).Set(worksetId);
+            return newSpace;
+        }
+
+        private void CreateRoomsByRevitElements(Document document, List<RevitElement> elementsList)
+        {
+            foreach (RevitElement revitElement in elementsList)
+            {
+                RoomElement room = revitElement as RoomElement;
+                Room newRoom = CreateRoomByRoomElement(document,room);
+
+                Element element = newRoom as Element;
+                DefineElementPropertiesByRoomElement(document, element, room);
+            }
+            document.Regenerate();
+        }
+
+        private Room CreateRoomByRoomElement(Document document, RoomElement room)
+        {
+            ElementId matchingLevelElementId = new ElementId(room.Level.MatchedLevelId);
+            Level level = document.GetElement(matchingLevelElementId) as Level;
+            XYZ locationPoint = room.LocationPoint;
+            UV spaceUV = new UV(locationPoint.X, locationPoint.Y);
+            Room newRoom = document.Create.NewRoom(level, spaceUV);
+            int worksetId = GetUserWorksetIdByName("Model Rooms");
+            newRoom.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM).Set(worksetId);
+            return newRoom;
+        }
+
+        private void DefineElementPropertiesByRoomElement(Document document, Element element, RoomElement room)
+        {
+
+            //ElementId matchingUpperLimitElementId = new ElementId(room.UpperLimit.MatchedLevelId);
+            //Level upperLimit = document.GetElement(matchingUpperLimitElementId) as Level;
+
+            //element.get_Parameter(BuiltInParameter.ROOM_NUMBER).Set(room_number)
+            //element.get_Parameter(BuiltInParameter.ROOM_NAME).Set(room_name)
+            //element.get_Parameter(BuiltInParameter.ROOM_LOWER_OFFSET).Set(room_base_offset)
+            //element.get_Parameter(BuiltInParameter.ROOM_UPPER_OFFSET).Set(room_limit_offset)
+            //element.get_Parameter(BuiltInParameter.ROOM_UPPER_LEVEL).Set(room_upper_limit_level_id)
+            //element_phase_name = element.get_Parameter(BuiltInParameter.ROOM_PHASE).AsValueString()
+        }
+
+        private int GetUserWorksetIdByName(string worksetName)
         {
             List<Workset> userWorksets = GetUserWorksets(_document);
             foreach (Workset workset in userWorksets)
@@ -122,31 +186,6 @@ namespace RevitSpacesManager.Models
                 }
             }
             return 0;
-        }
-
-
-        private void CreateSpacesByRevitElements(Document document, List<RevitElement> elementsList)
-        {
-            foreach (RevitElement element in elementsList)
-            {
-                RoomElement room = element as RoomElement;
-
-                //element = document.Create.NewSpace(level, UV(roomLocationPoint.X, roomLocationPoint.Y));
-                //element.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM).Set(worksetSpacesId);
-                //document.Regenerate()
-            }
-        }
-
-        private void CreateRoomsByRevitElements(Document document, List<RevitElement> elementsList)
-        {
-            foreach (RevitElement element in elementsList)
-            {
-                RoomElement room = element as RoomElement;
-
-                //element = document.Create.NewRoom(level, UV(roomLocationPoint.X, roomLocationPoint.Y));
-                //element.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM).Set(self.worksetRoomsId);
-                //document.Regenerate()
-            }
         }
 
         private void DeleteRevitElements(Document document, List<RevitElement> elementsList)
@@ -265,7 +304,7 @@ namespace RevitSpacesManager.Models
             foreach (Element element in elements)
             {
                 Room room = element as Room;
-                RoomElement roomElement = new RoomElement(room);
+                RoomElement roomElement = new RoomElement(room, _levels);
                 rooms.Add(roomElement);
             }
             return rooms;

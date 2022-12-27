@@ -6,6 +6,7 @@ namespace RevitSpacesManager.Models
     {
         bool IsWorksetNotAvailable();
         RoomsVerificationReport VerifyRooms(IRoomLevelsMatchable levelMatchable);
-        void CreateByRooms(List<RoomElement> roomElements); 
+        void CreateAllByRooms(List<RoomElement> roomElements); 
+        void CreateByPhaseRooms(List<RoomElement> roomElements, PhaseElement phaseElement);
     }
 }

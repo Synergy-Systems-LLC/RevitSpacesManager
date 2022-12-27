@@ -6,13 +6,13 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class MessageGenerator
     {
-        private readonly string _areaObjectName;
-        private readonly string _selectedPhaseName;
         private readonly int _phasesNumber;
         private readonly int _documentElementsNumber;
         private readonly int _selectedPhaseElementsNumber;
         private readonly int _incorrectlyPlacedElementsNumber;
         private readonly int _incorrectLevelElementsNumber;
+        private readonly string _areaObjectName;
+        private readonly string _selectedPhaseName;
         private readonly string _phases;
         private readonly string _linkedDocumentTitle;
         private readonly RoomsVerificationReport _report;
@@ -21,9 +21,13 @@ namespace RevitSpacesManager.ViewModels
         internal MessageGenerator(MainWindowViewModel viewModel)
         {
             _areaObjectName = viewModel.GetModelAreaName();
-            _selectedPhaseName = viewModel.CurrentDocumentPhaseSelected.Name;
-            _selectedPhaseElementsNumber = viewModel.GetCurrentSelectedPhaseNumberOfElements();
             _documentElementsNumber = viewModel.GetCurrentNumberOfElements();
+
+            if (viewModel.CurrentDocumentPhaseSelected != null)
+            {
+                _selectedPhaseName = viewModel.CurrentDocumentPhaseSelected.Name;
+                _selectedPhaseElementsNumber = viewModel.GetCurrentSelectedPhaseNumberOfElements();
+            }
 
             var phases = viewModel.CurrentDocumentPhases;
             _phasesNumber = phases.Count;
@@ -81,7 +85,7 @@ namespace RevitSpacesManager.ViewModels
             if (IsAnyIncorrectlyPlacedElement() || IsAnyIncorrectLevelElement())
             {
                 DefineWarningStrings(sb);
-                sb.Append($"\nin the '{_selectedPhaseName}' phase of the '{_linkedDocumentTitle}' linked model.\n");
+                sb.Append($"in the '{_selectedPhaseName}' phase of the '{_linkedDocumentTitle}' linked model.\n");
                 sb.Append($"Please contact Architecture team.\n\n\n");
             }
 

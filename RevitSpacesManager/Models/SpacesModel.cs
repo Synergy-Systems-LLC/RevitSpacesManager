@@ -17,10 +17,19 @@ namespace RevitSpacesManager.Models
         }
 
 
-        public override void CreateByRooms(List<RoomElement> roomElements)
+        public override void CreateAllByRooms(List<RoomElement> roomElements)
         {
             List<RevitElement> elements = roomElements.Cast<RevitElement>().ToList();
             string transactionName = "Create All Spaces";
+            _revitDocument.CreateSpacesByRooms(elements, transactionName);
+            _revitDocument.RefreshPhasesRoomsAndSpaces();
+        }
+
+        public override void CreateByPhaseRooms(List<RoomElement> roomElements, PhaseElement phaseElement)
+        {
+            List<RevitElement> elements = roomElements.Cast<RevitElement>().ToList();
+            string phaseName = phaseElement.Name;
+            string transactionName = $"Create Spaces by '{phaseName}' phase Rooms";
             _revitDocument.CreateSpacesByRooms(elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
