@@ -50,6 +50,7 @@ namespace RevitSpacesManager.ViewModels
 
             string deleteSelectedReport = messageGenerator.ReportDeleteSelected();
             _viewModel.ShowReportMessage(deleteSelectedReport);
+
             _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }

@@ -41,6 +41,7 @@ namespace RevitSpacesManager.ViewModels
 
             string deleteAllReport = messageGenerator.ReportDeleteAll();
             _viewModel.ShowReportMessage(deleteAllReport);
+
             _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }

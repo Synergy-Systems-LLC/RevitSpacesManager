@@ -57,7 +57,8 @@ namespace RevitSpacesManager.ViewModels
 
             string createSelectedReport = messageGenerator.ReportCreateSelected();
             _viewModel.ShowReportMessage(createSelectedReport);
-            _viewModel.OnPropertyChanged(nameof(_viewModel.LinkedDocumentSelected));
+
+            _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }
 }
