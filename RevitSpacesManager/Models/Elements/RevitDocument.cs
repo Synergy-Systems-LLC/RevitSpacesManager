@@ -119,7 +119,7 @@ namespace RevitSpacesManager.Models
             {
                 RoomElement room = revitElement as RoomElement;
                 Space newSpace = CreateSpaceByRoomElement(document, room);
-                DefineElementPropertiesByRoomElement(document, newSpace, room);
+                DefineElementPropertiesByRoomElement(newSpace, room);
             }
             document.Regenerate();
         }
@@ -144,7 +144,7 @@ namespace RevitSpacesManager.Models
                 Room newRoom = CreateRoomByRoomElement(document,room);
 
                 Element element = newRoom as Element;
-                DefineElementPropertiesByRoomElement(document, element, room);
+                DefineElementPropertiesByRoomElement(element, room);
             }
             document.Regenerate();
         }
@@ -161,18 +161,17 @@ namespace RevitSpacesManager.Models
             return newRoom;
         }
 
-        private void DefineElementPropertiesByRoomElement(Document document, Element element, RoomElement room)
+        private void DefineElementPropertiesByRoomElement(Element element, RoomElement room)
         {
+            int upperLimitId = room.UpperLimit.MatchedLevelId;
+            ElementId upperLimitElementId = new ElementId(upperLimitId);
+            element.get_Parameter(BuiltInParameter.ROOM_UPPER_LEVEL).Set(upperLimitElementId);
 
-            //ElementId matchingUpperLimitElementId = new ElementId(room.UpperLimit.MatchedLevelId);
-            //Level upperLimit = document.GetElement(matchingUpperLimitElementId) as Level;
+            element.get_Parameter(BuiltInParameter.ROOM_NUMBER).Set(room.Number);
+            element.get_Parameter(BuiltInParameter.ROOM_NAME).Set(room.Name);
 
-            //element.get_Parameter(BuiltInParameter.ROOM_NUMBER).Set(room_number)
-            //element.get_Parameter(BuiltInParameter.ROOM_NAME).Set(room_name)
-            //element.get_Parameter(BuiltInParameter.ROOM_LOWER_OFFSET).Set(room_base_offset)
-            //element.get_Parameter(BuiltInParameter.ROOM_UPPER_OFFSET).Set(room_limit_offset)
-            //element.get_Parameter(BuiltInParameter.ROOM_UPPER_LEVEL).Set(room_upper_limit_level_id)
-            //element_phase_name = element.get_Parameter(BuiltInParameter.ROOM_PHASE).AsValueString()
+            element.get_Parameter(BuiltInParameter.ROOM_LOWER_OFFSET).Set(room.BaseOffset);
+            element.get_Parameter(BuiltInParameter.ROOM_UPPER_OFFSET).Set(room.LimitOffset);
         }
 
         private int GetUserWorksetIdByName(string worksetName)
