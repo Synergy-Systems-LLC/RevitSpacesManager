@@ -28,8 +28,7 @@ namespace RevitSpacesManager.ViewModels
         #endregion
 
         public bool AreRoomsChecked => !AreSpacesChecked;
-        public string ActiveObject => GetActiveObject();
-        public string PhaseDisplayPath => $"{ActiveObject}sItemName";
+        public string PhaseDisplayPath => $"{GetModelAreaName()}sItemName";
         public List<PhaseElement> CurrentDocumentPhases => _activeModel.GetPhases();
 
         #region CurrentDocumentPhaseSelected Property
@@ -108,7 +107,6 @@ namespace RevitSpacesManager.ViewModels
         public CreateAllCommand CreateAllCommand { get; }
         public CreateByPhaseCommand CreateByPhaseCommand { get; }
 
-
         private AreaModel _activeModel;
         private readonly RevitDocument _currentDocument;
         private readonly SpacesModel _spacesModel;
@@ -136,9 +134,25 @@ namespace RevitSpacesManager.ViewModels
         }
 
 
+        internal void ShowMissingWorksetMessage()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"'Model {GetModelAreaName()}s' workset doesn't exist in the Current Project. ");
+            sb.Append("Please close the Add-In and Add the missing workset before creation.");
+            string message = sb.ToString();
+            ShowInformationMessage(message);
+        }
         internal void ShowNothingDeleteMessage()
         {
-            string message = $"There are no {ActiveObject}s to Delete in the Current Project";
+            string message = $"There are no {GetModelAreaName()}s to Delete in the Current Project";
+            ShowInformationMessage(message);
+        }
+        internal void ShowNoAccessMessage()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"Some {GetModelAreaName()}s in the Current Project are owned by other user. ");
+            sb.Append("Please close the Add-In and try to Sync your Project with Central.");
+            string message = sb.ToString();
             ShowInformationMessage(message);
         }
         internal void ShowPhaseNotSelectedMessage()
@@ -153,7 +167,7 @@ namespace RevitSpacesManager.ViewModels
         }
         internal void ShowNothingCreateMessage()
         {
-            string message = $"There are no {ActiveObject}s to Create from the selected Linked Model";
+            string message = $"There are no {GetModelAreaName()}s to Create from the selected Linked Model";
             ShowInformationMessage(message);
         }
         internal void ShowReportMessage(string reportMessage)
@@ -168,6 +182,7 @@ namespace RevitSpacesManager.ViewModels
             return result;
         }
 
+        internal string GetModelAreaName() => _activeModel.GetAreaName();
         internal int GetCurrentNumberOfElements() => _activeModel.NumberOfElements;
         internal int GetCurrentSelectedPhaseNumberOfElements()
         {
@@ -199,11 +214,11 @@ namespace RevitSpacesManager.ViewModels
             CreateAllCommand.Model = _activeModel;
             CreateByPhaseCommand.Model = _activeModel;
         }
-        private string GetActiveObject()
+
+        private void ShowInformationMessage(string informationMessage)
         {
-            if(AreSpacesChecked)
-                return "Space";
-            return "Room";
+            string title = "Information";
+            MessageBox.Show(informationMessage, title);
         }
         private void ShowReadmeMessage()
         {
@@ -217,11 +232,6 @@ namespace RevitSpacesManager.ViewModels
             sb.Append("                                                           Молодец, читаешь инструкцию <3");
             string message = sb.ToString();
             MessageBox.Show(message, "Readme");
-        }
-        private void ShowInformationMessage(string informationMessage)
-        {
-            string title = "Information";
-            MessageBox.Show(informationMessage, title);
         }
     }
 }

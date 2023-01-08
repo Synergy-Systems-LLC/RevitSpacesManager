@@ -6,103 +6,146 @@ namespace RevitSpacesManager.ViewModels
 {
     internal class MessageGenerator
     {
-        internal string MessageAll
-        {
-            get
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append($"You are going to {_action} ");
-                sb.Append($"{_number} ");
-                sb.Append($"{_objectType}{PluralSuffix(_number)} ");
-                sb.Append($"{_preposition} ");
-                sb.Append($"{_phasesNumber} ");
-                sb.Append($"Phase{PluralSuffix(_phasesNumber)} ");
-                sb.Append($"{_suffix}:\n");
-                sb.Append($"{_phases}");
-                return sb.ToString();
-            }
-
-        }
-
-        internal string ReportAll
-        {
-            get
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append($"{_number} ");
-                sb.Append($"{_objectType}{PluralSuffix(_number)} ");
-                sb.Append($"ha{HaveSuffix(_number)} been ");
-                sb.Append($"{_action}d ");
-                sb.Append($"{_preposition} ");
-                sb.Append($"{_phasesNumber} ");
-                sb.Append($"Phase{PluralSuffix(_phasesNumber)} ");
-                sb.Append($"{_suffix}");
-                return sb.ToString();
-            }
-
-        }
-
-        internal string MessageSelected
-        {
-            get
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append($"You are going to {_action} ");
-                sb.Append($"{_number} ");
-                sb.Append($"{_objectType}{PluralSuffix(_number)} ");
-                sb.Append($"{_preposition} the ");
-                sb.Append($"'{_phaseName}' Phase ");
-                sb.Append($"\n{_suffix}");
-                return sb.ToString();
-            }
-
-        }
-
-        internal string ReportSelected
-        {
-            get
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append($"{_number} ");
-                sb.Append($"{_objectType}{PluralSuffix(_number)} ");
-                sb.Append($"ha{HaveSuffix(_number)} been ");
-                sb.Append($"{_action}d ");
-                sb.Append($"{_preposition} the ");
-                sb.Append($"'{_phaseName}' Phase ");
-                sb.Append($"\n{_suffix}");
-                return sb.ToString();
-            }
-        }
-
-        private readonly string _action;
-        private readonly int _number;
-        private readonly string _objectType;
-        private readonly string _preposition;
         private readonly int _phasesNumber;
+        private readonly int _documentElementsNumber;
+        private readonly int _selectedPhaseElementsNumber;
+        private readonly int _incorrectlyPlacedElementsNumber;
+        private readonly int _incorrectLevelElementsNumber;
+        private readonly string _areaObjectName;
+        private readonly string _selectedPhaseName;
         private readonly string _phases;
-        private readonly string _suffix;
-        private readonly string _phaseName;
+        private readonly string _linkedDocumentTitle;
+        private readonly RoomsVerificationReport _report;
 
-        internal MessageGenerator(string objectType, int number, List<PhaseElement> phases, Actions action)
+
+        internal MessageGenerator(MainWindowViewModel viewModel)
         {
-            _action = GetActionDescription(action);
-            _number = number;
-            _objectType = objectType;
-            _preposition = GetActionPreposition(action);
+            _areaObjectName = viewModel.GetModelAreaName();
+            _documentElementsNumber = viewModel.GetCurrentNumberOfElements();
+
+            if (viewModel.CurrentDocumentPhaseSelected != null)
+            {
+                _selectedPhaseName = viewModel.CurrentDocumentPhaseSelected.Name;
+                _selectedPhaseElementsNumber = viewModel.GetCurrentSelectedPhaseNumberOfElements();
+            }
+
+            var phases = viewModel.CurrentDocumentPhases;
             _phasesNumber = phases.Count;
             _phases = GetPhasesString(phases);
-            _suffix = GetActionSuffix(action);
         }
 
-        internal MessageGenerator(string objectType, int number, PhaseElement phaseElement, Actions action)
+        internal MessageGenerator(MainWindowViewModel viewModel, RoomsVerificationReport report)
         {
-            _action = GetActionDescription(action);
-            _number = number;
-            _objectType = objectType;
-            _preposition = GetActionPreposition(action);
-            _phaseName = phaseElement.Name;
-            _suffix = GetActionSuffix(action);
+            _areaObjectName = viewModel.GetModelAreaName();
+            _linkedDocumentTitle = viewModel.LinkedDocumentSelected.Title;
+            _selectedPhaseName = viewModel.LinkedDocumentPhaseSelected.Name;
+            _phasesNumber = viewModel.LinkedDocumentPhases.Count;
+
+            _report = report;
+            _documentElementsNumber = _report.VerifiedRooms.Count;
+            _selectedPhaseElementsNumber = _report.VerifiedRooms.Count;
+
+            _incorrectlyPlacedElementsNumber = _report.IncorrectyPlacedRooms.Count;
+            _incorrectLevelElementsNumber = _report.IncorrectLevelRooms.Count;
         }
+
+
+        internal string MessageCreateAll()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (IsAnyIncorrectlyPlacedElement() || IsAnyIncorrectLevelElement())
+            {
+                DefineWarningStrings(sb);
+                sb.Append($"in the '{_linkedDocumentTitle}' linked model.\n");
+                sb.Append($"Please contact Architecture team.\n\n\n");
+            }
+
+            sb.Append($"You are going to create ");
+            sb.Append($"{_documentElementsNumber} ");
+            sb.Append($"{_areaObjectName}{PluralSuffix(_documentElementsNumber)} by Rooms from ");
+            sb.Append($"{_phasesNumber} ");
+            sb.Append($"Phase{PluralSuffix(_phasesNumber)} of the ");
+            sb.Append($"'{_linkedDocumentTitle}' linked Model");
+            return sb.ToString();
+        }
+        internal string ReportCreateAll()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"{_documentElementsNumber} ");
+            sb.Append($"{_areaObjectName}{PluralSuffix(_documentElementsNumber)} ");
+            sb.Append($"ha{HaveSuffix(_documentElementsNumber)} been created by Rooms from ");
+            sb.Append($"{_phasesNumber} ");
+            sb.Append($"Phase{PluralSuffix(_phasesNumber)} \nof the ");
+            sb.Append($"'{_linkedDocumentTitle}' linked Model");
+            return sb.ToString();
+        }
+        internal string MessageCreateSelected()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (IsAnyIncorrectlyPlacedElement() || IsAnyIncorrectLevelElement())
+            {
+                DefineWarningStrings(sb);
+                sb.Append($"in the '{_selectedPhaseName}' phase of the '{_linkedDocumentTitle}' linked model.\n");
+                sb.Append($"Please contact Architecture team.\n\n\n");
+            }
+
+            sb.Append($"You are going to create ");
+            sb.Append($"{_selectedPhaseElementsNumber} ");
+            sb.Append($"{_areaObjectName}{PluralSuffix(_selectedPhaseElementsNumber)} by Rooms from the ");
+            sb.Append($"'{_selectedPhaseName}' phase of the ");
+            sb.Append($"'{_linkedDocumentTitle}' linked Model");
+            return sb.ToString();
+        }
+        internal string ReportCreateSelected()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"{_selectedPhaseElementsNumber} ");
+            sb.Append($"{_areaObjectName}{PluralSuffix(_selectedPhaseElementsNumber)} ");
+            sb.Append($"ha{HaveSuffix(_selectedPhaseElementsNumber)} been crated by Rooms from the ");
+            sb.Append($"'{_selectedPhaseName}' phase \nof the ");
+            sb.Append($"'{_linkedDocumentTitle}' linked Model");
+            return sb.ToString();
+        }
+        internal string MessageDeleteAll()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"You are going to delete ");
+            sb.Append($"{_documentElementsNumber} ");
+            sb.Append($"{_areaObjectName}{PluralSuffix(_documentElementsNumber)} in ");
+            sb.Append($"{_phasesNumber} ");
+            sb.Append($"Phase{PluralSuffix(_phasesNumber)} of the current Model:\n");
+            sb.Append($"{_phases}");
+            return sb.ToString();
+        }
+        internal string ReportDeleteAll()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"{_documentElementsNumber} ");
+            sb.Append($"{_areaObjectName}{PluralSuffix(_documentElementsNumber)} ");
+            sb.Append($"ha{HaveSuffix(_documentElementsNumber)} been deleted in ");
+            sb.Append($"{_phasesNumber} ");
+            sb.Append($"Phase{PluralSuffix(_phasesNumber)} of the current Model");
+            return sb.ToString();
+        }
+        internal string MessageDeleteSelected()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"You are going to delete ");
+            sb.Append($"{_selectedPhaseElementsNumber} ");
+            sb.Append($"{_areaObjectName}{PluralSuffix(_selectedPhaseElementsNumber)} in the ");
+            sb.Append($"'{_selectedPhaseName}' phase \nof the current Model");
+            return sb.ToString();
+        }
+        internal string ReportDeleteSelected()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"{_selectedPhaseElementsNumber} ");
+            sb.Append($"{_areaObjectName}{PluralSuffix(_selectedPhaseElementsNumber)} ");
+            sb.Append($"ha{HaveSuffix(_selectedPhaseElementsNumber)} been deleted in the ");
+            sb.Append($"'{_selectedPhaseName}' phase \nof the current Model");
+            return sb.ToString();
+        }
+
 
         private string GetPhasesString(List<PhaseElement> phases)
         {
@@ -111,40 +154,61 @@ namespace RevitSpacesManager.ViewModels
                 phasesString += $"   - {phase.Name}\n";
             return phasesString;
         }
-
-        private string GetActionDescription(Actions action)
+        private string ToBe(int number)
         {
-            if (action == Actions.Create)
-                return "create";
-            return "delete";
+            if (number == 1)
+                return "is";
+            return "are";
         }
-
-        private string GetActionPreposition(Actions action)
-        {
-            if (action == Actions.Create)
-                return "from";
-            return "in";
-        }
-
-        private string GetActionSuffix(Actions action)
-        {
-            if (action == Actions.Create)
-                return "of the selected Linked Model";
-            return "of the current Model";
-        }
-
         private string PluralSuffix(int number)
         {
             if (number == 1)
                 return "";
             return "s";
         }
-
         private string HaveSuffix(int number)
         {
             if (number == 1)
                 return "s";
             return "ve";
+        }
+
+        private bool IsAnyIncorrectlyPlacedElement()
+        {
+            return _incorrectlyPlacedElementsNumber != 0;
+        }
+        private bool IsAnyIncorrectLevelElement()
+        {
+            return _incorrectLevelElementsNumber != 0;
+        }
+
+        private StringBuilder DefineWarningStrings(StringBuilder sb)
+        {
+            sb.Append($"WARNING(!)\n");
+            if (IsAnyIncorrectlyPlacedElement())
+            {
+                sb.Append($" - {_incorrectlyPlacedElementsNumber} ");
+                sb.Append($"{_areaObjectName}{PluralSuffix(_documentElementsNumber)} ");
+                sb.Append($"{ToBe(_incorrectlyPlacedElementsNumber)} Not placed correctly\n");
+                sb.Append($"{GetRoomsIdsString(_report.IncorrectyPlacedRooms)}\n");
+            }
+
+            if (IsAnyIncorrectLevelElement())
+            {
+                sb.Append($" - {_incorrectLevelElementsNumber} ");
+                sb.Append($"{_areaObjectName}{PluralSuffix(_documentElementsNumber)} ");
+                sb.Append($"ha{HaveSuffix(_incorrectLevelElementsNumber)} Not matching Levels\n\n");
+            }
+            return sb;
+        }
+        private string GetRoomsIdsString(List<RoomElement> roomElements)
+        {
+            string roomsIds = string.Empty;
+            foreach (RoomElement roomElement in roomElements)
+            {
+                roomsIds += $"       {roomElement.Id}\n";
+            }
+            return roomsIds;
         }
     }
 }

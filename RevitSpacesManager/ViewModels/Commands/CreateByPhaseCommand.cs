@@ -35,26 +35,30 @@ namespace RevitSpacesManager.ViewModels
             if (_viewModel.IsLinkedPhaseNotSelected())
             {
                 _viewModel.ShowPhaseNotSelectedMessage();
-                return ;
-            }
-
-            MessageGenerator messageGenerator = new MessageGenerator(
-                _viewModel.ActiveObject,
-                _viewModel.LinkedDocumentPhaseSelected.NumberOfRooms,
-                _viewModel.LinkedDocumentPhaseSelected,
-                Actions.Create
-                );
-            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageSelected);
-
-            if (result == MessageBoxResult.Cancel)
-            {
                 return;
             }
 
-            Model.CreateByPhase();
+            if (Model.IsWorksetNotAvailable())
+            {
+                _viewModel.ShowMissingWorksetMessage();
+                return;
+            }
 
-            _viewModel.ShowReportMessage(messageGenerator.ReportSelected);
-            _viewModel.OnPropertyChanged(nameof(_viewModel.LinkedDocumentSelected));
+            PhaseElement selectedPhase = _viewModel.LinkedDocumentPhaseSelected;
+            var verificationReport = Model.VerifyRooms(selectedPhase);
+            var messageGenerator = new MessageGenerator(_viewModel, verificationReport);
+            string createSelectedMessage = messageGenerator.MessageCreateSelected();
+            MessageBoxResult result = _viewModel.ShowConfirmationDialog(createSelectedMessage);
+
+            if (result == MessageBoxResult.Cancel)
+                return;
+
+            Model.CreateByPhaseRooms(verificationReport.VerifiedRooms, selectedPhase);
+
+            string createSelectedReport = messageGenerator.ReportCreateSelected();
+            _viewModel.ShowReportMessage(createSelectedReport);
+
+            _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }
 }

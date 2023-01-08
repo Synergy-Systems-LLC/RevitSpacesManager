@@ -32,23 +32,27 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            MessageGenerator messageGenerator = new MessageGenerator(
-                _viewModel.ActiveObject,
-                _viewModel.LinkedDocumentSelected.NumberOfRooms,
-                _viewModel.LinkedDocumentPhases,
-                Actions.Create
-                );
-            MessageBoxResult result = _viewModel.ShowConfirmationDialog(messageGenerator.MessageAll);
-
-            if (result == MessageBoxResult.Cancel)
+            if (Model.IsWorksetNotAvailable())
             {
+                _viewModel.ShowMissingWorksetMessage();
                 return;
             }
 
-            Model.CreateAll();
+            RevitDocument selectedLinkedDocument = _viewModel.LinkedDocumentSelected;
+            var verificationReport = Model.VerifyRooms(selectedLinkedDocument);
+            var messageGenerator = new MessageGenerator(_viewModel, verificationReport);
+            string createAllMessage = messageGenerator.MessageCreateAll();
+            MessageBoxResult result = _viewModel.ShowConfirmationDialog(createAllMessage);
 
-            _viewModel.ShowReportMessage(messageGenerator.ReportAll);
-            _viewModel.OnPropertyChanged(nameof(_viewModel.LinkedDocumentSelected));
+            if (result == MessageBoxResult.Cancel)
+                return;
+
+            Model.CreateAllByRooms(verificationReport.VerifiedRooms);
+
+            string createAllReport = messageGenerator.ReportCreateAll();
+            _viewModel.ShowReportMessage(createAllReport);
+
+            _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
         }
     }
 }

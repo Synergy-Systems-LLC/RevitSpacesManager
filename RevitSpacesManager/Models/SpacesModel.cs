@@ -1,15 +1,14 @@
-﻿using RevitSpacesManager.Models.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 
 namespace RevitSpacesManager.Models
 {
     internal class SpacesModel : AreaModel
     {
         internal override int NumberOfElements => _revitDocument.NumberOfSpaces;
-
+        internal override RevitDocument RevitDocument => _revitDocument;
         private readonly RevitDocument _revitDocument;
+        private const string _areaName = "Space";
 
 
         internal SpacesModel(RevitDocument revitDocument)
@@ -18,21 +17,28 @@ namespace RevitSpacesManager.Models
         }
 
 
-        public override void CreateAll()
+        public override void CreateAllByRooms(List<RoomElement> roomElements)
         {
-            MessageBox.Show("СОЗДАНИЕ...");
+            List<RevitElement> elements = roomElements.Cast<RevitElement>().ToList();
+            string transactionName = "Create All Spaces";
+            _revitDocument.CreateSpacesByRooms(elements, transactionName);
+            _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
-        public override void CreateByPhase()
+        public override void CreateByPhaseRooms(List<RoomElement> roomElements, PhaseElement phaseElement)
         {
-            MessageBox.Show("СОЗДАНИЕ...");
+            List<RevitElement> elements = roomElements.Cast<RevitElement>().ToList();
+            string phaseName = phaseElement.Name;
+            string transactionName = $"Create Spaces by '{phaseName}' phase Rooms";
+            _revitDocument.CreateSpacesByRooms(elements, transactionName);
+            _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
         public override void DeleteAll()
         {
             List<RevitElement> elements = _revitDocument.Spaces.Cast<RevitElement>().ToList();
             string transactionName = "Delete All Spaces";
-            RevitServices.DeleteElements(_revitDocument.Document, elements, transactionName);
+            _revitDocument.DeleteElements(elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
@@ -41,10 +47,25 @@ namespace RevitSpacesManager.Models
             List<RevitElement> elements = phaseElement.Spaces.Cast<RevitElement>().ToList();
             string phaseName = phaseElement.Name;
             string transactionName = $"Delete '{phaseName}' phase Spaces";
-            RevitServices.DeleteElements(_revitDocument.Document, elements, transactionName);
+            _revitDocument.DeleteElements(elements, transactionName);
             _revitDocument.RefreshPhasesRoomsAndSpaces();
         }
 
+        public override bool IsWorksetNotAvailable() => !_revitDocument.DoesUserWorksetExist("Model Spaces");
+
+        public override bool AreNotAllElementsEditable()
+        {
+            List<RevitElement> elements = _revitDocument.Spaces.Cast<RevitElement>().ToList();
+            return _revitDocument.AreNotAllElementsEditable(elements);
+        }
+
+        public override bool AreNotAllPhaseElementsEditable(PhaseElement phaseElement)
+        {
+            List<RevitElement> elements = phaseElement.Spaces.Cast<RevitElement>().ToList();
+            return _revitDocument.AreNotAllElementsEditable(elements);
+        }
+
         internal override List<PhaseElement> GetPhases() => _revitDocument.Phases.Where(p => p.NumberOfSpaces > 0).ToList();
+        internal override string GetAreaName() => _areaName;
     }
 }
