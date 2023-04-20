@@ -29,25 +29,9 @@
                 <Directory Id="INSTALLDIR.2020.SynSys" Name="SynSys">
                   <Directory Id="INSTALLDIR.2020.SynSys.RevitSpacesManager" Name="RevitSpacesManager">
 
-                    <Component Id="Component.RevitAPI.dll_3210162216" Guid="9879281f-1f82-42a1-bf75-177e88eecdb3" Win64="yes">
-                      <File Id="RevitAPI.dll_3210162216" Source="..\setup\temp\2020\SynSys\RevitSpacesManager\RevitAPI.dll" />
-                      <RemoveFolder Id="INSTALLDIR.2020.SynSys.RevitSpacesManager" On="uninstall" />
-
-                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
-                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
-                      </RegistryKey>
-                    </Component>
-
-                    <Component Id="Component.RevitAPIUI.dll_772030704" Guid="9879281f-1f82-42a1-bf75-177ea747147d" Win64="yes">
-                      <File Id="RevitAPIUI.dll_772030704" Source="..\setup\temp\2020\SynSys\RevitSpacesManager\RevitAPIUI.dll" />
-
-                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
-                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
-                      </RegistryKey>
-                    </Component>
-
                     <Component Id="Component.RevitSpacesManager.dll_3932070345" Guid="9879281f-1f82-42a1-bf75-177e86e0ac47" Win64="yes">
                       <File Id="RevitSpacesManager.dll_3932070345" Source="..\setup\temp\2020\SynSys\RevitSpacesManager\RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2020.SynSys.RevitSpacesManager" On="uninstall" />
 
                       <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                         <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -81,25 +65,9 @@
                 <Directory Id="INSTALLDIR.2021.SynSys" Name="SynSys">
                   <Directory Id="INSTALLDIR.2021.SynSys.RevitSpacesManager" Name="RevitSpacesManager">
 
-                    <Component Id="Component.RevitAPI.dll_3582257240" Guid="9879281f-1f82-42a1-bf75-177e56fae7ef" Win64="yes">
-                      <File Id="RevitAPI.dll_3582257240" Source="..\setup\temp\2021\SynSys\RevitSpacesManager\RevitAPI.dll" />
-                      <RemoveFolder Id="INSTALLDIR.2021.SynSys.RevitSpacesManager" On="uninstall" />
-
-                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
-                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
-                      </RegistryKey>
-                    </Component>
-
-                    <Component Id="Component.RevitAPIUI.dll_171512643" Guid="9879281f-1f82-42a1-bf75-177efd93fefc" Win64="yes">
-                      <File Id="RevitAPIUI.dll_171512643" Source="..\setup\temp\2021\SynSys\RevitSpacesManager\RevitAPIUI.dll" />
-
-                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
-                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
-                      </RegistryKey>
-                    </Component>
-
                     <Component Id="Component.RevitSpacesManager.dll_2340670656" Guid="9879281f-1f82-42a1-bf75-177e63cf72e9" Win64="yes">
                       <File Id="RevitSpacesManager.dll_2340670656" Source="..\setup\temp\2021\SynSys\RevitSpacesManager\RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2021.SynSys.RevitSpacesManager" On="uninstall" />
 
                       <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                         <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -133,25 +101,9 @@
                 <Directory Id="INSTALLDIR.2022.SynSys" Name="SynSys">
                   <Directory Id="INSTALLDIR.2022.SynSys.RevitSpacesManager" Name="RevitSpacesManager">
 
-                    <Component Id="Component.RevitAPI.dll_3771743947" Guid="9879281f-1f82-42a1-bf75-177e219937b1" Win64="yes">
-                      <File Id="RevitAPI.dll_3771743947" Source="..\setup\temp\2022\SynSys\RevitSpacesManager\RevitAPI.dll" />
-                      <RemoveFolder Id="INSTALLDIR.2022.SynSys.RevitSpacesManager" On="uninstall" />
-
-                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
-                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
-                      </RegistryKey>
-                    </Component>
-
-                    <Component Id="Component.RevitAPIUI.dll_2159361290" Guid="9879281f-1f82-42a1-bf75-177eaea3a072" Win64="yes">
-                      <File Id="RevitAPIUI.dll_2159361290" Source="..\setup\temp\2022\SynSys\RevitSpacesManager\RevitAPIUI.dll" />
-
-                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
-                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
-                      </RegistryKey>
-                    </Component>
-
                     <Component Id="Component.RevitSpacesManager.dll_1180891138" Guid="9879281f-1f82-42a1-bf75-177e27706d88" Win64="yes">
                       <File Id="RevitSpacesManager.dll_1180891138" Source="..\setup\temp\2022\SynSys\RevitSpacesManager\RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2022.SynSys.RevitSpacesManager" On="uninstall" />
 
                       <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                         <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -219,16 +171,10 @@
 
     <Feature Id="Complete" Title="Complete" Absent="allow" Level="1">
       <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_3096436155" />
-      <ComponentRef Id="Component.RevitAPI.dll_3210162216" />
-      <ComponentRef Id="Component.RevitAPIUI.dll_772030704" />
       <ComponentRef Id="Component.RevitSpacesManager.dll_3932070345" />
       <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_4199953190" />
-      <ComponentRef Id="Component.RevitAPI.dll_3582257240" />
-      <ComponentRef Id="Component.RevitAPIUI.dll_171512643" />
       <ComponentRef Id="Component.RevitSpacesManager.dll_2340670656" />
       <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_2596044852" />
-      <ComponentRef Id="Component.RevitAPI.dll_3771743947" />
-      <ComponentRef Id="Component.RevitAPIUI.dll_2159361290" />
       <ComponentRef Id="Component.RevitSpacesManager.dll_1180891138" />
       <ComponentRef Id="AppDataFolder.Autodesk" />
       <ComponentRef Id="AppDataFolder.Autodesk.Revit" />
