@@ -6,9 +6,9 @@
 </auto-generated>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="9879281f-1f82-42a1-bf75-177e97f929c3" Name="RevitSpacesManager" Language="1033" Codepage="Windows-1252" Version="2.0.0.0" UpgradeCode="9879281f-1f82-42a1-bf75-177e77f929c2" Manufacturer="Synergy Systems">
+  <Product Id="9879281f-1f82-42a1-bf75-177e97f929c3" Name="SynSys.RevitSpacesManager" Language="1033" Codepage="Windows-1252" Version="2.0.0.0" UpgradeCode="9879281f-1f82-42a1-bf75-177e77f929c2" Manufacturer="Synergy Systems">
     <Package InstallerVersion="200" Compressed="yes" Platform="x64" SummaryCodepage="Windows-1252" InstallScope="perUser" Languages="1033" />
-    <Media Id="1" Cabinet="RevitSpacesManager.cab" EmbedCab="yes" />
+    <Media Id="1" Cabinet="SynSys.RevitSpacesManager.cab" EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="AppDataFolder" Name="AppDataFolder">
@@ -17,8 +17,8 @@
             <Directory Id="INSTALLDIR" Name="Addins">
               <Directory Id="INSTALLDIR.2020" Name="2020">
 
-                <Component Id="Component.Synsys_RevitSpacesManager.addin_3096436155" Guid="9879281f-1f82-42a1-bf75-177e5e2ac6aa" Win64="yes">
-                  <File Id="Synsys_RevitSpacesManager.addin_3096436155" Source="..\setup\temp\2020\Synsys_RevitSpacesManager.addin" />
+                <Component Id="Component.Synsys_RevitSpacesManager.addin_3001630822" Guid="9879281f-1f82-42a1-bf75-177e58d32a08" Win64="yes">
+                  <File Id="Synsys_RevitSpacesManager.addin_3001630822" Source="..\setup\temp\2020\Synsys_RevitSpacesManager.addin" />
                   <RemoveFolder Id="INSTALLDIR.2020" On="uninstall" />
 
                   <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -27,11 +27,11 @@
                 </Component>
 
                 <Directory Id="INSTALLDIR.2020.SynSys" Name="SynSys">
-                  <Directory Id="INSTALLDIR.2020.SynSys.RevitSpacesManager" Name="RevitSpacesManager">
+                  <Directory Id="INSTALLDIR.2020.SynSys.SynSys.RevitSpacesManager" Name="SynSys.RevitSpacesManager">
 
-                    <Component Id="Component.RevitSpacesManager.dll_3932070345" Guid="9879281f-1f82-42a1-bf75-177e86e0ac47" Win64="yes">
-                      <File Id="RevitSpacesManager.dll_3932070345" Source="..\setup\temp\2020\SynSys\RevitSpacesManager\RevitSpacesManager.dll" />
-                      <RemoveFolder Id="INSTALLDIR.2020.SynSys.RevitSpacesManager" On="uninstall" />
+                    <Component Id="Component.SynSys.RevitSpacesManager.dll_3823225169" Guid="9879281f-1f82-42a1-bf75-177edf97463f" Win64="yes">
+                      <File Id="SynSys.RevitSpacesManager.dll_3823225169" Source="..\setup\temp\2020\SynSys\SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2020.SynSys.SynSys.RevitSpacesManager" On="uninstall" />
 
                       <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                         <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -53,8 +53,8 @@
 
               <Directory Id="INSTALLDIR.2021" Name="2021">
 
-                <Component Id="Component.Synsys_RevitSpacesManager.addin_4199953190" Guid="9879281f-1f82-42a1-bf75-177e06e3ee0f" Win64="yes">
-                  <File Id="Synsys_RevitSpacesManager.addin_4199953190" Source="..\setup\temp\2021\Synsys_RevitSpacesManager.addin" />
+                <Component Id="Component.Synsys_RevitSpacesManager.addin_2423372954" Guid="9879281f-1f82-42a1-bf75-177e9bb525b3" Win64="yes">
+                  <File Id="Synsys_RevitSpacesManager.addin_2423372954" Source="..\setup\temp\2021\Synsys_RevitSpacesManager.addin" />
                   <RemoveFolder Id="INSTALLDIR.2021" On="uninstall" />
 
                   <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -63,11 +63,11 @@
                 </Component>
 
                 <Directory Id="INSTALLDIR.2021.SynSys" Name="SynSys">
-                  <Directory Id="INSTALLDIR.2021.SynSys.RevitSpacesManager" Name="RevitSpacesManager">
+                  <Directory Id="INSTALLDIR.2021.SynSys.SynSys.RevitSpacesManager" Name="SynSys.RevitSpacesManager">
 
-                    <Component Id="Component.RevitSpacesManager.dll_2340670656" Guid="9879281f-1f82-42a1-bf75-177e63cf72e9" Win64="yes">
-                      <File Id="RevitSpacesManager.dll_2340670656" Source="..\setup\temp\2021\SynSys\RevitSpacesManager\RevitSpacesManager.dll" />
-                      <RemoveFolder Id="INSTALLDIR.2021.SynSys.RevitSpacesManager" On="uninstall" />
+                    <Component Id="Component.SynSys.RevitSpacesManager.dll_972108373" Guid="9879281f-1f82-42a1-bf75-177e42408754" Win64="yes">
+                      <File Id="SynSys.RevitSpacesManager.dll_972108373" Source="..\setup\temp\2021\SynSys\SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2021.SynSys.SynSys.RevitSpacesManager" On="uninstall" />
 
                       <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                         <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -89,8 +89,8 @@
 
               <Directory Id="INSTALLDIR.2022" Name="2022">
 
-                <Component Id="Component.Synsys_RevitSpacesManager.addin_2596044852" Guid="9879281f-1f82-42a1-bf75-177edb874bcb" Win64="yes">
-                  <File Id="Synsys_RevitSpacesManager.addin_2596044852" Source="..\setup\temp\2022\Synsys_RevitSpacesManager.addin" />
+                <Component Id="Component.Synsys_RevitSpacesManager.addin_607919229" Guid="9879281f-1f82-42a1-bf75-177e09860656" Win64="yes">
+                  <File Id="Synsys_RevitSpacesManager.addin_607919229" Source="..\setup\temp\2022\Synsys_RevitSpacesManager.addin" />
                   <RemoveFolder Id="INSTALLDIR.2022" On="uninstall" />
 
                   <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -99,11 +99,11 @@
                 </Component>
 
                 <Directory Id="INSTALLDIR.2022.SynSys" Name="SynSys">
-                  <Directory Id="INSTALLDIR.2022.SynSys.RevitSpacesManager" Name="RevitSpacesManager">
+                  <Directory Id="INSTALLDIR.2022.SynSys.SynSys.RevitSpacesManager" Name="SynSys.RevitSpacesManager">
 
-                    <Component Id="Component.RevitSpacesManager.dll_1180891138" Guid="9879281f-1f82-42a1-bf75-177e27706d88" Win64="yes">
-                      <File Id="RevitSpacesManager.dll_1180891138" Source="..\setup\temp\2022\SynSys\RevitSpacesManager\RevitSpacesManager.dll" />
-                      <RemoveFolder Id="INSTALLDIR.2022.SynSys.RevitSpacesManager" On="uninstall" />
+                    <Component Id="Component.SynSys.RevitSpacesManager.dll_4206821644" Guid="9879281f-1f82-42a1-bf75-177e30a05a18" Win64="yes">
+                      <File Id="SynSys.RevitSpacesManager.dll_4206821644" Source="..\setup\temp\2022\SynSys\SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2022.SynSys.SynSys.RevitSpacesManager" On="uninstall" />
 
                       <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                         <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -114,6 +114,42 @@
 
                   <Component Id="INSTALLDIR.2022.SynSys" Guid="9879281f-1f82-42a1-bf75-177ecc820751" Win64="yes">
                     <RemoveFolder Id="INSTALLDIR.2022.SynSys" On="uninstall" />
+
+                    <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                      <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                    </RegistryKey>
+                  </Component>
+
+                </Directory>
+              </Directory>
+
+              <Directory Id="INSTALLDIR.2023" Name="2023">
+
+                <Component Id="Component.Synsys_RevitSpacesManager.addin_3481304664" Guid="9879281f-1f82-42a1-bf75-177ec589adb7" Win64="yes">
+                  <File Id="Synsys_RevitSpacesManager.addin_3481304664" Source="..\setup\temp\2023\Synsys_RevitSpacesManager.addin" />
+                  <RemoveFolder Id="INSTALLDIR.2023" On="uninstall" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+                <Directory Id="INSTALLDIR.2023.SynSys" Name="SynSys">
+                  <Directory Id="INSTALLDIR.2023.SynSys.SynSys.RevitSpacesManager" Name="SynSys.RevitSpacesManager">
+
+                    <Component Id="Component.SynSys.RevitSpacesManager.dll_3878644045" Guid="9879281f-1f82-42a1-bf75-177e80d97cfd" Win64="yes">
+                      <File Id="SynSys.RevitSpacesManager.dll_3878644045" Source="..\setup\temp\2023\SynSys\SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2023.SynSys.SynSys.RevitSpacesManager" On="uninstall" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                  </Directory>
+
+                  <Component Id="INSTALLDIR.2023.SynSys" Guid="9879281f-1f82-42a1-bf75-177ec1b0838c" Win64="yes">
+                    <RemoveFolder Id="INSTALLDIR.2023.SynSys" On="uninstall" />
 
                     <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                       <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -165,23 +201,26 @@
     <UIRef Id="WixUI_InstallDir" />
     <UIRef Id="WixUI_ErrorProgressText" />
 
-    <Property Id="ARPHELPLINK" Value="paltynnikov@synsys.co" />
+    <Property Id="ARPHELPLINK" Value="info@synsys.co" />
     <Property Id="REINSTALLMODE" Value="omus" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
 
     <Feature Id="Complete" Title="Complete" Absent="allow" Level="1">
-      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_3096436155" />
-      <ComponentRef Id="Component.RevitSpacesManager.dll_3932070345" />
-      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_4199953190" />
-      <ComponentRef Id="Component.RevitSpacesManager.dll_2340670656" />
-      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_2596044852" />
-      <ComponentRef Id="Component.RevitSpacesManager.dll_1180891138" />
+      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_3001630822" />
+      <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_3823225169" />
+      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_2423372954" />
+      <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_972108373" />
+      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_607919229" />
+      <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_4206821644" />
+      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_3481304664" />
+      <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_3878644045" />
       <ComponentRef Id="AppDataFolder.Autodesk" />
       <ComponentRef Id="AppDataFolder.Autodesk.Revit" />
       <ComponentRef Id="INSTALLDIR" />
       <ComponentRef Id="INSTALLDIR.2020.SynSys" />
       <ComponentRef Id="INSTALLDIR.2021.SynSys" />
       <ComponentRef Id="INSTALLDIR.2022.SynSys" />
+      <ComponentRef Id="INSTALLDIR.2023.SynSys" />
     </Feature>
 
   </Product>
