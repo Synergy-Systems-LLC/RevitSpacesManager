@@ -1,6 +1,6 @@
-﻿using RevitSpacesManager.Revit;
-using System;
+﻿﻿using System;
 using System.IO;
+using System.Reflection;
 using WixSharp;
 using WixSharp.CommonTasks;
 using WixSharp.Controls;
@@ -11,44 +11,54 @@ namespace WixSharpSetup
     {
         private static void Main()
         {
-            var assemblyName = typeof(RevitManager).Assembly.GetName();
-
-            var outFileName = $"{assemblyName.Name}-{assemblyName.Version}";
-            var version = assemblyName.Version;
-            var projectName = assemblyName.Name;
-
+#if SynSys
+            var customer = "SynSys";
+            var helpLink = "info@synsys.co";
             var guid = new Guid("9879281f-1f82-42a1-bf75-177e77f929c2");
+#endif
+            var developCompany = "Synergy Systems";
+            var pluginName = "RevitSpacesManager";
+            var revitVersion = "2023";
+            var pathToMainPluginAssembly =
+                $@"..\{customer}.{pluginName}\bin\{customer}_R{revitVersion}\{customer}.{pluginName}.dll";
 
-            var solutionDir = Directory.GetParent(Directory.GetCurrentDirectory());
+            // Это нужно чтобы не зависеть от проектов заказчиков
+            AssemblyName pluginAssemblyName = System.Reflection.Assembly
+                .LoadFrom(pathToMainPluginAssembly)
+                .GetName();
+
+            DirectoryInfo solutionDir = Directory.GetParent(Directory.GetCurrentDirectory());
             var tempDir = new DirectoryInfo(Path.Combine(solutionDir.FullName, "setup", "temp"));
-            var setupDir = Path.Combine(solutionDir.FullName, "setup");
+            string setupDir = Path.Combine(solutionDir.FullName, "setup");
 
             var project = new Project
             {
-                Name = projectName,
+                Name = pluginAssemblyName.Name,
+                Version = pluginAssemblyName.Version,
+                OutFileName = $"{pluginAssemblyName.Name}-{pluginAssemblyName.Version}",
                 OutDir = setupDir,
+                GUID = guid,
                 Platform = Platform.x64,
                 UI = WUI.WixUI_InstallDir,
-                Version = version,
-                OutFileName = outFileName,
                 InstallScope = InstallScope.perUser,
                 MajorUpgrade = MajorUpgrade.Default,
-                GUID = guid,
                 ControlPanelInfo =
                 {
-                    Manufacturer = "Synergy Systems",
-                    HelpLink = "paltynnikov@synsys.co",
+                    Manufacturer = developCompany,
+                    HelpLink = helpLink
                 },
                 Dirs = new Dir[]
                 {
-                    new InstallDir(@"%AppDataFolder%\Autodesk\Revit\Addins\", GenerateWixEntities(tempDir.FullName))
+                    new InstallDir(
+                        @"%AppDataFolder%\Autodesk\Revit\Addins\",
+                        GenerateWixEntities(tempDir.FullName)
+                    )
                 }
             };
 
             MajorUpgrade.Default.AllowSameVersionUpgrades = true;
             project.RemoveDialogsBetween(NativeDialogs.WelcomeDlg, NativeDialogs.VerifyReadyDlg);
             project.BuildMsi();
-            //project.BuildMsiCmd();
 
             Directory.Delete(tempDir.FullName, true);
         }
