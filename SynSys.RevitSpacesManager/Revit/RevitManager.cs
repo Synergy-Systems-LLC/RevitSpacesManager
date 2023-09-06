@@ -2,7 +2,7 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace RevitSpacesManager.Revit
+namespace SynSys.RevitSpacesManager.Revit
 {
     public class RevitManager
     {

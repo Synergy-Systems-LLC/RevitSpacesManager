@@ -1,12 +1,12 @@
-﻿using Autodesk.Revit.UI;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Autodesk.Revit.UI;
 
-namespace RevitSpacesManager.Revit
+namespace SynSys.RevitSpacesManager.Revit
 {
     public class App : IExternalApplication
     {

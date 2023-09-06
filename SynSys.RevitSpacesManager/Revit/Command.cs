@@ -5,10 +5,10 @@ using RevitSpacesManager.ViewModels;
 using RevitSpacesManager.Views;
 using System.Windows;
 
-namespace RevitSpacesManager.Revit
+namespace SynSys.RevitSpacesManager.Revit
 {
-    [TransactionAttribute(TransactionMode.Manual)]
-    [RegenerationAttribute(RegenerationOption.Manual)]
+    [Transaction(TransactionMode.Manual)]
+    [Regeneration(RegenerationOption.Manual)]
     internal class Command : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
@@ -45,7 +45,7 @@ namespace RevitSpacesManager.Revit
         private void ShowActiveViewError()
         {
             string message = "There is no special Phase in the currently active View.\nPlease open definite View and relaunch the Revit Spaces\nManager Add-In.";
-            string title = "ERROR!"; 
+            string title = "ERROR!";
             MessageBox.Show(message, title);
         }
     }
