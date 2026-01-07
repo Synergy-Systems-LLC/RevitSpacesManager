@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevitSpacesManager", "SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.csproj", "{2117AA54-097C-4DB5-A222-434F1189538B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SynSys.RevitSpacesManager", "SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.csproj", "{2117AA54-097C-4DB5-A222-434F1189538B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WixSharpSetup", "WixSharpSetup\WixSharpSetup.csproj", "{2394690A-3202-4CA2-ACFF-92EC27D09167}"
 EndProject
@@ -13,10 +13,12 @@ Global
 		SynSys_D21|Any CPU = SynSys_D21|Any CPU
 		SynSys_D22|Any CPU = SynSys_D22|Any CPU
 		SynSys_D23|Any CPU = SynSys_D23|Any CPU
+		SynSys_D24|Any CPU = SynSys_D24|Any CPU
 		SynSys_R20|Any CPU = SynSys_R20|Any CPU
 		SynSys_R21|Any CPU = SynSys_R21|Any CPU
 		SynSys_R22|Any CPU = SynSys_R22|Any CPU
 		SynSys_R23|Any CPU = SynSys_R23|Any CPU
+		SynSys_R24|Any CPU = SynSys_R24|Any CPU
 		SynSys|Any CPU = SynSys|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -28,6 +30,8 @@ Global
 		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_D22|Any CPU.Build.0 = SynSys_D22|Any CPU
 		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_D23|Any CPU.ActiveCfg = SynSys_D23|Any CPU
 		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_D23|Any CPU.Build.0 = SynSys_D23|Any CPU
+		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_D24|Any CPU.ActiveCfg = SynSys_D24|Any CPU
+		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_D24|Any CPU.Build.0 = SynSys_D24|Any CPU
 		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_R20|Any CPU.ActiveCfg = SynSys_R20|Any CPU
 		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_R20|Any CPU.Build.0 = SynSys_R20|Any CPU
 		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_R21|Any CPU.ActiveCfg = SynSys_R21|Any CPU
@@ -36,15 +40,19 @@ Global
 		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_R22|Any CPU.Build.0 = SynSys_R22|Any CPU
 		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_R23|Any CPU.ActiveCfg = SynSys_R23|Any CPU
 		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_R23|Any CPU.Build.0 = SynSys_R23|Any CPU
+		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_R24|Any CPU.ActiveCfg = SynSys_R24|Any CPU
+		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys_R24|Any CPU.Build.0 = SynSys_R24|Any CPU
 		{2117AA54-097C-4DB5-A222-434F1189538B}.SynSys|Any CPU.ActiveCfg = SynSys_R23|Any CPU
 		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys_D20|Any CPU.ActiveCfg = SynSys|Any CPU
 		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys_D21|Any CPU.ActiveCfg = SynSys|Any CPU
 		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys_D22|Any CPU.ActiveCfg = SynSys|Any CPU
 		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys_D23|Any CPU.ActiveCfg = SynSys|Any CPU
+		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys_D24|Any CPU.ActiveCfg = SynSys|Any CPU
 		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys_R20|Any CPU.ActiveCfg = SynSys|Any CPU
 		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys_R21|Any CPU.ActiveCfg = SynSys|Any CPU
 		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys_R22|Any CPU.ActiveCfg = SynSys|Any CPU
 		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys_R23|Any CPU.ActiveCfg = SynSys|Any CPU
+		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys_R24|Any CPU.ActiveCfg = SynSys|Any CPU
 		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys|Any CPU.ActiveCfg = SynSys|Any CPU
 		{2394690A-3202-4CA2-ACFF-92EC27D09167}.SynSys|Any CPU.Build.0 = SynSys|Any CPU
 	EndGlobalSection

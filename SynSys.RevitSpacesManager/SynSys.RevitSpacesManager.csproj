@@ -5,7 +5,7 @@
     <Customer>SynSys</Customer>
     <AssemblyName>$(Customer).RevitSpacesManager</AssemblyName>
     <RootNamespace>$(Customer).RevitSpacesManager</RootNamespace>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -18,10 +18,7 @@
 
   <!-- Эти свойства можно изменить -->
   <PropertyGroup>
-    <Configurations>
-      $(Customer)_D20;$(Customer)_D21;$(Customer)_D22;$(Customer)_D23;
-      $(Customer)_R20;$(Customer)_R21;$(Customer)_R22;$(Customer)_R23
-    </Configurations>
+    <Configurations>SynSys_D20;SynSys_D21;SynSys_D22;SynSys_D23;SynSys_D24;SynSys_R20;SynSys_R21;SynSys_R22;SynSys_R23;SynSys_R24;SynSys_D24</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration.Contains('20'))">
     <RevitVersion>2020</RevitVersion>
@@ -34,6 +31,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration.Contains('23'))">
     <RevitVersion>2023</RevitVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('24'))">
+	<RevitVersion>2024</RevitVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration.Contains('D'))">

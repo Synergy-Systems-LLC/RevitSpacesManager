@@ -4,9 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net48</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Configurations>
-      SynSys
-    </Configurations>
+    <Configurations>SynSys;SynSys_D24;SynSys_R24</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration.Contains(SynSys))">
