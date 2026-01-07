@@ -188,7 +188,7 @@ namespace RevitSpacesManager.ViewModels
             if (IsAnyIncorrectlyPlacedElement())
             {
                 sb.Append($" - {_incorrectlyPlacedElementsNumber} ");
-                sb.Append($"{_areaObjectName}{PluralSuffix(_documentElementsNumber)} ");
+                sb.Append($"Room{PluralSuffix(_incorrectlyPlacedElementsNumber)} ");
                 sb.Append($"{ToBe(_incorrectlyPlacedElementsNumber)} Not placed correctly\n");
                 sb.Append($"{GetRoomsIdsString(_report.IncorrectyPlacedRooms)}\n");
             }
@@ -196,7 +196,7 @@ namespace RevitSpacesManager.ViewModels
             if (IsAnyIncorrectLevelElement())
             {
                 sb.Append($" - {_incorrectLevelElementsNumber} ");
-                sb.Append($"{_areaObjectName}{PluralSuffix(_documentElementsNumber)} ");
+                sb.Append($"Room{PluralSuffix(_incorrectLevelElementsNumber)} ");
                 sb.Append($"ha{HaveSuffix(_incorrectLevelElementsNumber)} Not matching Levels\n\n");
             }
             return sb;
