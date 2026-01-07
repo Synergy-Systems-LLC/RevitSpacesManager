@@ -1,5 +1,6 @@
 ﻿using RevitSpacesManager.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RevitSpacesManager.ViewModels
@@ -197,18 +198,26 @@ namespace RevitSpacesManager.ViewModels
             {
                 sb.Append($" - {_incorrectLevelElementsNumber} ");
                 sb.Append($"Room{PluralSuffix(_incorrectLevelElementsNumber)} ");
-                sb.Append($"ha{HaveSuffix(_incorrectLevelElementsNumber)} Not matching Levels\n\n");
+                sb.Append($"ha{HaveSuffix(_incorrectLevelElementsNumber)} Not matching Levels\n");
+                sb.Append($"{GetLevelNamesString(_report.IncorrectLevelRooms)}\n\n");
             }
             return sb;
         }
         private string GetRoomsIdsString(List<RoomElement> roomElements)
         {
-            string roomsIds = string.Empty;
-            foreach (RoomElement roomElement in roomElements)
-            {
-                roomsIds += $"       {roomElement.Id}\n";
-            }
-            return roomsIds;
+            var roomIds = roomElements.Select(r => $"       {r.Id}");
+            var result = string.Join("\n", roomIds);
+            return $"{result}\n";
+        }
+
+        private string GetLevelNamesString(List<RoomElement> roomElements)
+        {
+            var uniqueNames = roomElements
+                .Select(r => r.Level.Name)
+                .Distinct()
+                .Select(name => $"       {name}");
+            var result = string.Join("\n", uniqueNames);
+            return  $"{result}\n";
         }
     }
 }
