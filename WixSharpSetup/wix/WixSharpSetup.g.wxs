@@ -6,7 +6,7 @@
 </auto-generated>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="9879281f-1f82-42a1-bf75-177e97f939c3" Name="SynSys.RevitSpacesManager" Language="1033" Codepage="Windows-1252" Version="2.0.1.0" UpgradeCode="9879281f-1f82-42a1-bf75-177e77f929c2" Manufacturer="Synergy Systems">
+  <Product Id="9879281f-1f82-42a1-bf75-177e97f949c3" Name="SynSys.RevitSpacesManager" Language="1033" Codepage="Windows-1252" Version="2.0.2.0" UpgradeCode="9879281f-1f82-42a1-bf75-177e77f929c2" Manufacturer="Synergy Systems">
     <Package InstallerVersion="200" Compressed="yes" Platform="x64" SummaryCodepage="Windows-1252" InstallScope="perUser" Languages="1033" />
     <Media Id="1" Cabinet="SynSys.RevitSpacesManager.cab" EmbedCab="yes" />
 

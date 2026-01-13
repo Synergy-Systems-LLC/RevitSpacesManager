@@ -5,7 +5,7 @@
     <Customer>SynSys</Customer>
     <AssemblyName>$(Customer).RevitSpacesManager</AssemblyName>
     <RootNamespace>$(Customer).RevitSpacesManager</RootNamespace>
-    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <AssemblyVersion>2.0.2.0</AssemblyVersion>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
