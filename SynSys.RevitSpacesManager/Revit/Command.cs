@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.IO;
 using System.Windows;
 
 using Autodesk.Revit.DB;
@@ -14,10 +15,21 @@ namespace SynSys.RevitSpacesManager.Revit
     [Regeneration(RegenerationOption.Manual)]
     internal class Command : IExternalCommand
     {
+        // Диагностика краша Revit 2025: пишет шаги и фатальные исключения в %APPDATA%\RevitSpacesManager.log
+        static Command() => Log("Command type loaded");
+
+        internal static void Log(string text)
+        {
+            try { File.AppendAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RevitSpacesManager.log"), $"{DateTime.Now:HH:mm:ss.fff} {text}{Environment.NewLine}"); }
+            catch { }
+        }
+
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             try
             {
+                AppDomain.CurrentDomain.UnhandledException += (s, e) => Log($"FATAL: {e.ExceptionObject}");
+                Log("Execute start");
                 RevitManager.CommandData = commandData;
 
                 if (IsCorrectActiveView())
@@ -33,6 +45,7 @@ namespace SynSys.RevitSpacesManager.Revit
             }
             catch (Exception ex)
             {
+                Log($"CATCH: {ex}");
                 MessageBox.Show($"{ex.Message}\n\n{ex.StackTrace}", "ERROR!");
                 return Result.Failed;
             }
@@ -40,7 +53,18 @@ namespace SynSys.RevitSpacesManager.Revit
 
         private void ShowMainWindow()
         {
-            MainWindow mainWindow = new MainWindow { DataContext = new MainWindowViewModel() };
+            Log("ViewModel");
+            var viewModel = new MainWindowViewModel();
+            Log("Window");
+            MainWindow mainWindow = new MainWindow { DataContext = viewModel };
+            Log("ShowDialog");
+            // Revit 2025+ (.NET 8) падает на необработанных исключениях диспетчера окна
+            mainWindow.Dispatcher.UnhandledException += (s, e) =>
+            {
+                Log($"DISPATCHER: {e.Exception}");
+                MessageBox.Show($"{e.Exception.Message}\n\n{e.Exception.StackTrace}", "ERROR!");
+                e.Handled = true;
+            };
             mainWindow.ShowDialog();
         }
 

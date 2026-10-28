@@ -9,7 +9,7 @@ namespace RevitSpacesManager.Models
         public string RoomsItemName => $"{NumberOfRooms} Room{PluralSuffix(NumberOfRooms)} - {Name}";
 
         internal string Name => _phase.Name;
-        internal int Id => _phase.Id.IntegerValue;
+        internal int Id => _phase.Id.ToInt();
         internal List<SpaceElement> Spaces { get; set; } = new List<SpaceElement>();
         public List<RoomElement> Rooms { get; set; } = new List<RoomElement>();
         internal int NumberOfSpaces => Spaces.Count;

@@ -7,7 +7,7 @@ namespace RevitSpacesManager.Models
     {
         internal string Name => _level.Name;
         internal ElementId ElementId => _level.Id;
-        internal int Id => ElementId.IntegerValue;
+        internal int Id => ElementId.ToInt();
         internal double ProjectElevation => _level.ProjectElevation;
         internal int MatchedLevelId { get; set; } = 0;
 

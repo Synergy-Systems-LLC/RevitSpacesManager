@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +8,9 @@ namespace RevitSpacesManager.Models
     internal class RoomElement : RevitElement
     {
         internal override ElementId ElementId => _room.Id;
-        internal int Id => ElementId.IntegerValue;
+        internal int Id => ElementId.ToInt();
         internal string PhaseName => PhaseParameter.AsValueString();
-        internal int PhaseId => PhaseParameter.AsElementId().IntegerValue;
+        internal int PhaseId => PhaseParameter.AsElementId().ToInt();
 
         internal double Area => _room.Area;
         internal LevelElement? Level => _level;
@@ -33,8 +33,11 @@ namespace RevitSpacesManager.Models
         {
             _room = room;
             _transform = transform;
+            SynSys.RevitSpacesManager.Revit.Command.Log("Room: level");
             _level = GetLevel(documentLevels);
+            SynSys.RevitSpacesManager.Revit.Command.Log("Room: upper");
             _upperLimit = GetUpperLimit(documentLevels);
+            SynSys.RevitSpacesManager.Revit.Command.Log("Room: ok");
         }
 
 
@@ -48,15 +51,16 @@ namespace RevitSpacesManager.Models
         private LevelElement? GetLevel(List<LevelElement> documentLevels)
         {
             Level level = _room.Level;
+            SynSys.RevitSpacesManager.Revit.Command.Log("Room: level read");
             if (level == null) return null;
-            return documentLevels.FirstOrDefault(l => l.Id == _room.Level.Id.IntegerValue);
+            return documentLevels.FirstOrDefault(l => l.Id == _room.Level.Id.ToInt());
         }
 
         private LevelElement? GetUpperLimit(List<LevelElement> documentLevels)
         {
             Level upperLimit = _room.UpperLimit;
             if (upperLimit == null) return _level;
-            return documentLevels.FirstOrDefault(l => l.Id == upperLimit.Id.IntegerValue);
+            return documentLevels.FirstOrDefault(l => l.Id == upperLimit.Id.ToInt());
         }
     }
 }

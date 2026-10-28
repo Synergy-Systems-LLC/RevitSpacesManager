@@ -6,7 +6,7 @@
 </auto-generated>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="9879281f-1f82-42a1-bf75-177e97f969c3" Name="SynSys.RevitSpacesManager" Language="1033" Codepage="Windows-1252" Version="2.0.4.0" UpgradeCode="9879281f-1f82-42a1-bf75-177e77f929c2" Manufacturer="Synergy Systems">
+  <Product Id="9879281f-1f82-42a1-bf75-177e970929c3" Name="SynSys.RevitSpacesManager" Language="1033" Codepage="Windows-1252" Version="2.1.0.0" UpgradeCode="9879281f-1f82-42a1-bf75-177e77f929c2" Manufacturer="Synergy Systems">
     <Package InstallerVersion="200" Compressed="yes" Platform="x64" SummaryCodepage="Windows-1252" InstallScope="perUser" Languages="1033" />
     <Media Id="1" Cabinet="SynSys.RevitSpacesManager.cab" EmbedCab="yes" />
 
@@ -32,6 +32,46 @@
                     <Component Id="Component.SynSys.RevitSpacesManager.dll_1938232339" Guid="9879281f-1f82-42a1-bf75-177e18781f26" Win64="yes">
                       <File Id="SynSys.RevitSpacesManager.dll_1938232339" Source="..\setup\temp\2020\SynSys\SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.dll" />
                       <RemoveFolder Id="INSTALLDIR.2020.SynSys.SynSys.RevitSpacesManager" On="uninstall" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Buffers.dll_2882501640" Guid="9879281f-1f82-42a1-bf75-177ea3fe41ee" Win64="yes">
+                      <File Id="System.Buffers.dll_2882501640" Source="..\setup\temp\2020\SynSys\SynSys.RevitSpacesManager\System.Buffers.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Memory.dll_2537109710" Guid="9879281f-1f82-42a1-bf75-177e666009ec" Win64="yes">
+                      <File Id="System.Memory.dll_2537109710" Source="..\setup\temp\2020\SynSys\SynSys.RevitSpacesManager\System.Memory.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Numerics.Vectors.dll_3740858455" Guid="9879281f-1f82-42a1-bf75-177e91efe4b7" Win64="yes">
+                      <File Id="System.Numerics.Vectors.dll_3740858455" Source="..\setup\temp\2020\SynSys\SynSys.RevitSpacesManager\System.Numerics.Vectors.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Resources.Extensions.dll_2844250148" Guid="9879281f-1f82-42a1-bf75-177e33034455" Win64="yes">
+                      <File Id="System.Resources.Extensions.dll_2844250148" Source="..\setup\temp\2020\SynSys\SynSys.RevitSpacesManager\System.Resources.Extensions.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Runtime.CompilerServices.Unsafe.dll_1074191419" Guid="9879281f-1f82-42a1-bf75-177edea14ce7" Win64="yes">
+                      <File Id="System.Runtime.CompilerServices.Unsafe.dll_1074191419" Source="..\setup\temp\2020\SynSys\SynSys.RevitSpacesManager\System.Runtime.CompilerServices.Unsafe.dll" />
 
                       <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                         <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -74,6 +114,46 @@
                       </RegistryKey>
                     </Component>
 
+                    <Component Id="Component.System.Buffers.dll_2187362060" Guid="9879281f-1f82-42a1-bf75-177e319e4b6c" Win64="yes">
+                      <File Id="System.Buffers.dll_2187362060" Source="..\setup\temp\2021\SynSys\SynSys.RevitSpacesManager\System.Buffers.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Memory.dll_579556648" Guid="9879281f-1f82-42a1-bf75-177e07e1acdd" Win64="yes">
+                      <File Id="System.Memory.dll_579556648" Source="..\setup\temp\2021\SynSys\SynSys.RevitSpacesManager\System.Memory.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Numerics.Vectors.dll_2332463739" Guid="9879281f-1f82-42a1-bf75-177ed8d8a868" Win64="yes">
+                      <File Id="System.Numerics.Vectors.dll_2332463739" Source="..\setup\temp\2021\SynSys\SynSys.RevitSpacesManager\System.Numerics.Vectors.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Resources.Extensions.dll_2394893753" Guid="9879281f-1f82-42a1-bf75-177e063274d4" Win64="yes">
+                      <File Id="System.Resources.Extensions.dll_2394893753" Source="..\setup\temp\2021\SynSys\SynSys.RevitSpacesManager\System.Resources.Extensions.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Runtime.CompilerServices.Unsafe.dll_3675267364" Guid="9879281f-1f82-42a1-bf75-177e12d33647" Win64="yes">
+                      <File Id="System.Runtime.CompilerServices.Unsafe.dll_3675267364" Source="..\setup\temp\2021\SynSys\SynSys.RevitSpacesManager\System.Runtime.CompilerServices.Unsafe.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
                   </Directory>
 
                   <Component Id="INSTALLDIR.2021.SynSys" Guid="9879281f-1f82-42a1-bf75-177e277207f6" Win64="yes">
@@ -104,6 +184,46 @@
                     <Component Id="Component.SynSys.RevitSpacesManager.dll_3079325107" Guid="9879281f-1f82-42a1-bf75-177e834b073a" Win64="yes">
                       <File Id="SynSys.RevitSpacesManager.dll_3079325107" Source="..\setup\temp\2022\SynSys\SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.dll" />
                       <RemoveFolder Id="INSTALLDIR.2022.SynSys.SynSys.RevitSpacesManager" On="uninstall" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Buffers.dll_3631225554" Guid="9879281f-1f82-42a1-bf75-177effe73ff3" Win64="yes">
+                      <File Id="System.Buffers.dll_3631225554" Source="..\setup\temp\2022\SynSys\SynSys.RevitSpacesManager\System.Buffers.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Memory.dll_1523601756" Guid="9879281f-1f82-42a1-bf75-177eb72adfc9" Win64="yes">
+                      <File Id="System.Memory.dll_1523601756" Source="..\setup\temp\2022\SynSys\SynSys.RevitSpacesManager\System.Memory.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Numerics.Vectors.dll_4258293510" Guid="9879281f-1f82-42a1-bf75-177e1d9e8e1c" Win64="yes">
+                      <File Id="System.Numerics.Vectors.dll_4258293510" Source="..\setup\temp\2022\SynSys\SynSys.RevitSpacesManager\System.Numerics.Vectors.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Resources.Extensions.dll_2206739047" Guid="9879281f-1f82-42a1-bf75-177e6608a029" Win64="yes">
+                      <File Id="System.Resources.Extensions.dll_2206739047" Source="..\setup\temp\2022\SynSys\SynSys.RevitSpacesManager\System.Resources.Extensions.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Runtime.CompilerServices.Unsafe.dll_3130618134" Guid="9879281f-1f82-42a1-bf75-177eb4877e20" Win64="yes">
+                      <File Id="System.Runtime.CompilerServices.Unsafe.dll_3130618134" Source="..\setup\temp\2022\SynSys\SynSys.RevitSpacesManager\System.Runtime.CompilerServices.Unsafe.dll" />
 
                       <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                         <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -146,6 +266,46 @@
                       </RegistryKey>
                     </Component>
 
+                    <Component Id="Component.System.Buffers.dll_2347226675" Guid="9879281f-1f82-42a1-bf75-177e993a6a4c" Win64="yes">
+                      <File Id="System.Buffers.dll_2347226675" Source="..\setup\temp\2023\SynSys\SynSys.RevitSpacesManager\System.Buffers.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Memory.dll_2021346883" Guid="9879281f-1f82-42a1-bf75-177ef0d89c97" Win64="yes">
+                      <File Id="System.Memory.dll_2021346883" Source="..\setup\temp\2023\SynSys\SynSys.RevitSpacesManager\System.Memory.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Numerics.Vectors.dll_888452440" Guid="9879281f-1f82-42a1-bf75-177e49d8fae4" Win64="yes">
+                      <File Id="System.Numerics.Vectors.dll_888452440" Source="..\setup\temp\2023\SynSys\SynSys.RevitSpacesManager\System.Numerics.Vectors.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Resources.Extensions.dll_3420207441" Guid="9879281f-1f82-42a1-bf75-177e54fb4c45" Win64="yes">
+                      <File Id="System.Resources.Extensions.dll_3420207441" Source="..\setup\temp\2023\SynSys\SynSys.RevitSpacesManager\System.Resources.Extensions.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Runtime.CompilerServices.Unsafe.dll_2418614729" Guid="9879281f-1f82-42a1-bf75-177e09ecafad" Win64="yes">
+                      <File Id="System.Runtime.CompilerServices.Unsafe.dll_2418614729" Source="..\setup\temp\2023\SynSys\SynSys.RevitSpacesManager\System.Runtime.CompilerServices.Unsafe.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
                   </Directory>
 
                   <Component Id="INSTALLDIR.2023.SynSys" Guid="9879281f-1f82-42a1-bf75-177ec1b0838c" Win64="yes">
@@ -182,10 +342,122 @@
                       </RegistryKey>
                     </Component>
 
+                    <Component Id="Component.System.Buffers.dll_299753484" Guid="9879281f-1f82-42a1-bf75-177ea355da91" Win64="yes">
+                      <File Id="System.Buffers.dll_299753484" Source="..\setup\temp\2024\SynSys\SynSys.RevitSpacesManager\System.Buffers.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Memory.dll_351775956" Guid="9879281f-1f82-42a1-bf75-177e8aaf45bc" Win64="yes">
+                      <File Id="System.Memory.dll_351775956" Source="..\setup\temp\2024\SynSys\SynSys.RevitSpacesManager\System.Memory.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Numerics.Vectors.dll_2454507245" Guid="9879281f-1f82-42a1-bf75-177e1aec53cc" Win64="yes">
+                      <File Id="System.Numerics.Vectors.dll_2454507245" Source="..\setup\temp\2024\SynSys\SynSys.RevitSpacesManager\System.Numerics.Vectors.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Resources.Extensions.dll_2149124379" Guid="9879281f-1f82-42a1-bf75-177ef0d7d7b1" Win64="yes">
+                      <File Id="System.Resources.Extensions.dll_2149124379" Source="..\setup\temp\2024\SynSys\SynSys.RevitSpacesManager\System.Resources.Extensions.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                    <Component Id="Component.System.Runtime.CompilerServices.Unsafe.dll_849011" Guid="9879281f-1f82-42a1-bf75-177e1be93e41" Win64="yes">
+                      <File Id="System.Runtime.CompilerServices.Unsafe.dll_849011" Source="..\setup\temp\2024\SynSys\SynSys.RevitSpacesManager\System.Runtime.CompilerServices.Unsafe.dll" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
                   </Directory>
 
                   <Component Id="INSTALLDIR.2024.SynSys" Guid="9879281f-1f82-42a1-bf75-177ebbae1747" Win64="yes">
                     <RemoveFolder Id="INSTALLDIR.2024.SynSys" On="uninstall" />
+
+                    <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                      <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                    </RegistryKey>
+                  </Component>
+
+                </Directory>
+              </Directory>
+
+              <Directory Id="INSTALLDIR.2025" Name="2025">
+
+                <Component Id="Component.Synsys_RevitSpacesManager.addin_3000584957" Guid="9879281f-1f82-42a1-bf75-177eb683bd6c" Win64="yes">
+                  <File Id="Synsys_RevitSpacesManager.addin_3000584957" Source="..\setup\temp\2025\Synsys_RevitSpacesManager.addin" />
+                  <RemoveFolder Id="INSTALLDIR.2025" On="uninstall" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+                <Directory Id="INSTALLDIR.2025.SynSys" Name="SynSys">
+                  <Directory Id="INSTALLDIR.2025.SynSys.SynSys.RevitSpacesManager" Name="SynSys.RevitSpacesManager">
+
+                    <Component Id="Component.SynSys.RevitSpacesManager.dll_560914819" Guid="9879281f-1f82-42a1-bf75-177e6cac8fa2" Win64="yes">
+                      <File Id="SynSys.RevitSpacesManager.dll_560914819" Source="..\setup\temp\2025\SynSys\SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2025.SynSys.SynSys.RevitSpacesManager" On="uninstall" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                  </Directory>
+
+                  <Component Id="INSTALLDIR.2025.SynSys" Guid="9879281f-1f82-42a1-bf75-177e0967f882" Win64="yes">
+                    <RemoveFolder Id="INSTALLDIR.2025.SynSys" On="uninstall" />
+
+                    <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                      <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                    </RegistryKey>
+                  </Component>
+
+                </Directory>
+              </Directory>
+
+              <Directory Id="INSTALLDIR.2026" Name="2026">
+
+                <Component Id="Component.Synsys_RevitSpacesManager.addin_3550806526" Guid="9879281f-1f82-42a1-bf75-177ee4612d21" Win64="yes">
+                  <File Id="Synsys_RevitSpacesManager.addin_3550806526" Source="..\setup\temp\2026\Synsys_RevitSpacesManager.addin" />
+                  <RemoveFolder Id="INSTALLDIR.2026" On="uninstall" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+                <Directory Id="INSTALLDIR.2026.SynSys" Name="SynSys">
+                  <Directory Id="INSTALLDIR.2026.SynSys.SynSys.RevitSpacesManager" Name="SynSys.RevitSpacesManager">
+
+                    <Component Id="Component.SynSys.RevitSpacesManager.dll_2520631968" Guid="9879281f-1f82-42a1-bf75-177e0571705c" Win64="yes">
+                      <File Id="SynSys.RevitSpacesManager.dll_2520631968" Source="..\setup\temp\2026\SynSys\SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2026.SynSys.SynSys.RevitSpacesManager" On="uninstall" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                  </Directory>
+
+                  <Component Id="INSTALLDIR.2026.SynSys" Guid="9879281f-1f82-42a1-bf75-177e03668c3d" Win64="yes">
+                    <RemoveFolder Id="INSTALLDIR.2026.SynSys" On="uninstall" />
 
                     <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                       <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -244,14 +516,43 @@
     <Feature Id="Complete" Title="Complete" Absent="allow" Level="1">
       <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_3096436155" />
       <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_1938232339" />
+      <ComponentRef Id="Component.System.Buffers.dll_2882501640" />
+      <ComponentRef Id="Component.System.Memory.dll_2537109710" />
+      <ComponentRef Id="Component.System.Numerics.Vectors.dll_3740858455" />
+      <ComponentRef Id="Component.System.Resources.Extensions.dll_2844250148" />
+      <ComponentRef Id="Component.System.Runtime.CompilerServices.Unsafe.dll_1074191419" />
       <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_4199953190" />
       <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_713136293" />
+      <ComponentRef Id="Component.System.Buffers.dll_2187362060" />
+      <ComponentRef Id="Component.System.Memory.dll_579556648" />
+      <ComponentRef Id="Component.System.Numerics.Vectors.dll_2332463739" />
+      <ComponentRef Id="Component.System.Resources.Extensions.dll_2394893753" />
+      <ComponentRef Id="Component.System.Runtime.CompilerServices.Unsafe.dll_3675267364" />
       <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_2596044852" />
       <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_3079325107" />
+      <ComponentRef Id="Component.System.Buffers.dll_3631225554" />
+      <ComponentRef Id="Component.System.Memory.dll_1523601756" />
+      <ComponentRef Id="Component.System.Numerics.Vectors.dll_4258293510" />
+      <ComponentRef Id="Component.System.Resources.Extensions.dll_2206739047" />
+      <ComponentRef Id="Component.System.Runtime.CompilerServices.Unsafe.dll_3130618134" />
       <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_1308234580" />
       <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_806776477" />
+      <ComponentRef Id="Component.System.Buffers.dll_2347226675" />
+      <ComponentRef Id="Component.System.Memory.dll_2021346883" />
+      <ComponentRef Id="Component.System.Numerics.Vectors.dll_888452440" />
+      <ComponentRef Id="Component.System.Resources.Extensions.dll_3420207441" />
+      <ComponentRef Id="Component.System.Runtime.CompilerServices.Unsafe.dll_2418614729" />
       <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_3386961119" />
       <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_3660243600" />
+      <ComponentRef Id="Component.System.Buffers.dll_299753484" />
+      <ComponentRef Id="Component.System.Memory.dll_351775956" />
+      <ComponentRef Id="Component.System.Numerics.Vectors.dll_2454507245" />
+      <ComponentRef Id="Component.System.Resources.Extensions.dll_2149124379" />
+      <ComponentRef Id="Component.System.Runtime.CompilerServices.Unsafe.dll_849011" />
+      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_3000584957" />
+      <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_560914819" />
+      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_3550806526" />
+      <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_2520631968" />
       <ComponentRef Id="AppDataFolder.Autodesk" />
       <ComponentRef Id="AppDataFolder.Autodesk.Revit" />
       <ComponentRef Id="INSTALLDIR" />
@@ -260,6 +561,8 @@
       <ComponentRef Id="INSTALLDIR.2022.SynSys" />
       <ComponentRef Id="INSTALLDIR.2023.SynSys" />
       <ComponentRef Id="INSTALLDIR.2024.SynSys" />
+      <ComponentRef Id="INSTALLDIR.2025.SynSys" />
+      <ComponentRef Id="INSTALLDIR.2026.SynSys" />
     </Feature>
 
   </Product>

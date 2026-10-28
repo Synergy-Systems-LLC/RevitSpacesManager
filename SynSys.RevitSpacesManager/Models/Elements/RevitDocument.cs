@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.Mechanical;
 using System;
@@ -30,8 +30,11 @@ namespace RevitSpacesManager.Models
         {
             _document = document;
             _transform = transform;
+            SynSys.RevitSpacesManager.Revit.Command.Log("Doc: levels");
             _levels = GetLevels(document);
+            SynSys.RevitSpacesManager.Revit.Command.Log("Doc: phases");
             Phases = GetPhasesWithRoomsAndSpaces(_document);
+            SynSys.RevitSpacesManager.Revit.Command.Log("Doc: done");
         }
 
 
@@ -128,7 +131,7 @@ namespace RevitSpacesManager.Models
 
         private Space CreateSpaceByRoomElement(Document document, RoomElement room)
         {
-            ElementId matchingLevelElementId = new ElementId(room.Level.MatchedLevelId);
+            ElementId matchingLevelElementId = room.Level.MatchedLevelId.ToElementId();
             Level level = (Level)document.GetElement(matchingLevelElementId);
             XYZ locationPoint = room.LocationPoint;
             UV spaceUV = new UV(locationPoint.X, locationPoint.Y);
@@ -153,7 +156,7 @@ namespace RevitSpacesManager.Models
 
         private Room CreateRoomByRoomElement(Document document, RoomElement room)
         {
-            ElementId matchingLevelElementId = new ElementId(room.Level.MatchedLevelId);
+            ElementId matchingLevelElementId = room.Level.MatchedLevelId.ToElementId();
             Level level = (Level)document.GetElement(matchingLevelElementId);
             XYZ locationPoint = room.LocationPoint;
             UV spaceUV = new UV(locationPoint.X, locationPoint.Y);
@@ -166,7 +169,7 @@ namespace RevitSpacesManager.Models
         private void DefineElementPropertiesByRoomElement(Element element, RoomElement room)
         {
             int upperLimitId = room.UpperLimit.MatchedLevelId;
-            ElementId upperLimitElementId = new ElementId(upperLimitId);
+            ElementId upperLimitElementId = upperLimitId.ToElementId();
             element.get_Parameter(BuiltInParameter.ROOM_UPPER_LEVEL).Set(upperLimitElementId);
 
             element.get_Parameter(BuiltInParameter.ROOM_NUMBER).Set(room.Number);
@@ -250,7 +253,9 @@ namespace RevitSpacesManager.Models
         private List<PhaseElement> GetPhasesWithRoomsAndSpaces(Document document)
         {
             List<PhaseElement> phases = GetPhases(document);
+            SynSys.RevitSpacesManager.Revit.Command.Log("Doc: spaces");
             List<SpaceElement> spaces = GetSpaces(document);
+            SynSys.RevitSpacesManager.Revit.Command.Log("Doc: rooms");
             List<RoomElement> rooms = GetRooms(document);
 
             foreach (PhaseElement phase in phases)

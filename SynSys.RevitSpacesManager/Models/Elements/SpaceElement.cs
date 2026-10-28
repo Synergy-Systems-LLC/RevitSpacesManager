@@ -6,10 +6,10 @@ namespace RevitSpacesManager.Models
     internal class SpaceElement : RevitElement
     {
         internal override ElementId ElementId => _space.Id;
-        internal int Id => ElementId.IntegerValue;
+        internal int Id => ElementId.ToInt();
         internal string Name => _space.Name;
         internal string PhaseName => PhaseParameter.AsValueString();
-        internal int PhaseId => PhaseParameter.AsElementId().IntegerValue;
+        internal int PhaseId => PhaseParameter.AsElementId().ToInt();
 
         private readonly Space _space;
         private Parameter PhaseParameter => _space.get_Parameter(BuiltInParameter.ROOM_PHASE);

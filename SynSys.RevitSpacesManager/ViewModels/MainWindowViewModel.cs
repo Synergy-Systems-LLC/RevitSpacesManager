@@ -1,4 +1,4 @@
-﻿using RevitSpacesManager.Models;
+using RevitSpacesManager.Models;
 using SynSys.RevitSpacesManager.Revit;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,7 +62,7 @@ namespace RevitSpacesManager.ViewModels
             {
                 Set(ref _linkedDocumentSelected, value);
                 OnPropertyChanged(nameof(LinkedDocumentPhases));
-                LinkedDocumentPhaseSelected = LinkedDocumentPhases[0];
+                LinkedDocumentPhaseSelected = LinkedDocumentPhases.FirstOrDefault();
             }
         }
         #endregion
@@ -118,12 +118,17 @@ namespace RevitSpacesManager.ViewModels
 
         public MainWindowViewModel()
         {
+            SynSys.RevitSpacesManager.Revit.Command.Log("VM: RevitDocument");
             _currentDocument = new RevitDocument(RevitManager.Document);
+            SynSys.RevitSpacesManager.Revit.Command.Log("VM: ActiveViewPhaseName");
             ActiveViewPhaseName = _currentDocument.ActiveViewPhaseName;
+            SynSys.RevitSpacesManager.Revit.Command.Log("VM: Links");
             LinkedDocuments = _currentDocument.GetRevitLinkDocuments();
 
+            SynSys.RevitSpacesManager.Revit.Command.Log("VM: Models");
             _spacesModel = new SpacesModel(_currentDocument);
             _roomsModel = new RoomsModel(_currentDocument);
+            SynSys.RevitSpacesManager.Revit.Command.Log("VM: Commands");
             _activeModel = _spacesModel;
 
             ExitCommand = new LambdaCommand(OnExitCommandExecuted);

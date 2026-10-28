@@ -15,6 +15,7 @@ namespace SynSys.RevitSpacesManager.Revit
 
         public Result OnStartup(UIControlledApplication revit)
         {
+            Command.Log("OnStartup");
             CreateRibbonTab(revit);
             CreateRibbonPanel(revit);
             CreateButton();

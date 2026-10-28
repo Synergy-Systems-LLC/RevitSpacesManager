@@ -5,12 +5,11 @@
     <Customer>SynSys</Customer>
     <AssemblyName>$(Customer).RevitSpacesManager</AssemblyName>
     <RootNamespace>$(Customer).RevitSpacesManager</RootNamespace>
-    <AssemblyVersion>2.0.4.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
@@ -18,7 +17,7 @@
 
   <!-- Эти свойства можно изменить -->
   <PropertyGroup>
-    <Configurations>SynSys_D20;SynSys_D21;SynSys_D22;SynSys_D23;SynSys_D24;SynSys_R20;SynSys_R21;SynSys_R22;SynSys_R23;SynSys_R24;SynSys_D24</Configurations>
+    <Configurations>SynSys_D20;SynSys_D21;SynSys_D22;SynSys_D23;SynSys_D24;SynSys_R20;SynSys_R21;SynSys_R22;SynSys_R23;SynSys_R24;SynSys_D25;SynSys_R25;SynSys_D26;SynSys_R26</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration.Contains('20'))">
     <RevitVersion>2020</RevitVersion>
@@ -34,6 +33,27 @@
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration.Contains('24'))">
 	<RevitVersion>2024</RevitVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('25'))">
+    <RevitVersion>2025</RevitVersion>
+    <RevitApiVersion>2025.0.2</RevitApiVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('26'))">
+    <RevitVersion>2026</RevitVersion>
+    <RevitApiVersion>2026.0.4</RevitApiVersion>
+  </PropertyGroup>
+
+  <!-- Пакет API закрепляется на базовой версии: сборка со свежим 25.4.x не грузится в Revit с более старым билдом -->
+  <PropertyGroup Condition="'$(RevitApiVersion)' == ''">
+    <RevitApiVersion>$(RevitVersion).*</RevitApiVersion>
+  </PropertyGroup>
+
+  <!-- Revit 2025+ работает на .NET 8 -->
+  <PropertyGroup Condition="'$(RevitVersion)' &gt;= '2025'">
+    <TargetFramework>net8.0-windows</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RevitVersion)' &lt; '2025'">
+    <TargetFramework>net48</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration.Contains('D'))">
@@ -56,11 +76,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*" />
-    <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*" />
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitApiVersion)" />
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitApiVersion)" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+  </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Resources.Extensions" Version="8.0.*" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <PackageReference Include="System.Drawing.Common" Version="8.0.*" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
