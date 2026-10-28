@@ -6,7 +6,7 @@
 </auto-generated>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="9879281f-1f82-42a1-bf75-177e97f949c3" Name="SynSys.RevitSpacesManager" Language="1033" Codepage="Windows-1252" Version="2.0.2.0" UpgradeCode="9879281f-1f82-42a1-bf75-177e77f929c2" Manufacturer="Synergy Systems">
+  <Product Id="9879281f-1f82-42a1-bf75-177e97f969c3" Name="SynSys.RevitSpacesManager" Language="1033" Codepage="Windows-1252" Version="2.0.4.0" UpgradeCode="9879281f-1f82-42a1-bf75-177e77f929c2" Manufacturer="Synergy Systems">
     <Package InstallerVersion="200" Compressed="yes" Platform="x64" SummaryCodepage="Windows-1252" InstallScope="perUser" Languages="1033" />
     <Media Id="1" Cabinet="SynSys.RevitSpacesManager.cab" EmbedCab="yes" />
 
@@ -15,6 +15,78 @@
         <Directory Id="AppDataFolder.Autodesk" Name="Autodesk">
           <Directory Id="AppDataFolder.Autodesk.Revit" Name="Revit">
             <Directory Id="INSTALLDIR" Name="Addins">
+              <Directory Id="INSTALLDIR.2020" Name="2020">
+
+                <Component Id="Component.Synsys_RevitSpacesManager.addin_3096436155" Guid="9879281f-1f82-42a1-bf75-177e5e2ac6aa" Win64="yes">
+                  <File Id="Synsys_RevitSpacesManager.addin_3096436155" Source="..\setup\temp\2020\Synsys_RevitSpacesManager.addin" />
+                  <RemoveFolder Id="INSTALLDIR.2020" On="uninstall" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+                <Directory Id="INSTALLDIR.2020.SynSys" Name="SynSys">
+                  <Directory Id="INSTALLDIR.2020.SynSys.SynSys.RevitSpacesManager" Name="SynSys.RevitSpacesManager">
+
+                    <Component Id="Component.SynSys.RevitSpacesManager.dll_1938232339" Guid="9879281f-1f82-42a1-bf75-177e18781f26" Win64="yes">
+                      <File Id="SynSys.RevitSpacesManager.dll_1938232339" Source="..\setup\temp\2020\SynSys\SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2020.SynSys.SynSys.RevitSpacesManager" On="uninstall" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                  </Directory>
+
+                  <Component Id="INSTALLDIR.2020.SynSys" Guid="9879281f-1f82-42a1-bf75-177ed9b925bb" Win64="yes">
+                    <RemoveFolder Id="INSTALLDIR.2020.SynSys" On="uninstall" />
+
+                    <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                      <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                    </RegistryKey>
+                  </Component>
+
+                </Directory>
+              </Directory>
+
+              <Directory Id="INSTALLDIR.2021" Name="2021">
+
+                <Component Id="Component.Synsys_RevitSpacesManager.addin_4199953190" Guid="9879281f-1f82-42a1-bf75-177e06e3ee0f" Win64="yes">
+                  <File Id="Synsys_RevitSpacesManager.addin_4199953190" Source="..\setup\temp\2021\Synsys_RevitSpacesManager.addin" />
+                  <RemoveFolder Id="INSTALLDIR.2021" On="uninstall" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+                <Directory Id="INSTALLDIR.2021.SynSys" Name="SynSys">
+                  <Directory Id="INSTALLDIR.2021.SynSys.SynSys.RevitSpacesManager" Name="SynSys.RevitSpacesManager">
+
+                    <Component Id="Component.SynSys.RevitSpacesManager.dll_713136293" Guid="9879281f-1f82-42a1-bf75-177eb9e50a68" Win64="yes">
+                      <File Id="SynSys.RevitSpacesManager.dll_713136293" Source="..\setup\temp\2021\SynSys\SynSys.RevitSpacesManager\SynSys.RevitSpacesManager.dll" />
+                      <RemoveFolder Id="INSTALLDIR.2021.SynSys.SynSys.RevitSpacesManager" On="uninstall" />
+
+                      <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                        <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                      </RegistryKey>
+                    </Component>
+
+                  </Directory>
+
+                  <Component Id="INSTALLDIR.2021.SynSys" Guid="9879281f-1f82-42a1-bf75-177e277207f6" Win64="yes">
+                    <RemoveFolder Id="INSTALLDIR.2021.SynSys" On="uninstall" />
+
+                    <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                      <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                    </RegistryKey>
+                  </Component>
+
+                </Directory>
+              </Directory>
+
               <Directory Id="INSTALLDIR.2022" Name="2022">
 
                 <Component Id="Component.Synsys_RevitSpacesManager.addin_2596044852" Guid="9879281f-1f82-42a1-bf75-177edb874bcb" Win64="yes">
@@ -170,6 +242,10 @@
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
 
     <Feature Id="Complete" Title="Complete" Absent="allow" Level="1">
+      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_3096436155" />
+      <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_1938232339" />
+      <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_4199953190" />
+      <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_713136293" />
       <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_2596044852" />
       <ComponentRef Id="Component.SynSys.RevitSpacesManager.dll_3079325107" />
       <ComponentRef Id="Component.Synsys_RevitSpacesManager.addin_1308234580" />
@@ -179,6 +255,8 @@
       <ComponentRef Id="AppDataFolder.Autodesk" />
       <ComponentRef Id="AppDataFolder.Autodesk.Revit" />
       <ComponentRef Id="INSTALLDIR" />
+      <ComponentRef Id="INSTALLDIR.2020.SynSys" />
+      <ComponentRef Id="INSTALLDIR.2021.SynSys" />
       <ComponentRef Id="INSTALLDIR.2022.SynSys" />
       <ComponentRef Id="INSTALLDIR.2023.SynSys" />
       <ComponentRef Id="INSTALLDIR.2024.SynSys" />

@@ -1,4 +1,5 @@
 ﻿using RevitSpacesManager.Models;
+using System;
 using System.Windows;
 
 namespace RevitSpacesManager.ViewModels
@@ -44,21 +45,28 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            PhaseElement selectedPhase = _viewModel.LinkedDocumentPhaseSelected;
-            var verificationReport = Model.VerifyRooms(selectedPhase);
-            var messageGenerator = new MessageGenerator(_viewModel, verificationReport);
-            string createSelectedMessage = messageGenerator.MessageCreateSelected();
-            MessageBoxResult result = _viewModel.ShowConfirmationDialog(createSelectedMessage);
+            var selectedPhase = _viewModel.LinkedDocumentPhaseSelected;
+            if (selectedPhase == null) return;
 
-            if (result == MessageBoxResult.Cancel)
-                return;
+            try
+            {
+                var verificationReport = Model.VerifyRooms(selectedPhase);
+                var messageGenerator = new MessageGenerator(_viewModel, verificationReport);
+                string createSelectedMessage = messageGenerator.MessageCreateSelected();
+                MessageBoxResult result = _viewModel.ShowConfirmationDialog(createSelectedMessage);
+                if (result == MessageBoxResult.Cancel) return;
 
-            Model.CreateByPhaseRooms(verificationReport.VerifiedRooms, selectedPhase);
+                Model.CreateByPhaseRooms(verificationReport.VerifiedRooms, selectedPhase);
 
-            string createSelectedReport = messageGenerator.ReportCreateSelected();
-            _viewModel.ShowReportMessage(createSelectedReport);
+                string createSelectedReport = messageGenerator.ReportCreateSelected();
+                _viewModel.ShowReportMessage(createSelectedReport);
 
-            _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
+                _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}\n\n{ex.StackTrace}", "CreateByPhaseCommand");
+            }
         }
     }
 }

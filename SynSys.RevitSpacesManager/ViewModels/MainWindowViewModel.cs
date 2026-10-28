@@ -29,11 +29,15 @@ namespace RevitSpacesManager.ViewModels
 
         public bool AreRoomsChecked => !AreSpacesChecked;
         public string PhaseDisplayPath => $"{GetModelAreaName()}sItemName";
+
+        private readonly RevitDocument _currentDocument;
+        public RevitDocument CurrentDocument => _currentDocument;
+
         public List<PhaseElement> CurrentDocumentPhases => _activeModel.GetPhases();
 
         #region CurrentDocumentPhaseSelected Property
-        private PhaseElement _currentDocumentPhaseSelected;
-        public PhaseElement CurrentDocumentPhaseSelected
+        private PhaseElement? _currentDocumentPhaseSelected;
+        public PhaseElement? CurrentDocumentPhaseSelected
         {
             get => _currentDocumentPhaseSelected;
             set => Set(ref _currentDocumentPhaseSelected, value);
@@ -41,7 +45,7 @@ namespace RevitSpacesManager.ViewModels
         #endregion
 
         #region LinkedDocuments Property
-        private List<RevitDocument> _linkedDocuments;
+        private List<RevitDocument> _linkedDocuments = new List<RevitDocument>();
         public List<RevitDocument> LinkedDocuments
         {
             get => _linkedDocuments;
@@ -50,8 +54,8 @@ namespace RevitSpacesManager.ViewModels
         #endregion
 
         #region LinkedDocumentSelected Property
-        private RevitDocument _linkedDocumentSelected;
-        public RevitDocument LinkedDocumentSelected
+        private RevitDocument? _linkedDocumentSelected;
+        public RevitDocument? LinkedDocumentSelected
         {
             get => _linkedDocumentSelected;
             set
@@ -63,11 +67,11 @@ namespace RevitSpacesManager.ViewModels
         }
         #endregion
 
-        public List<PhaseElement> LinkedDocumentPhases => _linkedDocumentSelected.Phases.Where(p => p.NumberOfRooms > 0).ToList();
+        public List<PhaseElement> LinkedDocumentPhases => _linkedDocumentSelected?.Phases?.Where(p => p.NumberOfRooms > 0).ToList() ?? new List<PhaseElement>();
 
         #region LinkedDocumentPhaseSelected Property
-        private PhaseElement _linkedDocumentPhaseSelected;
-        public PhaseElement LinkedDocumentPhaseSelected
+        private PhaseElement? _linkedDocumentPhaseSelected;
+        public PhaseElement? LinkedDocumentPhaseSelected
         {
             get => _linkedDocumentPhaseSelected;
             set => Set(ref _linkedDocumentPhaseSelected, value);
@@ -75,7 +79,7 @@ namespace RevitSpacesManager.ViewModels
         #endregion
 
         #region ActiveViewPhaseName Property
-        private string _activeViewPhaseName;
+        private string _activeViewPhaseName = "UNKNOWN";
         public string ActiveViewPhaseName
         {
             get => _activeViewPhaseName;
@@ -108,9 +112,8 @@ namespace RevitSpacesManager.ViewModels
         public CreateByPhaseCommand CreateByPhaseCommand { get; }
 
         private AreaModel _activeModel;
-        private readonly RevitDocument _currentDocument;
-        private readonly SpacesModel _spacesModel;
         private readonly RoomsModel _roomsModel;
+        private readonly SpacesModel _spacesModel;
 
 
         public MainWindowViewModel()
@@ -187,14 +190,14 @@ namespace RevitSpacesManager.ViewModels
         internal int GetCurrentSelectedPhaseNumberOfElements()
         {
             if (AreSpacesChecked)
-                return CurrentDocumentPhaseSelected.NumberOfSpaces;
-            return CurrentDocumentPhaseSelected.NumberOfRooms;
+                return CurrentDocumentPhaseSelected?.NumberOfSpaces ?? 0;
+            return CurrentDocumentPhaseSelected?.NumberOfRooms ?? 0;
         }
 
         internal bool IsNothingToDelete() => GetCurrentNumberOfElements() == 0;
         internal bool IsCurrentPhaseNotSelected() => CurrentDocumentPhaseSelected == null;
         internal bool IsLinkNotSelected() => LinkedDocumentSelected == null;
-        internal bool IsNothingToCreate() => LinkedDocumentSelected.NumberOfRooms == 0;
+        internal bool IsNothingToCreate() => (LinkedDocumentSelected?.NumberOfRooms ?? 0) == 0;
         internal bool IsLinkedPhaseNotSelected() => LinkedDocumentPhaseSelected == null;
 
 

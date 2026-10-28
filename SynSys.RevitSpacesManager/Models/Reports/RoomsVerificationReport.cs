@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Windows;
+using System.Collections.Generic;
 
 namespace RevitSpacesManager.Models
 {
@@ -35,19 +36,36 @@ namespace RevitSpacesManager.Models
         private bool IsRoomNotPlacedCorrectly(RoomElement roomElement)
         {
             double area = roomElement.Area;
-            if (area > 0)
-                return false;
+            if (area > 0) return false;
+
+            var level = roomElement.Level;
+            if (level is null) return false;
+
             return true;
         }
 
         private bool IsRoomLevelNotAvailableInRevitDocument(RevitDocument revitDocument, RoomElement roomElement)
         {
-            LevelElement roomLevel = roomElement.Level;
-            if (revitDocument.IsLevelNotAvailable(roomLevel))
+            var debug = false;
+            LevelElement? roomLevel = roomElement.Level;
+            var fullname = $"{roomElement.Number} {roomElement.Name}";
+            if (roomLevel is null) {
+                if(debug) MessageBox.Show($"{fullname}\n\nroomLevel is null\n\n{roomLevel?.Name}", "NULL!");
                 return true;
-            LevelElement roomUpperLimit = roomElement.UpperLimit;
-            if (revitDocument.IsLevelNotAvailable(roomUpperLimit))
-                return true;
+            }
+            if (revitDocument.IsLevelNotAvailable(roomLevel)) {
+                if (debug) MessageBox.Show($"{fullname}\n\nroomLevel IsLevelNotAvailable true\n\n{roomLevel?.Name}", "NULL!");
+                return true; 
+            }
+            LevelElement? roomUpperLimit = roomElement.UpperLimit;
+            if (roomUpperLimit is null){
+                if (debug) MessageBox.Show($"{fullname}\n\nroomUpperLimit is null\n\n{roomUpperLimit?.Name}", "NULL!");
+                return true; 
+            }
+            if (revitDocument.IsLevelNotAvailable(roomUpperLimit)) {
+                if (debug) MessageBox.Show($"{fullname}\n\nroomUpperLimit IsLevelNotAvailable true\n\n{roomUpperLimit?.Name}", "NULL!");
+                return true; 
+            }
             return false;
         }
     }

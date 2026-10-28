@@ -1,4 +1,5 @@
 ﻿using RevitSpacesManager.Models;
+using System;
 using System.Windows;
 
 namespace RevitSpacesManager.ViewModels
@@ -38,21 +39,27 @@ namespace RevitSpacesManager.ViewModels
                 return;
             }
 
-            RevitDocument selectedLinkedDocument = _viewModel.LinkedDocumentSelected;
-            var verificationReport = Model.VerifyRooms(selectedLinkedDocument);
-            var messageGenerator = new MessageGenerator(_viewModel, verificationReport);
-            string createAllMessage = messageGenerator.MessageCreateAll();
-            MessageBoxResult result = _viewModel.ShowConfirmationDialog(createAllMessage);
+            var selectedLinkedDocument = _viewModel.LinkedDocumentSelected;
+            if (selectedLinkedDocument == null) return;
 
-            if (result == MessageBoxResult.Cancel)
-                return;
+            try {
+                var verificationReport = Model.VerifyRooms(selectedLinkedDocument);
+                var messageGenerator = new MessageGenerator(_viewModel, verificationReport);
+                string createAllMessage = messageGenerator.MessageCreateAll();
+                MessageBoxResult result = _viewModel.ShowConfirmationDialog(createAllMessage);
+                if (result == MessageBoxResult.Cancel) return;
 
-            Model.CreateAllByRooms(verificationReport.VerifiedRooms);
+                Model.CreateAllByRooms(verificationReport.VerifiedRooms);
 
-            string createAllReport = messageGenerator.ReportCreateAll();
-            _viewModel.ShowReportMessage(createAllReport);
+                string createAllReport = messageGenerator.ReportCreateAll();
+                _viewModel.ShowReportMessage(createAllReport);
 
-            _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
+                _viewModel.OnPropertyChanged(nameof(_viewModel.CurrentDocumentPhases));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}\n\n{ex.StackTrace}", "CreateAllCommand");
+            }
         }
     }
 }

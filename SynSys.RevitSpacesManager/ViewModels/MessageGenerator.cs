@@ -1,12 +1,15 @@
-﻿using RevitSpacesManager.Models;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Collections.Generic;
+
+using RevitSpacesManager.Models;
 
 namespace RevitSpacesManager.ViewModels
 {
     internal class MessageGenerator
     {
+        private readonly MainWindowViewModel _viewModel;
         private readonly int _phasesNumber;
         private readonly int _documentElementsNumber;
         private readonly int _selectedPhaseElementsNumber;
@@ -21,6 +24,7 @@ namespace RevitSpacesManager.ViewModels
 
         internal MessageGenerator(MainWindowViewModel viewModel)
         {
+            _viewModel = viewModel;
             _areaObjectName = viewModel.GetModelAreaName();
             _documentElementsNumber = viewModel.GetCurrentNumberOfElements();
 
@@ -37,9 +41,10 @@ namespace RevitSpacesManager.ViewModels
 
         internal MessageGenerator(MainWindowViewModel viewModel, RoomsVerificationReport report)
         {
+            _viewModel = viewModel;
             _areaObjectName = viewModel.GetModelAreaName();
-            _linkedDocumentTitle = viewModel.LinkedDocumentSelected.Title;
-            _selectedPhaseName = viewModel.LinkedDocumentPhaseSelected.Name;
+            _linkedDocumentTitle = viewModel.LinkedDocumentSelected!.Title;
+            _selectedPhaseName = viewModel.LinkedDocumentPhaseSelected!.Name;
             _phasesNumber = viewModel.LinkedDocumentPhases.Count;
 
             _report = report;
@@ -212,12 +217,26 @@ namespace RevitSpacesManager.ViewModels
 
         private string GetLevelNamesString(List<RoomElement> roomElements)
         {
-            var uniqueNames = roomElements
-                .Select(r => r.Level.Name)
-                .Distinct()
-                .Select(name => $"       {name}");
-            var result = string.Join("\n", uniqueNames);
+            var uniqueNames = new List<string>();
+            foreach (var roomElement in roomElements) { 
+                var name = GetInvalidLevelName(_viewModel.CurrentDocument, roomElement);
+                if (name is null) continue;
+                if (uniqueNames.Contains(name)) continue;
+                uniqueNames.Add(name);
+            }
+            var result = string.Join("\n", uniqueNames.Distinct().Select(name => $"       {name}"));
             return  $"{result}\n";
+        }
+
+        private string? GetInvalidLevelName(RevitDocument revitDocument, RoomElement roomElement)
+        {
+            LevelElement? roomLevel = roomElement.Level;
+            if (roomLevel is null) return null;
+            if (revitDocument.IsLevelNotAvailable(roomLevel)) return roomLevel.Name;
+            LevelElement? roomUpperLimit = roomElement.UpperLimit;
+            if (roomUpperLimit is null) return null;
+            if (revitDocument.IsLevelNotAvailable(roomUpperLimit)) return roomUpperLimit.Name;
+            return null;
         }
     }
 }

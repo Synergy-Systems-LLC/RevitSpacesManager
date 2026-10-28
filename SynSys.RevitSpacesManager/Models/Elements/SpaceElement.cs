@@ -11,7 +11,6 @@ namespace RevitSpacesManager.Models
         internal string PhaseName => PhaseParameter.AsValueString();
         internal int PhaseId => PhaseParameter.AsElementId().IntegerValue;
 
-
         private readonly Space _space;
         private Parameter PhaseParameter => _space.get_Parameter(BuiltInParameter.ROOM_PHASE);
 

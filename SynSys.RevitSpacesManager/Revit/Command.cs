@@ -1,9 +1,12 @@
-﻿using Autodesk.Revit.Attributes;
+﻿using System;
+using System.Windows;
+
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using RevitSpacesManager.ViewModels;
+using Autodesk.Revit.Attributes;
+
 using RevitSpacesManager.Views;
-using System.Windows;
+using RevitSpacesManager.ViewModels;
 
 namespace SynSys.RevitSpacesManager.Revit
 {
@@ -13,18 +16,26 @@ namespace SynSys.RevitSpacesManager.Revit
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            RevitManager.CommandData = commandData;
-
-            if (IsCorrectActiveView())
+            try
             {
-                ShowMainWindow();
-            }
-            else
-            {
-                ShowActiveViewError();
-            }
+                RevitManager.CommandData = commandData;
 
-            return Result.Succeeded;
+                if (IsCorrectActiveView())
+                {
+                    ShowMainWindow();
+                }
+                else
+                {
+                    ShowActiveViewError();
+                }
+
+                return Result.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}\n\n{ex.StackTrace}", "ERROR!");
+                return Result.Failed;
+            }
         }
 
         private void ShowMainWindow()

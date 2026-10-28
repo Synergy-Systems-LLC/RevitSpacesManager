@@ -4,6 +4,8 @@ using Autodesk.Revit.DB.Mechanical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Media;
 
 namespace RevitSpacesManager.Models
 {
@@ -21,11 +23,13 @@ namespace RevitSpacesManager.Models
         
         private readonly Document _document;
         private readonly List<LevelElement> _levels;
+        private readonly Autodesk.Revit.DB.Transform? _transform;
 
 
-        internal RevitDocument(Document document)
+        internal RevitDocument(Document document, Autodesk.Revit.DB.Transform? transform = null)
         {
             _document = document;
+            _transform = transform;
             _levels = GetLevels(document);
             Phases = GetPhasesWithRoomsAndSpaces(_document);
         }
@@ -38,13 +42,12 @@ namespace RevitSpacesManager.Models
             List<RevitDocument> revitLinkDocuments = new List<RevitDocument>();
             foreach (Element element in elements)
             {
-                RevitLinkInstance revitLinkInstance = element as RevitLinkInstance;
+                RevitLinkInstance revitLinkInstance = (RevitLinkInstance)element;
                 Document linkDocument = revitLinkInstance.GetLinkDocument();
-                if(linkDocument != null)
-                {
-                    RevitDocument revitLinkDocument = new RevitDocument(linkDocument);
-                    revitLinkDocuments.Add(revitLinkDocument);
-                }
+                if(linkDocument is null) continue;
+                Autodesk.Revit.DB.Transform transform = revitLinkInstance.GetTotalTransform();
+                var revitLinkDocument = new RevitDocument(linkDocument, transform);
+                revitLinkDocuments.Add(revitLinkDocument);
             }
             return revitLinkDocuments;
         }
@@ -97,8 +100,7 @@ namespace RevitSpacesManager.Models
         internal bool IsLevelNotAvailable(LevelElement linkedLevel)
         {
             IEnumerable<LevelElement> availableLevels = _levels.Where(l => l.MatchedLevelId == linkedLevel.Id);
-            if (availableLevels.Any())
-                return false;
+            if (availableLevels.Any()) return false;
             return true;
         }
 
@@ -117,7 +119,7 @@ namespace RevitSpacesManager.Models
         {
             foreach (RevitElement revitElement in elementsList)
             {
-                RoomElement room = revitElement as RoomElement;
+                RoomElement room = (RoomElement)revitElement;
                 Space newSpace = CreateSpaceByRoomElement(document, room);
                 DefineElementPropertiesByRoomElement(newSpace, room);
             }
@@ -127,7 +129,7 @@ namespace RevitSpacesManager.Models
         private Space CreateSpaceByRoomElement(Document document, RoomElement room)
         {
             ElementId matchingLevelElementId = new ElementId(room.Level.MatchedLevelId);
-            Level level = document.GetElement(matchingLevelElementId) as Level;
+            Level level = (Level)document.GetElement(matchingLevelElementId);
             XYZ locationPoint = room.LocationPoint;
             UV spaceUV = new UV(locationPoint.X, locationPoint.Y);
             Space newSpace = document.Create.NewSpace(level, spaceUV);
@@ -140,7 +142,7 @@ namespace RevitSpacesManager.Models
         {
             foreach (RevitElement revitElement in elementsList)
             {
-                RoomElement room = revitElement as RoomElement;
+                RoomElement room = (RoomElement)revitElement; 
                 Room newRoom = CreateRoomByRoomElement(document,room);
 
                 Element element = newRoom as Element;
@@ -152,7 +154,7 @@ namespace RevitSpacesManager.Models
         private Room CreateRoomByRoomElement(Document document, RoomElement room)
         {
             ElementId matchingLevelElementId = new ElementId(room.Level.MatchedLevelId);
-            Level level = document.GetElement(matchingLevelElementId) as Level;
+            Level level = (Level)document.GetElement(matchingLevelElementId);
             XYZ locationPoint = room.LocationPoint;
             UV spaceUV = new UV(locationPoint.X, locationPoint.Y);
             Room newRoom = document.Create.NewRoom(level, spaceUV);
@@ -219,8 +221,8 @@ namespace RevitSpacesManager.Models
 
         private List<LevelElement> GetLevelsForMatching(List<RoomElement> roomElements)
         {
-            List<LevelElement> roomLevelsForMatching = roomElements.Select(r => r.Level).ToList();
-            List<LevelElement> upperLimitsForMatching = roomElements.Select(r => r.UpperLimit).ToList();
+            List<LevelElement> roomLevelsForMatching = roomElements.Select(r => r.Level).Where(l => l != null).ToList();
+            List<LevelElement> upperLimitsForMatching = roomElements.Select(r => r.UpperLimit).Where(l => l != null).ToList();
             roomLevelsForMatching.AddRange(upperLimitsForMatching);
             List<LevelElement> levelsForMatching = roomLevelsForMatching.GroupBy(l => l.Id).Select(l => l.First()).ToList();
             return levelsForMatching;
@@ -278,7 +280,7 @@ namespace RevitSpacesManager.Models
             List<SpaceElement>  spaces = new List<SpaceElement>();
             foreach (Element element in elements)
             {
-                Space space = element as Space;
+                Space space = (Space)element;
                 SpaceElement spaceElement = new SpaceElement(space);
                 spaces.Add(spaceElement);
             }
@@ -302,8 +304,8 @@ namespace RevitSpacesManager.Models
             List<RoomElement>  rooms = new List<RoomElement>();
             foreach (Element element in elements)
             {
-                Room room = element as Room;
-                RoomElement roomElement = new RoomElement(room, _levels);
+                Room room = (Room)element;
+                RoomElement roomElement = new RoomElement(room, _levels, _transform);
                 rooms.Add(roomElement);
             }
             return rooms;
@@ -338,7 +340,7 @@ namespace RevitSpacesManager.Models
             List<LevelElement>  levels = new List<LevelElement>();
             foreach (Element element in elements)
             {
-                Level level = element as Level;
+                Level level = (Level)element;
                 LevelElement levelElement = new LevelElement(level);
                 levels.Add(levelElement);
             }
